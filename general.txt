@@ -1,0 +1,289 @@
+
+// root
+object > class:	root
+action > class:	root
+place > class: root
+substance > class: root
+phenomenon > class:	root
+concept > class: root
+attribute > class: root
+
+//---------------------------------------------
+
+creature > class:	object
+creature > ability > fly:	4
+creature > ability > walk:	6
+creature > ability > talk:	2
+creature > ability > run:	8
+creature > ability > swim:	5
+creature > ability > eat:	10
+creature > ability > rating:	10
+creature > ability > sing:	2
+creature > ability > dance:	2
+creature > ability > move:	10
+creature > ability > explode:	1
+creature > ability > burn:	2
+creature > ability > think:	9
+creature > ability > laugh:	2
+creature > ability > cry:	2
+creature > ability > scream:	3
+creature > ability > yell:	4
+creature > ability > break:	3
+creature > ability > turn:	9
+creature > ability > call:	5
+creature > ability > drink:	9
+
+person > class:	creature
+person > ability > fly:	0
+person > ability > walk:	9
+person > ability > talk:	9
+person > ability > run:	9
+person > ability > swim:	5
+person > ability > eat:	10
+person > ability > rating:	10
+
+//--------------------------------------------------
+
+// BODY PARTS
+// to add later
+foot
+leg
+arm
+head
+face
+hair
+nose
+mouth
+chin
+cheek
+eye
+ear
+toungue
+tooth
+neck
+hand
+finger
+thumb
+chest
+back
+stomach
+elbow
+wrist
+shoulder
+knee
+liver
+heart
+brain
+lung
+bone
+
+//---------------------------------------------
+
+//MISC
+// to add later
+guitar
+piano
+chair
+table
+bed class:furnature
+tv
+
+//---------------------------------------------
+
+// KITCHEN ITEMS
+
+appliance > class: device
+tool > class: device
+
+plate > class:	tool
+glass > class:	tool
+cup > class:	tool
+spoon > class:	tool
+fork > class:	tool
+knife > class:	tool
+stove > class: appliance
+oven > class: appliance
+toaster > class: appliance
+dishwasher > class: appliance
+fridge > class: appliance
+
+//-------------------------------------------------
+
+// MATERIALS
+
+steel > class:	material
+aluminum > class:	material
+wood > class:	material
+copper > class:	material
+plastic > class:	material
+cement >
+concrete >
+
+//--------------------------------------------------
+
+// VEHICLES
+
+plane > class:vehicle
+train > class:vehicle
+car > class:vehicle
+truck > class:vehicle
+bike > class:vehicle
+motorcycle > class:vehicle
+
+//-------------------------------------------------
+
+// CREATURES
+
+// CREATURE TYPES
+
+bird > class: creature
+bird > ability > fly: 9
+animal > class: creature
+insect > class: creature
+
+spider > class: insect
+ant > class: insect
+bee > class: insect
+wasp > class: insect
+hornet > class: insect
+cockroach > class: insect
+cat > class:animal
+dog > class:animal
+fish > class:creature
+lion > class:animal
+tiger >
+monkey >
+ape > class:animal
+cow >
+pig > class:animal
+squirrel >
+raccoon >
+horse > class:animal
+crow > class:bird
+crow > color:black
+crow > ability > fly:10
+crow > ability > talk:0
+crow > ability > swim:0
+
+
+//-------------------------------------------------
+
+// FOOD
+
+fruit > class:object
+apple > class:fruit
+orange > class:fruit
+toast >
+bread >
+potato >
+onion >
+tomato >
+milk >
+carrot >
+beer > class:beverage
+
+//-----------------------------------------------------
+
+// COLORS
+
+black > class:	color
+brown > class:	color
+red > class:	color
+orange > class:	color
+yellow > class:	color
+green > class:	color
+blue > class:	color
+purple > class:	color
+gray > class:	color
+white > class:	color
+pink > class:	color
+magenta > class:	color
+cyan > class:	color
+
+
+// MISC
+
+color > class:attribute
+fire
+water
+rock
+pen
+pencil
+paper
+beverage > class:substance
+device > class:object
+vehicle > class:object
+part > class: object
+foot > class: part
+foot > part_of: creature
+tower
+phone > class:device
+radio > class:device
+computer > class:device
+coffee > class:beverage
+grass > class:substance
+grass > color:green
+france > class:country
+france > location:europe
+country > class:place
+
+
+// to add later on
+
+material > class:substance
+furnature > class:object
+tool > class:object
+//house >
+//wall
+//floor
+//door
+//carpet
+//stairs
+
+//window
+//road
+//sidewalk
+plant > class:object
+
+// ACTIONS
+eat > class: action
+drink > class: action
+run > class: action
+walk > class: action
+talk > class: action
+fly > class: action
+go > class: action
+move > class: action
+fall > class: action
+hit > class: action
+kick > class: action
+calculate > class: action
+think > class: action
+read > class: action
+write > class: action
+see > class: action
+hear > class: action
+smell > class: action
+taste > class: action
+feel > class: action
+jump > class: action
+
+//=============================================================
+// BELOW IS DATA COLLECTED DURING USER SESSIONS
+
+#1 > class:person
+#1 > firstname:bob
+#1 > gender:male
+#2 > class:person
+#2 > firstname:ron
+#2 > gender:male
+#3 > class:person
+#3 > firstname:thor
+#4 > class:person
+#4 > firstname:annie
+#4 > gender:female
+#5 > class:person
+#5 > firstname:kim
+#5 > gender:female
+#6 > class:person
+#6 > firstname:jose
