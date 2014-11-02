@@ -3,6 +3,7 @@
 #include <string.h>
 #include "db.h"
 #include "handle.h"
+#include "time.h"
 
 #define TRUE 1
 #define FALSE 0
@@ -30,6 +31,10 @@ typedef struct {
     //int code;
 } template_info_type;
 
+//  char current_time[MAX_STRING_LEN];
+ // char current_time[80];
+  int current_time;
+
 #if 0
     typedef struct {
         char* input[80];
@@ -51,7 +56,9 @@ int tokenize(char*, char*, char);
 int separate_words(char*, char[MAX_WORDS][MAX_LETTERS]);
 int template_search(char*, template_info_type*);
 int check_gender_by_name(char*);
-//int isvalidname(char*);
+//void get_time(char*);
+int get_time(void);
+    //int isvalidname(char*);
 
 //-------------------------------------------------------
 
@@ -137,6 +144,14 @@ while(1){
     //printf("%d   ", token);
 #endif
 //----------------
+
+#if 0
+// experimenting with delays ========================
+current_time = get_time();
+while (get_time() < current_time +5);
+//printf("time: %d", current_time);
+#endif
+
 
 // The main sentence processing starts here. Soon this will be replaced by using the templates in templates.txt
 
@@ -980,6 +995,27 @@ int check_gender_by_name(char* name)
     return 3;
 }
 
+/*
+ * Get current time. Store time as a string in current_time.
+ */
+int get_time() {
+  time_t t;
+  struct tm *tm;
+
+//  current_time[0] = '\0';
+
+  t = time(NULL);
+  tm = localtime(&t);
+
+  if (tm == NULL)
+    return;
+
+return (tm->tm_hour*3600) + (tm->tm_min*60) + (tm->tm_sec);
+ // sprintf(current_time, "%d:%02d:%02d on %d-%d-%d ",
+//	  tm->tm_hour, tm->tm_min, tm->tm_sec,
+//	  1900 + tm->tm_year, tm->tm_mon, tm->tm_mday);
+
+} /* get_time */
 
 
 
