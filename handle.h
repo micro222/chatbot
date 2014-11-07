@@ -9,6 +9,9 @@
 #include <string.h>
 #include <stdio.h>
 
+extern int current_user_id;
+extern char current_user_name[];
+
 void handle_class_question(char*);
 void handle_class_statement(char*,char*);
 void handle_color_question(char*);
@@ -24,5 +27,6 @@ void handle_rating_statement(char*, char*, char*);
 void handle_list_question(char*);
 
 void handle_login(char*);
+void handle_greetings(void);
 
 #endif // HANDLE_H_INCLUDED

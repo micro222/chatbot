@@ -21,49 +21,43 @@ void handle_class_statement(char*user_subject, char*user_class)
 
     char value[20];
     char key[20];
-    int subject_result, class_result, comparison_result;
+    int result;
 
+    // 1 is "animal" in the database?
+    if(db_check(user_class) != FOUND) {
+        printf("I'm not familiar with %s\n", user_class);
+        return;
+    }
+
+    //2,3&4
 //  ex: lookup "cat"
-  //  strcpy(key, user_subject);
-  //  strcat(key," > class");
     sprintf(key, "%s > class", user_subject);
-    subject_result = db_lookup(key, value);
-    printf("DEBUG: %s\n", value);
-
-//  3)
-    if(strcmp(user_class, value) == 0)
-    {
-        printf("I already know that\n");
-        return;
-    }
-
-//  lookup "animal"
-   // strcpy(key, user_class);
-   // strcat(key," > class");
-    sprintf(key, "%s > class", user_class);
-    class_result = db_lookup(key, value);
-
-// 1)
-    if(class_result == NOT_FOUND)
-    {
-        printf("I'm unfamiliar with %s\n", user_class);
-        return;
-    }
+    result = db_lookup(key, value);
 
 //  2)
-    if(subject_result == NOT_FOUND)
+    if(result == NOT_FOUND)
     {
-   //     strcpy(key, user_subject);
-   //     strcat(key," > class");
         sprintf(key, "%s > class", user_subject);
         db_add_pair(key, user_class);
         printf("I'll take a note of that\n");
         return;
     }
 
-// 4)
-    printf("no, it's a %s\n", value);
+//  Note: At this point, "cat" was found in the database.
+//  We just need to check if the info matches or not.
 
+//  3) states what already is known
+    if(strcmp(user_class, value) == 0)
+    {
+        printf("I already know that\n");
+        return;
+    }
+
+//  4) contradictory info
+    else {
+        printf("no, it's a %s\n", value);
+        return;
+    }
 }
 
 //--------------------------------------------------
@@ -73,35 +67,38 @@ void handle_color_statement(char* user_subject,char* user_color)
     example: grass is green
 
     Posibilities:
-    1   grass is unknown                i dont know what grass is
-    2   grass known, color is unknown   add color
-    3   grass known, color = green      i know
-    4   grass known, color not green    is not
+    1   grass is unknown                "I dont know what grass is"
+    2   grass can't have a color
+    3   grass is known. no color is listed
+    4   grass is known and already associated with the given color
+    5   grass is known, but a different color is listed
+
     */
 
     char key[20];
-    char value[20];
+    char value1[20];char value2[20];
     int subject_result;
     char user_class;
-    int class_result;
+    int color_result;
 
-//  ex: lookup "grass"
-    sprintf(key, "%s > class", user_subject);
-    subject_result = db_lookup(key, value);
+    if(DEBUG) printf("handle_color  ");
 
-//  lookup "green"
-    sprintf(key, "%s > color", user_class);
-    class_result = db_lookup(key, value);
-
-// 1)
-    if(class_result == NOT_FOUND)
-    {
-        printf("I'm unfamiliar with %s\n", user_class);
+    // 1 is "grass" in the database?
+    if(db_check(user_subject) != FOUND) {
+        printf("I'm not familiar with %s\n", user_subject);
         return;
     }
 
-//  2)
-    if(subject_result == NOT_FOUND)
+    // 2 is "grass" something that can have a color?
+    if(db_root_check(user_subject, "substance")!=MATCH && db_root_check(user_subject, "object") != MATCH) {
+        printf("I don't think %s can have a color\r\n", user_subject);
+        return;
+    }
+
+    // 3 is grass already associated with that color? if not, add it
+    sprintf(key, "%s > color", user_subject);
+    color_result = db_lookup(key, value1);
+    if(color_result == NOT_FOUND)
     {
         sprintf(key, "%s > color", user_subject);
         db_add_pair(key, user_color);
@@ -109,17 +106,15 @@ void handle_color_statement(char* user_subject,char* user_color)
         return;
     }
 
-//  3)
-    if(strcmp(user_class, value) == 0)
+    // 4 if already associated with the given color
+    if(strcmp(user_color, value1) == 0)
     {
         printf("I already know that\n");
         return;
     }
 
-// 4)
-    printf("no, it's a %s\n", value);
-
-
+    // 5 if associated with a different color
+    else printf("no, it's %s\n", value1);
 }
 //--------------------------------------------------
 
@@ -515,5 +510,21 @@ void handle_attribute_statement(char* user_subject,char* user_attribute)
 
 }
 //--------------------------------------------------
+// WORK IN PROGRESS
+//
+// handle hi, hello
+//
+//
+void handle_greetings(void)
+{
+    // if not logged in
+    if(current_user_id == 0){
+        printf("hi, what is your name?\r\n");
+    }
+    // if logged in
+    else{
+        printf("hi %s\r\n", current_user_name);
+    }
+}
 
 

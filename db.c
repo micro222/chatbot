@@ -324,3 +324,22 @@ int db_root_check(char* startingwith, char* lookingfor){
    }
   return NO_MATCH;  // not found
 }
+
+//-----------------------------------------------------------------------
+//
+// ex:
+// db_check("cat");
+//
+int db_check(char* subject){
+
+   char key[60];
+   char value[20];
+
+   sprintf(key, "%s > class", subject);
+   return db_lookup(key, value); // lookup
+
+}
+
+
+
+
