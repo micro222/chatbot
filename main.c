@@ -547,6 +547,7 @@ int is_nonsense_word(char* s1){
 
   // 3 vowels in a row?
   int i,inarow;
+  int j;
   char *list_nonsense[] = {"ch", "gh", "sc", "sp", "th", "ck", "pp", "tt"};
 
   inarow=0;
@@ -560,17 +561,9 @@ int is_nonsense_word(char* s1){
   // replace all occurances of CH GH SC SP TH CK PP ST with vowels
   for(i=0;i<80-3;i++){
     if(user_input[i]==0) break;
-    for (j=0; j<sizeof(list_nonsense)
-    if(strncmp(&user_input[i], "ch", 2)
-				
-    if((user_input[i]== 'c' && user_input[i+1]== 'h') ||
-       (user_input[i]== 'g' && user_input[i+1]== 'h') ||
-       (user_input[i]== 's' && user_input[i+1]== 'c') ||
-       (user_input[i]== 's' && user_input[i+1]== 'p') ||
-       (user_input[i]== 's' && user_input[i+1]== 't') ||
-       (user_input[i]== 'p' && user_input[i+1]== 'p') ||
-       (user_input[i]== 'c' && user_input[i+1]== 'k') ){
-      user_input[i]='a'; user_input[i+1]='a';
+    for (j=0; j<sizeof(list_nonsense); j++) {
+        if(strncmp(&user_input[i], "ch", 2))
+            strncpy(&user_input[i], "aa", 2);
     }
   }
 
