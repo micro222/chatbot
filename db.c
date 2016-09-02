@@ -103,7 +103,7 @@ int db_get_id(char* firstname)
 
     for(id=1; id<1000; id++)
     {
-        itoa(id, id_string,10);  // convert id number from integer to string (integer, string, base)
+        snprintf (id_string, sizeof(id_string), "%d",id); // convert id number from integer to string (integer, string, base)
         sprintf(key, "#%s > firstname", id_string);
         result = db_lookup(key, name);
 
@@ -214,7 +214,7 @@ int db_next_available_id(void){
    //id[0]=0;
    for(i=1; i<1000; i++){
       // look for id, first_name
-      itoa(i,id_string,10);
+      snprintf (id_string, sizeof(id_string), "%d",i);
       strcpy(key,"#");
       strcat(key, id_string);
       strcat(key, " > class");

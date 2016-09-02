@@ -677,7 +677,7 @@ void handle_login(char*name)
       //   #1 > class: person
       //   #1 > firstname:bob
       //   #1 > gender:male
-      itoa(id_number, id_string, 10);
+      snprintf (id_string, sizeof(id_string), "%d",id_number);
       sprintf(key, "#%s > class", id_string);
       db_add_pair(key, "person");
 
