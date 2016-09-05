@@ -943,7 +943,7 @@ int template_search(char*user, template_info_type* template_info){
   if(line_position>0){
     line_position = copy_to_delimiter(template_info->line, temp, ',' ,line_position);
     //printf("temp:%s pos: %d", temp, line_position);
-    template_info->parameter1 = atoi(temp);
+    snprintf(template_info->parameter1, sizeof(template_info->parameter1), temp);
   }
 
   //printf("LP: %d", line_position);
@@ -952,7 +952,7 @@ int template_search(char*user, template_info_type* template_info){
     // extract parameter2
     line_position = copy_to_delimiter(template_info->line, temp, ',' ,line_position);
     //printf("temp:%s pos: %d", temp, line_position);
-    template_info->parameter2 = atoi(temp);
+    snprintf(template_info->parameter2, sizeof(template_info->parameter2), temp);
   }
 
   fclose(template_file_handle);
