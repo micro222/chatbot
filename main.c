@@ -99,7 +99,7 @@ int main(int argc, char *argv[]){
   template_info_type template_info;
   char key[80];
 
-  test_hashtable();
+  //test_hashtable();
 
   printf("type 'help' for a list of sentences I understand\r\n");
   while(1){
