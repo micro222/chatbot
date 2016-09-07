@@ -1,51 +1,55 @@
-// TESTING
-what time is it,
-what is your name,
-hi,
-how are you,
+// Notes
+//  Where there ia a *, no match is needed
+//  Do a root check on all words within angle brackets
 
 
-// SUBSET OF
-what is *,class_question, 3
-what are *,   class_question, 3
-what is a *,class_question,4
-a * is a *,    class_statement, 2, 5   //  ex: a cat is an animal
+// CLASS (is a subset of)
+what is *, class_question, 3
+what are *, class_question, 3
+what is a *, class_question, 4
+a * is a *, class_statement, 2, 5   //  ex: a cat is an animal
+<substance> is a *, class_statement, 1, 4    //  ex: beer is a beverage
 
-// ATTRIBUTES-COLORS
+// ATTRIBUTES
 what color is *, color_question, 4
-is * <color>,   color_confirmation_question, 2, 3
-* is <color>,    color_statement, 1, 3
-
-
-// LOCATION
-where is *,     location_question, 3
-
+is * <color>, color_confirmation_question, 2, 3
+* is <color>, color_statement, 1, 3
+where is *, location_question, 3
+    // say my name
+    // what is my name,             user_name_question
+    // what is your name
+    // i am male,
+    // bob is male
+    // my gender is male
+    // what is my gender
+    // bob is tired
 
 // ABILITY
 can * <action>, ability_question, 2, 3
 * can <action>,  ability_statement, 1, 3
 
 // RATING
-do you like *,          rating_question, 2, 4         //  Example: do you like beer
-does <creature> like *, rating_question, 2, 4         //  Example: does fred like beer
+do you like *,                  rating_question, 2, 4         //  Example: do you like beer
+does <creature> like *,         rating_question, 2, 4         //  Example: does fred like beer
 I hate *,                       rating_statement, 1, 3, 0
 I dont like *,                  rating_statement, 1, 4, 3
 I like *,                       rating_statement, 1, 3, 7   // Example: i like beer
 I love *,                       rating_statement, 1, 3, 10
 <creature> hates *,             rating_statement, 1, 3, 0   // Example: bob hates beer
-<creature> doesn't'like *,      rating_statement, 1, 4, 3
+<creature> doesn't like *,      rating_statement, 1, 4, 3
 <creature> likes *,             rating_statement, 1, 3, 7
 <creature> loves *,             rating_statement, 1, 3, 10
 
-
 // MISC.
 list <class>,                  list_question, 2   // Example: list action
-what is my name,             user_name_question
-help,                        help
+    // help
+    // bye
+    // what time is it
+    // hi
+    // how are you
 
-// Note: do a root check on all words within angle brackets
 
-
+//Functions (ignore this for now)
 // 1 class_question
 // 2 class_statement
 // 3 color_question
@@ -58,5 +62,3 @@ help,                        help
 // 10 rating_statement
 // 11 list_question
 // 12 name_question
-
-
