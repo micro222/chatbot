@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // Notes
 //  Where there ia a *, no match is needed
 //  Do a root check on all words within angle brackets
@@ -24,7 +23,7 @@ where is *, location_question, 3
     // my gender is male
     // what is my gender
     // bob is tired
-=======
+
 // Template form
 // sentence to be mached, function to be called if there's a match, number of the word to be passed to the function
 
@@ -42,7 +41,7 @@ is * <color>,   color_confirmation_question, 2, 3   // ex: is choclolate brown?
 
 // LOCATION
 where is *,     location_question, 3   // where is lucy?
->>>>>>> 29f228afbcad42feb0710a999cd0b09143883957
+
 
 // ABILITY
 can * <action>, ability_question, 2, 3  // ex: can cows fly
@@ -68,12 +67,12 @@ list <class>,                  list_question, 2   // Example: list action
     // hi
     // how are you
 
-<<<<<<< HEAD
+
 
 //Functions (ignore this for now)
-=======
+
 // Ignore this for now
->>>>>>> 29f228afbcad42feb0710a999cd0b09143883957
+
 // 1 class_question
 // 2 class_statement
 // 3 color_question
