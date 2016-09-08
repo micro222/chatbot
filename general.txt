@@ -282,6 +282,3 @@ jump > class: action
 #4 > class:person
 #4 > firstname:annie
 #4 > gender:female
-#5 > class:person
-#5 > firstname:kim
-#5 > gender:female
