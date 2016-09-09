@@ -1,5 +1,7 @@
-
-// ROOT
+// This is the main database. Most of the robot's knowledge is contained here.
+// Individua pieces of information is stored as key-value pairs. It uses terms that are organized in a tree structure. 
+// 
+// Level 0 (ROOT)
 
 object > class:	root
 attribute > class: root
@@ -10,7 +12,7 @@ concept > class: root
 
 //------------------------------
 
-// VARIOUS
+// Level 1
 
 creature > class: object
 device > class: object
@@ -27,6 +29,7 @@ part_of > class: attribute
 material > class: substance
 beverage > class: substance
 tool > class: device
+material > class: substance
 
 //------------------------------
 
