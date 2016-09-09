@@ -1,16 +1,99 @@
 
-// root
+// ROOT
+
 object > class:	root
-action > class:	root
-place > class: root
-substance > class: root
-phenomenon > class:	root
-concept > class: root
 attribute > class: root
+substance > class: root
+action > class:	root
+phenomenon > class: root
+concept > class: root
 
-//---------------------------------------------
+//------------------------------
 
-creature > class:	object
+// VARIOUS
+
+creature > class: object
+device > class: object
+vehicle > class: object
+furnature > class: object
+tool > class: object
+plant > class: object
+color > class: attribute
+gender > class: attribute
+first_name > class: attribute
+location > class: attribute
+creation_date > class: attribute
+part_of > class: attribute
+material > class: substance
+beverage > class: substance
+tool > class: device
+
+//------------------------------
+
+// COLORS
+
+black > class:	color
+brown > class:	color
+red > class:	color
+orange > class:	color
+yellow > class:	color
+green > class:	color
+blue > class:	color
+purple > class:	color
+gray > class:	color
+white > class:	color
+pink > class:	color
+magenta > class:color
+cyan > class:	color
+
+//-------------------------------------------------
+
+// MATERIALS
+
+steel > class: material
+aluminum > class: material
+wood > class: material
+copper > class:	material
+plastic > class: material
+//cement >
+//concrete >
+
+
+//-------------------------------------------------
+
+// CREATURES
+
+// CREATURE TYPES
+
+bird > class: creature
+bird > ability > fly: 9
+animal > class: creature
+insect > class: creature
+
+spider > class: insect
+ant > class: insect
+bee > class: insect
+wasp > class: insect
+hornet > class: insect
+cockroach > class: insect
+cat > class:animal
+dog > class:animal
+fish > class:creature
+lion > class:animal
+tiger > class:animal
+monkey > class:animal
+ape > class:animal
+cow > class:animal
+pig > class:animal
+squirrel > class:animal
+raccoon > class:animal
+horse > class:animal
+crow > class:bird
+crow > color:black
+crow > ability > fly:10
+crow > ability > talk:0
+crow > ability > swim:0
+
 creature > ability > fly:	4
 creature > ability > walk:	6
 creature > ability > talk:	2
@@ -42,208 +125,7 @@ person > ability > swim:	5
 person > ability > eat:	10
 person > ability > rating:	10
 
-//--------------------------------------------------
-
-// BODY PARTS
-// to add later
-foot
-leg
-arm
-head
-face
-hair
-nose
-mouth
-chin
-cheek
-eye
-ear
-toungue
-tooth
-neck
-hand
-finger
-thumb
-chest
-back
-stomach
-elbow
-wrist
-shoulder
-knee
-liver
-heart
-brain
-lung
-bone
-
 //---------------------------------------------
-
-//MISC
-// to add later
-guitar
-piano
-chair
-table
-bed class:furnature
-tv
-
-//---------------------------------------------
-
-// KITCHEN ITEMS
-
-appliance > class: device
-tool > class: device
-
-plate > class:	tool
-glass > class:	tool
-cup > class:	tool
-spoon > class:	tool
-fork > class:	tool
-knife > class:	tool
-stove > class: appliance
-oven > class: appliance
-toaster > class: appliance
-dishwasher > class: appliance
-fridge > class: appliance
-
-//-------------------------------------------------
-
-// MATERIALS
-
-steel > class:	material
-aluminum > class:	material
-wood > class:	material
-copper > class:	material
-plastic > class:	material
-cement >
-concrete >
-
-//--------------------------------------------------
-
-// VEHICLES
-
-plane > class:vehicle
-train > class:vehicle
-car > class:vehicle
-truck > class:vehicle
-bike > class:vehicle
-motorcycle > class:vehicle
-
-//-------------------------------------------------
-
-// CREATURES
-
-// CREATURE TYPES
-
-bird > class: creature
-bird > ability > fly: 9
-animal > class: creature
-insect > class: creature
-
-spider > class: insect
-ant > class: insect
-bee > class: insect
-wasp > class: insect
-hornet > class: insect
-cockroach > class: insect
-cat > class:animal
-dog > class:animal
-fish > class:creature
-lion > class:animal
-tiger >
-monkey >
-ape > class:animal
-cow >
-pig > class:animal
-squirrel >
-raccoon >
-horse > class:animal
-crow > class:bird
-crow > color:black
-crow > ability > fly:10
-crow > ability > talk:0
-crow > ability > swim:0
-
-
-//-------------------------------------------------
-
-// FOOD
-
-fruit > class:object
-apple > class:fruit
-orange > class:fruit
-toast >
-bread >
-potato >
-onion >
-tomato >
-milk >
-carrot >
-beer > class:beverage
-
-//-----------------------------------------------------
-
-// COLORS
-
-black > class:	color
-brown > class:	color
-red > class:	color
-orange > class:	color
-yellow > class:	color
-green > class:	color
-blue > class:	color
-purple > class:	color
-gray > class:	color
-white > class:	color
-pink > class:	color
-magenta > class:	color
-cyan > class:	color
-
-
-// MISC
-
-color > class:attribute
-fire
-water
-rock
-pen
-pencil
-paper
-beverage > class:substance
-device > class:object
-vehicle > class:object
-part > class: object
-foot > class: part
-foot > part_of: creature
-tower
-phone > class:device
-radio > class:device
-computer > class:device
-coffee > class:beverage
-grass > class:substance
-grass > color:green
-france > class:country
-france > location:europe
-country > class:place
-
-
-// to add later on
-
-material > class:substance
-furnature > class:object
-tool > class:object
-//house >
-//wall
-//floor
-//door
-//carpet
-//stairs
-
-//window
-//road
-//sidewalk
-plant > class:object
 
 // ACTIONS
 eat > class: action
@@ -267,6 +149,164 @@ smell > class: action
 taste > class: action
 feel > class: action
 jump > class: action
+
+//--------------------------------------------
+
+// KITCHEN ITEMS
+
+appliance > class: device
+plate > class:	tool
+glass > class:	tool
+cup > class:	tool
+spoon > class:	tool
+fork > class:	tool
+knife > class:	tool
+stove > class: appliance
+oven > class: appliance
+toaster > class: appliance
+dishwasher > class: appliance
+fridge > class: appliance
+
+//--------------------------------------------------
+
+// VEHICLES
+
+plane > class: vehicle
+train > class: vehicle
+car > class: vehicle
+truck > class: vehicle
+bike > class: vehicle
+motorcycle > class: vehicle
+
+//-------------------------------------------------
+
+// FOOD
+
+//fruit > 
+//apple > 
+//orange > 
+//toast >
+//bread >
+//potato >
+//onion >
+//tomato >
+//milk >
+//carrot >
+beer > class: beverage
+
+//-----------------------------------------------------
+
+// MISC
+
+//fire
+//water
+//rock
+//pen
+//pencil
+//paper
+
+foot > class: object
+foot > part_of: creature
+//tower
+phone > class:device
+radio > class:device
+computer > class:device
+coffee > class:beverage
+grass > class:substance
+grass > color:green
+
+france > location:europe
+
+
+//------------------------------------------
+
+// to add later on
+
+//house >
+//wall
+//floor
+//door
+//carpet
+//stairs
+
+//window
+//road
+//sidewalk
+
+// BODY PARTS
+
+arm	 > part_of 	creature
+arm	 > class 	object
+back	 > part_of 	creature
+back	 > class 	object
+bone	 > part_of 	creature
+bone	 > class 	object
+brain	 > part_of 	creature
+brain	 > class 	object
+cheek	 > part_of 	creature
+cheek	 > class 	object
+chest	 > part_of 	creature
+chest	 > class 	object
+chin	 > part_of 	creature
+chin	 > class 	object
+ear	 > part_of 	creature
+ear	 > class 	object
+elbow	 > part_of 	creature
+elbow	 > class 	object
+eye	 > part_of 	creature
+eye	 > class 	object
+face	 > part_of 	creature
+face	 > class 	object
+finger	 > part_of 	creature
+finger	 > class 	object
+foot	 > part_of 	creature
+foot	 > class 	object
+hair	 > part_of 	creature
+hair	 > class 	object
+hand	 > part_of 	creature
+hand	 > class 	object
+head	 > part_of 	creature
+head	 > class 	object
+heart	 > part_of 	creature
+heart	 > class 	object
+knee	 > part_of 	creature
+knee	 > class 	object
+leg	 > part_of 	creature
+leg	 > class 	object
+liver	 > part_of 	creature
+liver	 > class 	object
+lung	 > part_of 	creature
+lung	 > class 	object
+mouth	 > part_of 	creature
+mouth	 > class 	object
+neck	 > part_of 	creature
+neck	 > class 	object
+nose	 > part_of 	creature
+nose	 > class 	object
+shoulder	 > part_of 	creature
+shoulder	 > class 	object
+stomach	 > part_of 	creature
+stomach	 > class 	object
+thumb	 > part_of 	creature
+thumb	 > class 	object
+tooth	 > part_of 	creature
+tooth	 > class 	object
+toungue	 > part_of 	creature
+toungue	 > class 	object
+wrist	 > part_of 	creature
+wrist	 > class 	object
+
+
+
+//---------------------------------------------
+
+//MISC
+//guitar
+//piano
+//chair
+//table
+bed class:furnature
+//tv
 
 //=============================================================
 // BELOW IS DATA COLLECTED DURING USER SESSIONS
