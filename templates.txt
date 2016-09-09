@@ -1,9 +1,12 @@
+//The robot will try to match the sentence with one of the templates below. If there's a match, the specified function will deal with the rest of the processing. The numbers indicate which words are passed to the function.
+
+
 // Notes
 //  Where there ia a *, no match is needed
 //  Do a root check on all words within angle brackets
 
 
-// CLASS (is a subset of)
+// CLASS (what is the subject a subset of)
 what is *, class_question, 3
 what are *, class_question, 3
 what is a *, class_question, 4
