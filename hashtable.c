@@ -2,9 +2,6 @@
 
 #include "hashtable.h"
 
-#define DEFAULT_HASHSIZE 51
-
-
 /* hash: form hash value for string s */
 unsigned hash(char *s, int hash_size)
 {
@@ -44,10 +41,15 @@ hashtable *regrow_hashtable(hashtable *ht, int new_hash_size)
     int i;
     int old_hash_size;
 
+    new_ht = create_hashtable(new_hash_size);
+
     for (i=0; i<old_hash_size; i++) {
     }
+
+    destroy_hashtable(ht);
+    return(new_ht);
 }
-/* lookup: look for s in hashtab */
+/* Main interface for 'lookup': look for s in hashtab */
 struct nlist *lookup(hashtable *ht, char *s)
 {
     struct nlist *np;
@@ -57,8 +59,17 @@ struct nlist *lookup(hashtable *ht, char *s)
     return NULL; /* not found */
 }
 
-char *strdup(char *);
-/* write: put (name, defn) in hashtab */
+/* Helper function: make a duplicate of s */
+char *strdup(char *s)
+{
+    char *p;
+    p = (char *) malloc(strlen(s)+1); /* +1 for ’\0’ */
+    if (p != NULL)
+       strcpy(p, s);
+    return p;
+}
+
+/* Main interface for 'write': put (name, defn) in hashtab */
 struct nlist *write(hashtable *ht, char *name, char *defn)
 {
     struct nlist *np;
@@ -75,13 +86,4 @@ struct nlist *write(hashtable *ht, char *name, char *defn)
     if ((np->defn = strdup(defn)) == NULL)
        return NULL;
     return np;
-}
-
-char *strdup(char *s) /* make a duplicate of s */
-{
-    char *p;
-    p = (char *) malloc(strlen(s)+1); /* +1 for ’\0’ */
-    if (p != NULL)
-       strcpy(p, s);
-    return p;
 }
