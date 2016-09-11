@@ -1,0 +1,7 @@
+bin/Debug/chatbot
+bin/Release/chatbot
+chatbot.cbp
+chatbot.depend
+*.o
+obj
+
