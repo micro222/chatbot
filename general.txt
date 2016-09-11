@@ -326,3 +326,4 @@ bed class:furnature
 #4 > class:person
 #4 > firstname:annie
 #4 > gender:female
+water > class:substance
