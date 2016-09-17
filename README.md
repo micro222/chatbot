@@ -5,8 +5,6 @@ I've been working on a chatbot on and off for about 11 years, and while I've mad
 
 I wanted to make a chatbot that is better than the AIML types. Something that would pay attention to who it was talking to and try to learn from that person. It would not guess at an answer when it has no understanding of that was said. If it doesn't understand, it will explain why and ask for information in an attempt to understand. What it learns can be applied later in the conversation and with other users.
 
-There's [a short demonstration in the wiki] (https://github.com/micro222/chatbot/wiki/A-quick-demo)
-
 ## About this program
 * This is a text based robot with learning as the main emphasis
 * It tends to try to learn about the people it talks to and the world in general

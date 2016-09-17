@@ -14,6 +14,7 @@ extern char current_user_name[];
 
 void handle_class_question(char*);
 void handle_class_statement(char*,char*);
+void handle_attribute_statement(char*, char*);
 void handle_color_question(char*);
 void handle_color_confirmation_question(char*,char*);
 void handle_color_statement(char*,char*);

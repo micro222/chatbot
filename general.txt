@@ -1,6 +1,8 @@
 // This is the main database. Most of the robot's knowledge is contained here.
-// Individua pieces of information is stored as key-value pairs. It uses terms that are organized in a tree structure. 
-// 
+// Individua pieces of information is stored as key-value pairs.
+// It uses terms that are organized in a tree structure.
+
+
 // Level 0 (ROOT)
 
 object > class:	root
@@ -20,16 +22,20 @@ vehicle > class: object
 furnature > class: object
 tool > class: object
 plant > class: object
+
 color > class: attribute
 gender > class: attribute
 first_name > class: attribute
 location > class: attribute
 creation_date > class: attribute
 part_of > class: attribute
+
 material > class: substance
 beverage > class: substance
-tool > class: device
 material > class: substance
+
+tool > class: device
+
 
 //------------------------------
 
@@ -185,9 +191,9 @@ motorcycle > class: vehicle
 
 // FOOD
 
-//fruit > 
-//apple > 
-//orange > 
+//fruit >
+//apple >
+//orange >
 //toast >
 //bread >
 //potato >
@@ -327,3 +333,15 @@ bed class:furnature
 #4 > firstname:annie
 #4 > gender:female
 water > class:substance
+#5 > class:person
+#5 > firstname:eric
+#5 > gender:male
+#6 > class:person
+#6 > firstname:lyle
+#7 > class:person
+#7 > firstname:fred
+#7 > gender:male
+#8 > class:person
+#8 > firstname:linus
+#9 > class:person
+#9 > firstname:was

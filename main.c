@@ -229,11 +229,33 @@ int main(int argc, char *argv[]){
     }
 
     // this needs to be placed before "___ is ___"
+
+
+
+//---------------------------
+// construction zone
+
+/* code to be replaced
     if(
        number_of_words==3 && strcmp(words[2],"is")==0 && db_root_check(words[3],"color")==MATCH){
       handle_color_statement(words[1],words[3]);
       continue;
     }
+*/
+
+// new code
+    if(
+       number_of_words==3 && strcmp(words[2],"is")==0){
+      handle_attribute_statement(words[1],words[3]);
+      continue;
+    }
+
+// end of construction zone
+
+//----------------------------
+
+
+
 
     // CLASS (SUBSET OF)
     // what is ___
