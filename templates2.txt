@@ -58,9 +58,12 @@ does * like *,    rating_question(2, 4)       // ex: does fred like beer
 
 // MISC.
 list *, list_question, 2                      // ex: list action
-  // TO DO
+hi,               handle_greetings()
+hey,              handle_greetings()
+hello,            handle_greetings()
+
+// TO DO
     // help
     // bye
     // what time is it
-    // hi
     // how are you

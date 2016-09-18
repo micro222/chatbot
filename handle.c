@@ -423,31 +423,29 @@ void handle_attribute_statement(char* user_subject,char* user_attribute) {
 
    // 3) is green in db?
    sprintf(key, "%s > class", user_attribute);
-   result = db_lookup(key, db_class);
-   if(result == NOT_FOUND) {
+   if(db_lookup(key, db_class) == NOT_FOUND) {
       printf("I'm unfamiliar with %s\n", user_attribute);
       return;
    }
 
    // 4) is "green" an attribute
-   result = db_root_check(user_attribute, "attribute");
-   if(result == NOT_FOUND) {
+   if(db_root_check(user_attribute, "attribute") == NOT_FOUND) {
       printf("%s is not an attribute\n", user_attribute);
       return;
    }
 
    // Preparation for 5, 6 and 7
 
-   // Get the type of the attribute. ex: green is a color
-   sprintf(key, "%s > class", user_attribute);  // assemble key, ex: green > class
-   result = db_lookup(key, attribute_type);  // ex: returns "color"
+   // Get the type of the attribute. ex: "green is a color"
+   sprintf(key, "%s > class", user_attribute);  // assemble key, ex: "green > class"
+   db_lookup(key, attribute_type);  // ex: returns "color"
 
    // Get the attribute from db if any
-   sprintf(key, "%s > %s", user_subject, attribute_type);  // assemble key, ex: green > color
+   sprintf(key, "%s > %s", user_subject, attribute_type);  // assemble key, ex: "green > color"
    result = db_lookup(key, db_attribute);  // ex: returns "green"
 
    // 5) Is the attribute already known?
-    if(strcmp(user_attribute, db_attribute) == 0) {   // compare green(what the user typed) with green(from db)
+    if(strcmp(user_attribute, db_attribute) == 0) {   // compare "green"(what the user typed) with green(from db)
       printf("I already know that\n");
       return;
    }

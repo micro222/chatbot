@@ -318,11 +318,11 @@ int db_root_check(char* startingwith, char* lookingfor){
        sprintf(key, "%s > class", subject);
        result = db_lookup(key, value); // lookup
        if(result == NOT_FOUND) return NOT_FOUND; // if not in database at all, exit
-       if(strcmp(value,lookingfor)==0)return MATCH;  // is it what we're looking for?
-       if(strcmp(value,"root")==0)return NO_MATCH; // has it reached to root?
+       if(strcmp(value,lookingfor)==0)return FOUND;  // is it what we're looking for?
+       if(strcmp(value,"root")==0)return NOT_FOUND; // has it reached to root?
        strcpy(subject,value); // if no luck so far, the value becomes the subject
    }
-  return NO_MATCH;  // not found
+  return NOT_FOUND;  // not found
 }
 
 //-----------------------------------------------------------------------

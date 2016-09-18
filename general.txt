@@ -324,24 +324,4 @@ bed class:furnature
 #1 > class:person
 #1 > firstname:bob
 #1 > gender:male
-#2 > class:person
-#2 > firstname:ron
-#2 > gender:male
-#3 > class:person
-#3 > firstname:thor
-#4 > class:person
-#4 > firstname:annie
-#4 > gender:female
-water > class:substance
-#5 > class:person
-#5 > firstname:eric
-#5 > gender:male
-#6 > class:person
-#6 > firstname:lyle
-#7 > class:person
-#7 > firstname:fred
-#7 > gender:male
-#8 > class:person
-#8 > firstname:linus
-#9 > class:person
-#9 > firstname:was
+
