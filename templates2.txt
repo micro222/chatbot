@@ -6,27 +6,27 @@
 
 // CLASS STATEMENTS
 // parameters: subject, class
-a * is a *,  is_statement(2, 5)               // ex: a cat is an animal
-* is a *,    is_statement(1, 4)               // ex: beer is a beverage
+a * is a *,  handle_class_statement(2, 5)                 // ex: a cat is an animal
+* is a *,    handle_class_statement(1, 4)                 // ex: beer is a beverage
 
 // CLASS QUESTIONS
 // parameters: subject, class
-what is *,   is_question(3)          // ex: what is coffee?
-what are *,  is_question(3)          // ex: what are raccoons?
-what is a *, is_question(4)          // ex: what is a cow?
+what is *,   handle_class_question(3)                     // ex: what is coffee?
+what are *,  handle_class_question(3)                     // ex: what are raccoons?
+what is a *, handle_class_question(4)                     // ex: what is a cow?
 
 // ATTRIBUTE STATEMENTS
 // parameters: subject, attribute
-* is *,      is_statement(1, 3)               // ex: chocolate is brown
+* is *,      handle_attribute_statement(1, 3)             // ex: chocolate is brown
 
 // ATTRIBUTE QUESTIONS
 // parameters: subject, attribute
-what * is *, is_question(4, 2)                // ex: what color is chocolate
-where is *,  is_question(3, "location")       // ex: where is lucy?
+what * is *, handle_attribute_question(4, 2)              // ex: what color is chocolate
+where is *,  handle_attribute_question(3, "location")     // ex: where is lucy?
 
 // ATTRIBUTE CONFIRMAION QUESTIONS
 // parameters: subject, attribute
-is * *, is_confirmation_question(2, 3)        // ex: is chocolate brown
+is * *,      handle_attribute_confirmation_question(2, 3) // ex: is chocolate brown
 
 //TO DO
     // say my name
@@ -39,25 +39,25 @@ is * *, is_confirmation_question(2, 3)        // ex: is chocolate brown
     // bob is tired
 
 // ABILITY
-can * *, ability_question(2, 3)               // ex: can cows fly
-* can *, ability_statement(1, 3)              // ex: crows can fly
+can * *, handle_ability_question(2, 3)                    // ex: can cows fly
+* can *, handle_ability_statement(1, 3)                   // ex: crows can fly
 
 // RATING STATEMENTS
-I hate *,         rating_statement(1, 3, 0)
-I dont like *,    rating_statement(1, 4, 3)
-I like *,         rating_statement(1, 3, 7)   // ex: i like beer
-I love *,         rating_statement(1, 3, 10)
-* hates *,        rating_statement(1, 3, 0)   // ex: bob hates beer
-* doesn't like *, rating_statement(1, 4, 3)
-* likes *,        rating_statement(1, 3, 7)   // ex: bob likes jane
-* loves *,        rating_statement(1, 3, 10)  // ex: fred loves beer
+I hate *,         handle_rating_statement(1, 3, 0)
+I dont like *,    handle_rating_statement(1, 4, 3)
+I like *,         handle_rating_statement(1, 3, 7)        // ex: i like beer
+I love *,         handle_rating_statement(1, 3, 10)
+* hates *,        handle_rating_statement(1, 3, 0)        // ex: bob hates beer
+* doesn't like *, handle_rating_statement(1, 4, 3)
+* likes *,        handle_rating_statement(1, 3, 7)        // ex: bob likes jane
+* loves *,        handle_rating_statement(1, 3, 10)       // ex: fred loves beer
 
 // RATING QUESTION
-do you like *,    rating_question(2, 4)       // ex: do you like beer
-does * like *,    rating_question(2, 4)       // ex: does fred like beer
+do you like *,    handle_rating_question(2, 4)            // ex: do you like beer
+does * like *,    handle_rating_question(2, 4)            // ex: does fred like beer
 
 // MISC.
-list *, list_question, 2                      // ex: list action
+list *, list_question, 2                                  // ex: list action
 hi,               handle_greetings()
 hey,              handle_greetings()
 hello,            handle_greetings()
