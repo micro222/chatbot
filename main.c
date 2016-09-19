@@ -512,6 +512,7 @@ int main(void) {
 
       // Default
       printf("I'm not familiar with that kind of sentence\n");
+      continue;
 
       // - - - - - -
       // experimental
