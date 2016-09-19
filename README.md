@@ -50,7 +50,7 @@ There is a set of functions for easy access to it.
 * Language: C
 * Editor: Code::Blocks
 * Compiler: GCC
-* Platform: Windows console
+* Platform: Raspberry Pi with Raspian
 
 ## What I need help with
 * Clearer and more complete documentation
@@ -59,5 +59,3 @@ There is a set of functions for easy access to it.
 * Ideas in general
 
 See "Issues" for a list of things that need to be worked on.
-
-To run this software on windows, place all the files in a folder and double-click on chat.exe. For other platforms, you'll need to do a little editing and compile. 
