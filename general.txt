@@ -315,7 +315,7 @@ wrist	 > class 	object
 //piano
 //chair
 //table
-bed class:furnature
+bed > class:furnature
 //tv
 
 //=============================================================
