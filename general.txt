@@ -11,6 +11,11 @@ substance > class: root
 action > class:	root
 phenomenon > class: root
 concept > class: root
+relation > class: root
+posession > class: root
+condition > class: root
+state > class: root
+pet > class: root
 
 //------------------------------
 
@@ -33,6 +38,31 @@ part_of > class: attribute
 material > class: substance
 beverage > class: substance
 material > class: substance
+
+parent > class: relation
+offspring > class: relation
+owner > class: relation
+
+asthma    > class: condition
+acne      > class: condition
+influenza > class: condition
+flu       > class: condition
+cancer    > class: condition
+diabetes  > class: condition
+herpes    > class: condition
+itch      > class: condition
+rash      > class: condition
+smallpox  > class: condition
+rabies    > class: condition
+arthritis > class: condition
+soriisis  > class: condition
+adhd      > class: condition
+chlamydia > class: condition
+ebola     > class: condition
+epilepsy  > class: condition
+hepatitis > class: condition
+eczema    > class: condition
+
 
 tool > class: device
 
@@ -158,6 +188,8 @@ smell > class: action
 taste > class: action
 feel > class: action
 jump > class: action
+swim > class: action
+sing > class: action
 
 //--------------------------------------------
 
@@ -214,15 +246,15 @@ beer > class: beverage
 //pencil
 //paper
 
-foot > class: object
-foot > part_of: creature
+foot    > class: object
+foot    > part_of: creature
 //tower
-phone > class:device
-radio > class:device
+phone   > class:device
+radio   > class:device
 computer > class:device
-coffee > class:beverage
-grass > class:substance
-grass > color:green
+coffee  > class:beverage
+grass   > class:substance
+grass   > color:green
 
 france > location:europe
 
@@ -244,8 +276,8 @@ france > location:europe
 
 // BODY PARTS
 
-arm	 > part_of 	creature
-arm	 > class 	object
+arm	     > part_of 	creature
+arm	     > class 	object
 back	 > part_of 	creature
 back	 > class 	object
 bone	 > part_of 	creature
@@ -258,12 +290,12 @@ chest	 > part_of 	creature
 chest	 > class 	object
 chin	 > part_of 	creature
 chin	 > class 	object
-ear	 > part_of 	creature
-ear	 > class 	object
+ear	     > part_of 	creature
+ear	     > class 	object
 elbow	 > part_of 	creature
 elbow	 > class 	object
-eye	 > part_of 	creature
-eye	 > class 	object
+eye	     > part_of 	creature
+eye	     > class 	object
 face	 > part_of 	creature
 face	 > class 	object
 finger	 > part_of 	creature
@@ -280,8 +312,8 @@ heart	 > part_of 	creature
 heart	 > class 	object
 knee	 > part_of 	creature
 knee	 > class 	object
-leg	 > part_of 	creature
-leg	 > class 	object
+leg	     > part_of 	creature
+leg	     > class 	object
 liver	 > part_of 	creature
 liver	 > class 	object
 lung	 > part_of 	creature
@@ -292,8 +324,8 @@ neck	 > part_of 	creature
 neck	 > class 	object
 nose	 > part_of 	creature
 nose	 > class 	object
-shoulder	 > part_of 	creature
-shoulder	 > class 	object
+shoulder > part_of 	creature
+shoulder > class 	object
 stomach	 > part_of 	creature
 stomach	 > class 	object
 thumb	 > part_of 	creature
@@ -318,10 +350,10 @@ wrist	 > class 	object
 bed > class:furnature
 //tv
 
+robot > class: device
+#1 > class: robot
+#1 > first_name: ivan
+
 //=============================================================
 // BELOW IS DATA COLLECTED DURING USER SESSIONS
-
-#1 > class:person
-#1 > firstname:bob
-#1 > gender:male
 

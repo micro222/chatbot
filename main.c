@@ -184,6 +184,7 @@ int main(void) {
       strcmp(words[1],"my")==0 &&
       strcmp(words[2],"name")==0 &&
       strcmp(words[3],"is")==0) {
+
          handle_login(words[4]);
          continue;
       }
@@ -254,13 +255,12 @@ int main(void) {
          db_add_pair(key, "female");
          continue;
       }
-
       // my gender is female
       if(number_of_words==4 &&
-            strcmp(words[1],"my")==0 &&
-            strcmp(words[2],"gender")==0 &&
-            strcmp(words[3],"is")==0 &&
-            strcmp(words[4],"female")==0 ) {
+      strcmp(words[1],"my")==0 &&
+      strcmp(words[2],"gender")==0 &&
+      strcmp(words[3],"is")==0 &&
+      strcmp(words[4],"female")==0 ) {
          sprintf(key, "#%d > gender", current_user_id);
          gender_code = 2;
          db_add_pair(key, "female");
@@ -418,6 +418,25 @@ int main(void) {
          continue;
       }
 
+
+     // Template: i have *
+      // Example: i have rabies
+      if(number_of_words==3 &&
+      strcmp(words[2],"have")==0 ){
+         handle_have_statement(words[1], words[3]);
+         continue;
+      }
+
+    // Template: i have a *
+      // Example: i have a dog
+      if(number_of_words==4 &&
+      strcmp(words[2],"have")==0 &&
+      strcmp(words[3],"a")==0 ) {
+         handle_have_statement(words[1], words[4]);
+         continue;
+      }
+
+
       // Template: list <class>
       // Example: list action
       if(number_of_words==2 &&
@@ -493,7 +512,8 @@ int main(void) {
       // Single word
       if(number_of_words==1) {
          sprintf(key, "%s > class", words[1]);  // assemble a key
-         if(db_lookup(key, value) == FOUND) {
+ //        if(db_lookup(key, value) == FOUND) {
+          if(db_lookup(key, value) == FOUND) {
             printf("That's a %s\n", value);
             continue;
          }
@@ -736,7 +756,7 @@ int isword(char*word_to_lookup) {
 void handle_login(char*name) {
    int result, i;
    int known=FALSE;
-   int new = TRUE;
+   int new2 = TRUE;
    char first_name[20], id_string[20];
    char s2[20], value[20];
    char key[80];
@@ -762,7 +782,7 @@ void handle_login(char*name) {
    id_number = db_get_id(name);
    if(id_number != 0) {
       known=TRUE;
-      new = FALSE;
+      new2 = FALSE;
       // get gender
       sprintf(key,"#%d > gender", id_number);
       result = db_lookup(key, value);
@@ -775,10 +795,6 @@ void handle_login(char*name) {
       if(strcmp(value, "female")==0) {
          gender_code=2;
       }
-
-
-
-
    } else {
       known=FALSE;
    }
@@ -795,10 +811,8 @@ void handle_login(char*name) {
       snprintf (id_string, sizeof(id_string), "%d",id_number);
       sprintf(key, "#%s > class", id_string);
       db_add_pair(key, "person");
-
       sprintf(key,"#%s > firstname", id_string);
       db_add_pair(key, name);
-
       sprintf(key,"#%s > gender", id_string);
       gender_code = check_gender_by_name(name);
       switch(gender_code) {
@@ -809,13 +823,13 @@ void handle_login(char*name) {
          db_add_pair(key, "female");
       }
       known=TRUE;
-      new = TRUE;
+      new2 = TRUE;
    }
 
    // Step 4:
    strcpy(current_user_name, name);
    current_user_id = id_number;
-   if(new == TRUE) {
+   if(new2 == TRUE) {
       printf("hello %s\n", current_user_name);
    } else {
       printf("hi %s\n", current_user_name);
@@ -1136,7 +1150,7 @@ int check_gender_by_name(char* name) {
       // get a line
       status = fgets(line, LINE_LENGTH, male);
       if (status==0) {
-         fclose(male);
+
          break;
       }
 
@@ -1160,13 +1174,14 @@ int check_gender_by_name(char* name) {
    //  open female file
    female = fopen("female_names.txt","r");
    if(female == NULL)
+
       return CANT_OPEN_FILE;
 
    for(n=0; n<1000; n++) {
       // get a line
       status = fgets(line, LINE_LENGTH, female);
       if (status==0) {
-         fclose(female);
+
          break;
       }
 
@@ -1184,6 +1199,7 @@ int check_gender_by_name(char* name) {
       }
 
    }
+
    fclose(female);
    return 3;
 }

@@ -88,6 +88,30 @@ int db_add_pair(char*key, char*value){
 }
 
 
+//-------------------------------------------------------------------
+//
+//   example:  db_add_pair2("grass", "color", "green");
+//
+//
+int db_add_pair2(char*key1, char*key2, char*value){
+
+    FILE *general;
+
+   //open
+	  general = fopen("general.txt","a");
+	  if(general == NULL) {printf("fopen failed while trying to open general.txt");}
+
+   //add key and value
+	  fprintf(general, "%s > %s:%s\n", key1, key2, value);
+
+   // close
+	  fclose(general);
+
+	  return 1;
+
+}
+
+
 //--------------------------------
 //    look up a first name and return the id number
 //    returns 0 if error

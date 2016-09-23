@@ -1,6 +1,6 @@
 #include "handle.h"
 
-void handle_class_statement(char*user_subject, char*user_class) {
+void handle_class_statement(char* user_subject, char* user_class) {
    /*
    example: a cat is an animal(value)
 
@@ -378,6 +378,8 @@ void handle_rating_question(char* key, char* p) {
 
 void handle_list_question(char* subject) {
 
+// WORK IN PROGRESS
+
 }
 
 //--------------------------------------------------
@@ -568,3 +570,136 @@ void handle_is_statement(char*user_subject, char*user_attribute) {
    }
 }
 */
+
+void handle_have_statement(char* parameter1, char* parameter2){
+
+/*
+IN DEVELOPMENT, PARTIALLY WORKING
+
+Examples
+   i have a dog (pet, opposite: owner)
+   my dog has fleas
+   i have a daughter
+   i have a cold
+   i have influenza
+   i have a sore toe
+   my daughter has a bad attitude
+   i have 3 dogs
+   i have 2 thumbs
+   i have a * in my *
+   i have some *
+
+Options
+   1) condition (fleas, asthma, toothache)
+   2) posession (pizza, car, hammer)
+   3) relation (father, wife)
+   4) pet (dog, cat)
+
+Relations
+   parent, offspring (son/daughter, mother/father)
+   siblings? (brother/sister), aunt/uncle, (do this later)
+   spouse  (wife/husband), friend, boyfriend/girlfriend
+
+"i have a dog"
+   create database entries
+      #125 > class: dog
+      #125 > first_name: spot
+      #125 > gender: male
+      #125 > owner: #17
+      #17 > pet: #125
+
+"i have a toothache"
+   create a database entry
+      #17 > condition: toothache
+
+"i have a car"
+     create database entries
+        #200 > class: car
+        #200 > owner: #17
+
+"i have a daughter"
+    create database entries
+        #250 > class: person
+        #250 > gender: female
+        #250 > parent: #17
+        #17 > offspring: #250
+
+i have a dog
+   check if dog is known
+   determine whether dog is a condition, posession, relation or pet
+   already known?
+   contradictory info?
+
+*/
+
+// taken fom other function
+ int result;
+ int result1;
+ char value[20];
+ char key[60];
+ char key1[20];
+ char key2[20];
+ int id2;
+
+ int subject_result;
+ char subject_class[20];
+ char db_class[20];
+
+
+
+   // is dog in db? no
+   sprintf(key, "%s > class", parameter2);
+   if(db_lookup(key, db_class) == NOT_FOUND) {
+      printf("I'm unfamiliar with %s\n", parameter2);
+      return;
+   }
+
+   // is "dog" a condition? no
+   if(db_root_check(parameter2, "condition") == FOUND) {
+      //sprintf(key, "%s > %s", parameter1, "condition");  // assemble key
+      //db_add_pair(key, parameter2);
+      db_add_pair2(parameter1, "condition", parameter2); // new function
+ //  #17 > condition: toothache
+      printf("I'll take a note of that\n");
+
+      return;
+   }
+
+   //  is "dog" a relation? no
+   if(db_root_check(parameter2, "relation") == FOUND) {
+      sprintf(key, "%s > %s", parameter1, "condition");  // assemble key
+      db_add_pair(key, parameter2);
+      printf("I'll take a note of that\n");
+
+     return;
+   }
+
+   //  is "dog" a pet? yes
+   if(db_root_check(parameter2, "creature") == FOUND) {
+      //  sprintf(key, "%s > %s", parameter1, "pet");  // assemble key
+      //  db_add_pair(key, parameter2);
+
+      id2 = db_next_available_id(); // get an unused ID# for the dog
+      sprintf(key1, "#%d", current_user_id); // convert id# to db string
+      sprintf(key2, "#%d", id2); // convert id# to db string
+      db_add_pair2(key2, "class", parameter2); // ex: #125 > class: dog
+      db_add_pair2(key2, "owner", key1); // ex: #125 > owner: #17
+      db_add_pair2(key1, "pet", key2); // ex: #17 > pet: #125
+      printf("I'll take a note of that\n");
+      return;
+
+   }
+   //  is "dog" a posession
+   if(db_root_check(parameter2, "object") == FOUND) {
+      sprintf(key, "%s > %s", parameter1, "posession");  // assemble key
+      db_add_pair(key, parameter2);
+      printf("I'll take a note of that\n");
+      return;
+
+   }
+
+
+   printf("I don't know how you can have a %s\n", parameter2);
+   return;
+
+}

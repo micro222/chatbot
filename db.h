@@ -27,6 +27,7 @@ int db_check(char*);
 int db_lookup(char*,char*);
 int db_root_check(char*,char*);
 int db_add_pair(char*, char*);
+int db_add_pair2(char*, char*, char*);
 int db_next_available_id(void);
 int db_get_id(char*);
 int db_copy_word(char*, int, char*); // copies string up to a space
