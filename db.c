@@ -235,22 +235,15 @@ int db_next_available_id(void){
    int result;
    char key[20], id_string[20];
 
-   //id[0]=0;
    for(i=1; i<1000; i++){
-      // look for id, first_name
-      snprintf (id_string, sizeof(id_string), "%d",i);
-      strcpy(key,"#");
-      strcat(key, id_string);
-      strcat(key, " > class");
-      result = db_lookup(key,value);
-      if(result != FOUND){
-        //    printf("%d, %s   ", i, id_string);
-         return i;
+      // look for id
+      snprintf(key, sizeof(key), "#%d > class", i); // ex: "#23 > class"
+      if(db_lookup(key,value) != FOUND){
+          return i;
       }
    }
-
    printf("error in function DNAI");
-    return 0;
+   return 0;
 }
 
 //----------------------------------------------------------

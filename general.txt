@@ -216,6 +216,9 @@ plane > class: vehicle
 train > class: vehicle
 car > class: vehicle
 truck > class: vehicle
+van > class: vehicle
+bus > class: vehicle
+bicycle > class: vehicle
 bike > class: vehicle
 motorcycle > class: vehicle
 
@@ -332,12 +335,10 @@ thumb	 > part_of 	creature
 thumb	 > class 	object
 tooth	 > part_of 	creature
 tooth	 > class 	object
-toungue	 > part_of 	creature
-toungue	 > class 	object
+tongue	 > part_of 	creature
+tongue	 > class 	object
 wrist	 > part_of 	creature
 wrist	 > class 	object
-
-
 
 //---------------------------------------------
 
@@ -356,4 +357,5 @@ robot > class: device
 
 //=============================================================
 // BELOW IS DATA COLLECTED DURING USER SESSIONS
+
 

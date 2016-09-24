@@ -656,12 +656,9 @@ i have a dog
 
    // is "dog" a condition? no
    if(db_root_check(parameter2, "condition") == FOUND) {
-      //sprintf(key, "%s > %s", parameter1, "condition");  // assemble key
-      //db_add_pair(key, parameter2);
       db_add_pair2(parameter1, "condition", parameter2); // new function
  //  #17 > condition: toothache
       printf("I'll take a note of that\n");
-
       return;
    }
 
@@ -670,8 +667,7 @@ i have a dog
       sprintf(key, "%s > %s", parameter1, "condition");  // assemble key
       db_add_pair(key, parameter2);
       printf("I'll take a note of that\n");
-
-     return;
+      return;
    }
 
    //  is "dog" a pet? yes
@@ -691,8 +687,13 @@ i have a dog
    }
    //  is "dog" a posession
    if(db_root_check(parameter2, "object") == FOUND) {
-      sprintf(key, "%s > %s", parameter1, "posession");  // assemble key
-      db_add_pair(key, parameter2);
+      id2 = db_next_available_id(); // get an unused ID# for the posession
+      sprintf(key1, "#%d", current_user_id); // convert id# to db string
+      sprintf(key2, "#%d", id2); // convert id# to db string
+      printf("1:%s, 2:%s", key1, key2);
+      db_add_pair2(key2, "class", parameter2); // ex: #125 > class: car
+      db_add_pair2(key2, "owner", key1); // ex: #125 > owner: #17
+      db_add_pair2(key1, "posession", key2); // ex: #17 > posession: #125
       printf("I'll take a note of that\n");
       return;
 
