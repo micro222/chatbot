@@ -1,0 +1,642 @@
+#include "functions.h"
+
+
+
+void get_string(void) {
+
+   int position;
+
+   for(position = 0; position <= 78; position++) {
+      user_input[position] = getchar();
+      if(user_input[position]==10)break; // CR
+      if(user_input[position]==13)break; // LF
+   }
+   user_input[position] = 0;
+
+}
+
+//--------------------------------------------------------------
+
+void parse(void) {
+
+   // input: user_input
+   // output: words, number_of_words
+
+   int position = 0;
+   int letter_position;
+   int word_position;
+   //while(1);
+   for(word_position=1; word_position < MAX_WORDS; word_position++) {
+      for(letter_position = 0; letter_position < MAX_LETTERS; letter_position++) {
+
+         // End of user input?
+         if(user_input[position]==0 || position >= 80) {
+            words[word_position][letter_position] = 0;
+            number_of_words = word_position;
+            return;
+         }
+
+         //end of word?
+         if(user_input[position]==' ') {
+            words[word_position][letter_position] = 0;  // terminate the word
+            letter_position = 0;  // probably not needed
+            position++;  // skip over the space
+            break;
+         }
+
+         //
+         words[word_position][letter_position] = user_input[position];
+         position++;
+      }
+   }
+
+}
+//------------------------------------------------------------------
+
+int isvowel(char c1) {
+
+   char vowels[6]="aeiouy";
+   int i;
+
+   for(i=0; i<6; i++) {
+      if(c1 == vowels[i])return 0;
+   }
+   return 1;
+
+}
+
+//---------------------------------------
+
+int isconsonant(char c1) {
+
+   char consonants[20]="bcdfghjklmnpqrstvwxz";
+   int i;
+
+   for(i=0; i<20; i++) {
+      if(c1 == consonants[i]) return 0;
+   }
+   return 1;
+
+}
+
+//-----------------------------------------------------------------------
+
+int is_nonsense_word(char* s1) {
+   //
+   //  curently has trouble with: you, crackpot,apple,substance
+   //
+   //
+
+   // 3 vowels in a row?
+   int i,inarow;
+   int j;
+   char *list_nonsense[] = {"ch", "gh", "sc", "sp", "th", "ck", "pp", "tt"};
+
+   inarow=0;
+   for(i=0; i<80-3; i++) {
+      if(user_input[i]==0) break;
+      if(isvowel(user_input[i])==0) inarow++;
+      else inarow=0;
+      if(inarow>=4) break;
+   }
+   if(inarow>=3)printf("  3 vowels in a row  \n");
+   // replace all occurances of CH GH SC SP TH CK PP ST with vowels
+   for(i=0; i<80-3; i++) {
+      if(user_input[i]==0) break;
+      for (j=0; j<sizeof(list_nonsense); j++) {
+         if(strncmp(&user_input[i], "ch", 2))
+            strncpy(&user_input[i], "aa", 2);
+      }
+   }
+
+   // 3 consonants in a row?
+   inarow=0;
+   for(i=0; i<80-3; i++) {
+      if(user_input[i]==0) break;
+      if(isconsonant(user_input[i])==0) inarow++;
+      else inarow=0;
+      if(inarow>=4) break;
+   }
+   if(inarow>=4)printf("  that's jiberish\n");
+
+}
+
+//--------------------------------------------------------
+
+int isword(char*word_to_lookup) {
+   FILE *general;
+
+   int result = 1;
+   char word_from_list[80];
+   char *status;
+
+   //  open word list
+   general = fopen("word100k.txt","r");
+   if(general == NULL) {
+      printf("fopen failed while trying to open word100k.txt\n");
+   }
+
+   while(1) {
+      status = fgets(word_from_list,40,general);
+      if (status==0)break;
+      // remove the newline character
+      word_from_list[strlen(word_from_list)-1] = '\0';
+
+      if (strcmp(word_to_lookup, word_from_list) == 0) {
+         result = 0;
+         break;
+      }
+
+   }// end of while
+
+   fclose(general);
+   return result;
+
+}
+// --------------------------------------
+
+void handle_login(char*name) {
+//   int result, i;
+   int known=FALSE;
+   int new2 = TRUE;
+ //  char first_name[20]
+   char id_string[20];
+   //char s2[20];
+   char value[20];
+   char key[80];
+   int id_number;
+
+   // Proceedure
+   //
+   // 1 is the person the current user?
+   // 2 is this person known? (search for first name in database)
+   // 3 if not known, create new entry in database
+   // 4 update user_id, user_name, gender)
+   //
+   ////////////////////////////////////////////////////////////
+
+   // Step 1: check if already current user
+   if(strcmp(name, current_user_name)==0) {
+      printf("You told me that already\n");
+      known=TRUE;
+      return;
+   }
+
+   // Step #2
+   id_number = db_get_id(name);
+   if(id_number != 0) {
+      known=TRUE;
+      new2 = FALSE;
+      // get gender
+      sprintf(key,"#%d > gender", id_number);
+      result = db_lookup(key, value);
+      if(result != FOUND) {
+         gender_code=0;
+      }
+      if(strcmp(value, "male")==0) {
+         gender_code=1;
+      }
+      if(strcmp(value, "female")==0) {
+         gender_code=2;
+      }
+   } else {
+      known=FALSE;
+   }
+
+   // Step 3: add user to database
+   if(known==FALSE) {
+      // Get an id number
+      id_number = db_next_available_id();
+
+      // Add the following to the database
+      //   #1 > class: person
+      //   #1 > firstname:bob
+      //   #1 > gender:male
+      snprintf (id_string, sizeof(id_string), "%d",id_number);
+      sprintf(key, "#%s > class", id_string);
+      db_add_pair(key, "person");
+      sprintf(key,"#%s > firstname", id_string);
+      db_add_pair(key, name);
+      sprintf(key,"#%s > gender", id_string);
+      gender_code = check_gender_by_name(name);
+      switch(gender_code) {
+      case 1:
+         db_add_pair(key, "male");
+         break;
+      case 2:
+         db_add_pair(key, "female");
+      }
+      known=TRUE;
+      new2 = TRUE;
+   }
+
+   // Step 4:
+   strcpy(current_user_name, name);
+   current_user_id = id_number;
+   if(new2 == TRUE) {
+      printf("hello %s\n", current_user_name);
+   } else {
+      printf("hi %s\n", current_user_name);
+   }
+}
+
+//-------------------------------------------------------
+
+
+/*
+  int isvalidname(char* s1){
+
+  //  valid characters are a-z 0-1 _
+  if ((isalpha(s1)==0) && (isdigit(s1)==0) && s1!='_'){
+  return 0;  // not valid
+  }
+  else return 1;  // is valid
+  }
+*/
+//--------------------------------------------------
+
+void handle_help(void) {
+   printf("I can handle the following sentences\r\n\r\n");
+   printf(" my name is ___\n");
+   printf(" what is my name\n");
+   printf(" what is my gender\n");
+   printf(" I am male\n");
+   printf(" I am female\n");
+   printf(" my gender is male\n");
+   printf(" my gender is female\n");
+   printf(" say my name\n");
+   printf(" what color is ___, ex: what color is grass\n");
+   printf(" is <subject> <color>, ex: is grass green\n" );
+   printf(" where is <object>\n" );
+   printf(" can ___ ___, ");
+   printf(" what are ___\n" );
+   printf(" what is a ___\n" );
+   printf(" what is ___\n" );
+   printf(" a <object> is a ___, ex: a cat is an animal\n" );
+   printf(" ___ is <color>\n" );
+   printf(" ___ like ___, ex: I like pizza\n" );
+   printf(" ___ hate ___\n" );
+   printf(" ___ love ___\n" );
+   printf(" ___ dont like ___\n" );
+   printf(" do you like ___\n" );
+   //printf("who am i, ");
+   //printf("i am ___\r\n");
+   printf("bye\r\n");
+   //printf("is ___ ___, ");
+   //printf("what is ___, ");
+   //printf("have you heard of ___, ");
+   //printf("___ is ___\r\n");
+   //printf("can ___ ___, ");
+   //printf("do ___ ___, ");
+   //printf("___ can ___\r\n");
+   //printf("___ like ___, ");
+   //printf("do ___ like ___\r\n");
+   //printf("___ hates ___, ");
+   //printf("do ___ hate ___\r\n");
+   //printf("___ is in ___, ");
+   //printf("where is ___\r\n");
+   //printf("how old is/are ___\r\n");
+   //printf("do ___ feel ___, ");
+   //printf("___ feels ___\r\n");
+   //printf("do ___ want ___, ");
+   //printf("___ want _\r\n");
+   //printf("do ___ have ___\r\n");
+   //printf("what is the ___ of ___, ___ is the ___ of___\r\n");
+   //printf("what time is it\r\n");
+   //printf("lookup ___\r\n");
+   // continue;
+}
+
+//-------------------------------------------------------------
+// Experimental. Not in use.
+int tokenize(char* in_string, char* word_array, char delimiter) {
+
+   // input: in_string
+   // output: words, number_of_words
+
+   int position = 0;
+   int letter_position;
+   int word_position;
+
+   for(word_position=1; word_position < MAX_WORDS; word_position++) {
+      for(letter_position = 0; letter_position < MAX_LETTERS; letter_position++) {
+         // End of in_string?
+         if(in_string[position]==0 || position >= 80) {
+            ////        word_array[word_position][letter_position] = 0;
+            return word_position;
+         }
+
+         //end of word?
+         if(in_string[position] == delimiter) {
+            ////       word_array[word_position][letter_position] = 0;  // terminate the word
+            letter_position = 0;  // probably not needed
+            position++;  // skip over the delimiter
+            break;
+         }
+
+         ////     word_array[word_position][letter_position] = in_string[position];
+         position++;
+
+      }
+   }
+
+}
+
+
+
+// new function for chat 10
+// compares user input with a sentence template
+//
+// example:
+//  user input: what color is grass?
+//  template  : what color is *, color_question, 4
+//
+// the old way:
+//  else if(number_of_words==4 && strcmp(words[1],"what")==0 && strcmp(words[2],"color")==0&& strcmp(words[3],"is")==0){
+//     handle_color_question(words[4]);
+
+
+// number of words: 4
+// word 1: what
+// word 2: color
+// word 3: is
+
+// function: color_question()
+// parameter 1: word 4
+
+// new proceedure:
+// parse template by comma
+// parse template sentence by space
+// compare specified words in user sentence with template sentence
+
+
+/*
+
+  void template_search (void)
+  open template.txt
+
+  outer loop
+  read template
+
+  inner loop
+  tokenize(template, token_array, ',');
+  tokenize(token_array[0], word_array, ' ');
+
+  // do the words match?
+  for(i=0, i<WORD_MAX, i++){
+  if(words!=word_array[i]) break;
+  if(w=='*') continue;
+  }
+*/
+
+//--------------------------------------------------
+// This partialy works, but is not currently in use
+//  TEMPLATE SEARCH
+//
+//  inputs
+//      what the user typed
+//
+//  returns
+//      the matching template
+//      the result code
+
+//  1) opens the tempate file
+//  2) gets a line
+//  3) extracts the template
+//  4) checks the template to see if it's a match
+
+//int template_search(char*user, char*template2)
+//int template_search(char*user, char out[MAX_WORDS][MAX_LETTERS]){
+int template_search(char*user, template_info_type* template_info) {
+
+
+#define TEMPLATE_LINE_LENGTH 120
+
+   FILE *template_file_handle;
+   int line_position;
+   char *status;
+   char line[TEMPLATE_LINE_LENGTH];
+   char out[MAX_WORDS][MAX_LETTERS];
+   char template2[MAX_WORDS][MAX_LETTERS];
+   int n;
+   int match;
+   int number_of_template_words;
+   char temp[80];
+
+   //  open template file
+   template_file_handle = fopen("templates.txt","r");
+   if(template_file_handle == NULL) return CANT_OPEN_FILE;
+
+   // search for template
+   while(1) {
+      // get a template line
+      status = fgets(template_info->line, TEMPLATE_LINE_LENGTH, template_file_handle);
+
+      if (status==0) {
+         fclose(template_file_handle);
+         return 0;
+      }
+
+      // skip the comments
+      if (template_info->line[0] == '/' && template_info->line[1] == '/') continue;  // skip comments
+
+      // skip any line that begins with a space or control character
+      if(template_info->line[0] <= ' ')continue;
+
+      // extract the template from the line
+      line_position = copy_to_delimiter(template_info->line, template_info->template2, ',', 0);
+
+      // separate the words
+      number_of_template_words = separate_words(template_info->template2, out);  // 1d 2d
+
+      // check if the number of words are the same
+      if(number_of_template_words != number_of_words) continue;
+
+      // check the words one by one
+      match = TRUE;
+      for(n=1; n<=number_of_template_words; n++) {
+         if(strcmp(out[n], "*") == 0) continue;
+         if(strcmp(out[n], words[n]) != 0) {
+            match = FALSE;
+            break;
+         }
+      }
+
+      if(match == TRUE) {
+         break;
+      }
+   }
+
+   // extract function name
+   line_position = copy_to_delimiter(template_info->line, template_info->function_name, ',' ,line_position);
+
+   template_info->parameter1 = 0;
+   template_info->parameter2 = 0;
+
+   // extract parameter1
+
+   if(line_position>0) {
+      line_position = copy_to_delimiter(template_info->line, temp, ',' ,line_position);
+      //printf("temp:%s pos: %d", temp, line_position);
+      snprintf(template_info->parameter1, sizeof(template_info->parameter1), temp);
+   }
+
+   //printf("LP: %d", line_position);
+
+   if(line_position>0) {
+      // extract parameter2
+      line_position = copy_to_delimiter(template_info->line, temp, ',' ,line_position);
+      //printf("temp:%s pos: %d", temp, line_position);
+      snprintf(template_info->parameter2, sizeof(template_info->parameter2), temp);
+   }
+
+   fclose(template_file_handle);
+
+   return FOUND;  // (found)
+
+
+
+
+}
+
+//-----------------------------------------------------
+
+int separate_words(char* in, char out[MAX_WORDS][MAX_LETTERS]) {
+
+   // input:
+   // output: out, number_of_words
+
+   int position = 0;
+   int letter_position;
+   int word_position;
+   int number_of_words = 0;
+
+   for(word_position=1; word_position < MAX_WORDS; word_position++) {
+      for(letter_position = 0; letter_position < MAX_LETTERS; letter_position++) {
+
+         // End of sentence?
+         if(in[position]==NULL || position >= 200) {
+            out[word_position][letter_position] = NULL;
+            number_of_words = word_position;
+            return number_of_words;
+         }
+
+         //end of word?
+         if(in[position]==' ') {
+            out[word_position][letter_position] = NULL;  // terminate the word
+            letter_position = 0;  // probably not needed
+            position++;  // skip over the space
+            break;
+         }
+
+         out[word_position][letter_position] = in[position];
+         position++;
+      }
+   }
+   return 0;
+}
+
+int check_gender_by_name(char* name) {
+
+#define LINE_LENGTH 20
+   FILE *male;
+   FILE *female;
+   char *status;
+   char line[LINE_LENGTH];
+   int n, i;
+
+   //  open male file
+   male = fopen("male_names.txt","r");
+   if(male == NULL)
+      return CANT_OPEN_FILE;
+
+   for(n=0; n<1000; n++) {
+      // get a line
+      status = fgets(line, LINE_LENGTH, male);
+      if (status==0) {
+
+         break;
+      }
+
+      // teminate the word
+      for(i=0; i<LINE_LENGTH; i++) {
+         if(line[i] == 10) {
+            line[i] = 0;
+            break;
+         }
+      }
+
+      if(strcmp(name, line) == 0) {
+         fclose(male);
+         return 1;
+      }
+
+   }
+
+   fclose(male);
+
+   //  open female file
+   female = fopen("female_names.txt","r");
+   if(female == NULL)
+
+      return CANT_OPEN_FILE;
+
+   for(n=0; n<1000; n++) {
+      // get a line
+      status = fgets(line, LINE_LENGTH, female);
+      if (status==0) {
+
+         break;
+      }
+
+      // teminate the word
+      for(i=0; i<LINE_LENGTH; i++) {
+         if(line[i] == 10) {
+            line[i] = 0;
+            break;
+         }
+      }
+
+      if(strcmp(name, line) == 0) {
+         fclose(female);
+         return 2;
+      }
+
+   }
+
+   fclose(female);
+   return 3;
+}
+
+/*
+ * Get current time. Store time as a string in current_time.
+
+int get_time() {
+   time_t t;
+   struct tm *tm;
+
+   //  current_time[0] = '\0';
+
+   t = time(NULL);
+   tm = localtime(&t);
+
+   if (tm == NULL)
+      return;
+
+   return (tm->tm_hour*3600) + (tm->tm_min*60) + (tm->tm_sec);
+   // sprintf(current_time, "%d:%02d:%02d on %d-%d-%d ",
+   //	  tm->tm_hour, tm->tm_min, tm->tm_sec,
+   //	  1900 + tm->tm_year, tm->tm_mon, tm->tm_mday);
+
+} */
+
+/*
+int unit_test(){
+
+   // WORK IN PROGRESS
+   out("hi");
+
+}
+*/
+
+

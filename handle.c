@@ -74,9 +74,9 @@ void handle_color_statement(char* user_subject,char* user_color) {
 
    char key[20];
    char value1[20];
-   char value2[20];
-   int subject_result;
-   char user_class;
+//   char value2[20];
+//   int subject_result;
+//   char user_class;
    int color_result;
 
    if(DEBUG) printf("handle_color  ");
@@ -166,7 +166,8 @@ void handle_color_confirmation_question(char* subject, char*value1) {
 
 //----------------------------------------------------
 
-void handle_rating_statement(char* key, char* s2, char* rating) {
+void handle_rating_statement(char* parameter1, char* parameter2, char* rating) {
+// UNDER RENOVATIONS
 //
 // in: firstname, firstname or object or substance, rating:0-9
 //
@@ -185,6 +186,7 @@ void handle_rating_statement(char* key, char* s2, char* rating) {
 //     3) i know nothing of this "beer" you speak of
 //     4)
 //
+// TODO (pi#1#):
 // Problem: will make multiple entries
 
 // second parameter
@@ -195,80 +197,43 @@ void handle_rating_statement(char* key, char* s2, char* rating) {
 //  known substance? add info
 //  unknown
 
-   char pn[20]="rating-";
-// char value[20];
    int result, result2;
-   char id1[20],id2[20];
-   int person = FALSE;
+   char key[60];
 
-// So, take example 2. At this point we know that neither of the words have been checked.
-// We'll start by seeing if the first word is the first name of someone we know.
-// We can use the get id function for that
-// If known, take note that this is a person and continue on, if not, send a message and exit
-
-   result = db_get_id(key);
-
-   if(result != FOUND) {
-
-      result = db_root_check(key,"firstname");
-
-      if(result==FOUND) printf("I don't know%s\n", key);
-      else printf("%s?\n", key);
-
+// is the first word the first name of someone we know?
+   if(db_get_id(key) == 0) {
+      printf("I don't know %s\n", key);
       return;
    }
-// Next we'll look at the 2nd parameter and see if it's a known person
-//
-   result = db_get_id(s2);  // a known entity?
-   result2 = db_root_check(s2,"firstname");  // a person?
 
-   if(result==FOUND && result2==FOUND) {
-      person = TRUE;
+   if(db_root_check(key,"firstname") == NOT_FOUND){
+      printf("%s?\n", key);
+// TODO (pi#1#): better reply
+      return;
+   }
+
+// is the 2nd parameter a known person?
+//
+   result = db_get_id(parameter2);  // a known entity?
+   if(result==FOUND) {
       goto add_info;
    }
 
-   if(result!=FOUND && result2==FOUND) {
-      printf("I don't know %s\n", s2);
-      return;
-   }
-
    //  Check if the 2nd parameter a object or substance?
-   result = db_root_check(s2, "object");
-   result2 = db_root_check(s2, "substance");
+   result = db_root_check(parameter2, "object");
+   result2 = db_root_check(parameter2, "substance");
 
-   if(result == NO_MATCH) {
-      printf("I don't know what %s is\n", s2);
+   if(result == NOT_FOUND || result2 == NOT_FOUND ) {
+      printf("I dont see how %s makes sense\n", parameter2);
       return;
    }
-   printf("*%d*\n", result);
-   if(result != FOUND && result2 != FOUND) {
-      printf("I dont see how %s makes sense\n", s2);
-      return;
-   }
-//---
-// If we've made if this far we have a valid sentence and we can store
-// the info
 
 add_info:
+   // bob > rating > beer: 7
+   sprintf(key,"%s > rating > %s", parameter1, parameter2 );
+   db_add_pair(key, rating);
 
-   if(person==TRUE)strcat(pn, id2);
-   else strcat(pn, s2);
-
-//  result = db_lookup(id1, pn, value);
-
-//if(result == SUBJECT_NOT_FOUND){
-//     db_add_subject_and_property(id1,pn,rating);
-//     db_add_property(id1,"firstname",key);
-//     printf("name and rating added\n");
-//  }
-// else
-   if(result==5) {
-
-//     db_add_property(id1, pn, rating); // change this
-      printf("rating added\n");
-   } else if(result == FOUND) printf("I already know that\n");
-   else printf("error, result code:%d\n",result);
-}
+  }
 
 //--------------------------------------------------
 
@@ -307,31 +272,36 @@ void handle_location_question(char* subject) {
 
 //-------------------------------------------------------
 
-void handle_ability_question(char* key, char* value) {
+void handle_ability_question(char* subject, char* action) {
 
-   int result;
-   char* temp[40];
-   char value2[20];
+//   int result;
+   char key[40];
+   char value[20];
 
-   result = db_root_check(key,"object");
-   if(result == NOT_FOUND) {
-      printf(" I never heard of %s\n", key);
+   // Is suject in the database?
+   if(db_check(subject) == NOT_FOUND) {
+      printf(" I never heard of %s\n", subject);
+      return;
+   }
+//--
+   // Is subject an object?
+   if(db_root_check(subject, "object") == NOT_FOUND) {
+      printf("%s is not an object\n", subject);
       return;
    }
 
-   if(result != MATCH) {
-      printf("%s is not an object\n", key);
+   // Is action really an action?
+   if(db_root_check(action, "action") == NOT_FOUND) {
+      printf("%s is not an action\n", action);
       return;
    }
 
-   if(db_root_check(value,"action")!= MATCH) {
-      printf("%s is not an action\n",key);
-      return;
-   }
+   // Look up ability
+   sprintf(key,"%s > ability > %s", subject, action);
+   db_lookup(key, value);
+   printf("RESULT: %s\n", value);
+// TODO (pi#1#): improve the output
 
-   sprintf(temp,"%s > ability > %s", key, value);
-   result = db_lookup(temp, value2);
-   printf("RESULT: %d\r\n", result);
 }
 
 //------------------------------------------------------
@@ -342,7 +312,7 @@ void handle_rating_question(char* key, char* p) {
 
    int result;
    char value[20];
-   char id[20];
+//   char id[20];
    char temp[20]="rating-";
 
    result = db_get_id(key);
@@ -401,19 +371,19 @@ void handle_attribute_statement(char* user_subject,char* user_attribute) {
    int result;
    int result1;
    int result2;
-   char value[20];
+//   char value[20];
    char key[60];
-   int subject_result;
-   char subject_class[20];
+//   int subject_result;
+//   char subject_class[20];
    char db_class[20];
    char attribute_type[20];
    char db_attribute[20];
 
    // 1) ex: is "grass" in database?
-   sprintf(key, "%s > class", user_subject);
-   subject_result = db_lookup(key, subject_class);
-
-   // If subject_result === UNKNOWN, I don't know what %s is
+   if(db_check(user_subject) == NOT_FOUND) {
+      printf("I'm unfamiliar with %s\n", user_subject);
+      return;
+   }
 
    // 2) Is grass an object or substance?
    result1 = db_root_check(user_subject, "object");
@@ -464,8 +434,9 @@ void handle_attribute_statement(char* user_subject,char* user_attribute) {
    // Add to db
 
 
-   sprintf(key, "%s > %s", user_subject, value);  // assemble key, ex: grass > color
-   db_add_pair(key, user_attribute);
+//   sprintf(key, "%s > %s", user_subject, attribute_type);  // assemble key, ex: grass > color
+//   db_add_pair(key, user_attribute);
+db_add_pair2(user_subject, attribute_type, user_attribute);
 
    printf("I'll take a note of that\n");
    return;
@@ -633,19 +604,17 @@ i have a dog
 */
 
 // taken fom other function
- int result;
- int result1;
- char value[20];
- char key[60];
- char key1[20];
- char key2[20];
- int id2;
+//   int result;
+//   int result1;
+//   char value[20];
+   char key[60];
+   char key1[20];
+   char key2[20];
+   int id2;
 
- int subject_result;
- char subject_class[20];
- char db_class[20];
-
-
+//   int subject_result;
+//   char subject_class[20];
+   char db_class[20];
 
    // is dog in db? no
    sprintf(key, "%s > class", parameter2);

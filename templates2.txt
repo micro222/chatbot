@@ -80,3 +80,4 @@ hello,            handle_greetings()
     // bye
     // what time is it
     // how are you
+    // are you human
