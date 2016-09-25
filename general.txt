@@ -43,25 +43,25 @@ parent > class: relation
 offspring > class: relation
 owner > class: relation
 
-asthma    > class: condition
-acne      > class: condition
+asthma > class: condition
+acne > class: condition
 influenza > class: condition
-flu       > class: condition
-cancer    > class: condition
-diabetes  > class: condition
-herpes    > class: condition
-itch      > class: condition
-rash      > class: condition
-smallpox  > class: condition
-rabies    > class: condition
+flu > class: condition
+cancer > class: condition
+diabetes > class: condition
+herpes > class: condition
+itch > class: condition
+rash > class: condition
+smallpox > class: condition
+rabies > class: condition
 arthritis > class: condition
-soriisis  > class: condition
-adhd      > class: condition
+soriisis > class: condition
+adhd > class: condition
 chlamydia > class: condition
-ebola     > class: condition
-epilepsy  > class: condition
+ebola > class: condition
+epilepsy > class: condition
 hepatitis > class: condition
-eczema    > class: condition
+eczema > class: condition
 
 
 tool > class: device
@@ -162,7 +162,6 @@ person > ability > talk:	9
 person > ability > run:	9
 person > ability > swim:	5
 person > ability > eat:	10
-person > ability > rating:	10
 
 //---------------------------------------------
 
@@ -225,7 +224,7 @@ motorcycle > class: vehicle
 //-------------------------------------------------
 
 // FOOD
-
+//(TO DO)
 //fruit >
 //apple >
 //orange >
@@ -351,11 +350,11 @@ wrist	 > class 	object
 bed > class:furnature
 //tv
 
+// ABOUT THE ROBOT
 robot > class: device
 #1 > class: robot
 #1 > first_name: ivan
 
 //=============================================================
 // BELOW IS DATA COLLECTED DURING USER SESSIONS
-
 
