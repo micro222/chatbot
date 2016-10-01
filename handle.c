@@ -1,4 +1,5 @@
 #include "handle.h"
+#include "functions.h"
 
 void handle_class_statement(char* user_subject, char* user_class) {
    /*
@@ -444,8 +445,6 @@ db_add_pair2(user_subject, attribute_type, user_attribute);
 }
 
 //--------------------------------------------------
-// WORK IN PROGRESS
-//
 // handle hi, hello
 //
 //

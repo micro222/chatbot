@@ -169,23 +169,7 @@ int main(void) {
       }
 #endif
 
-      // - - - - MUST BE LOGGED IN TO GET PAST THIS POINT - - - - - - - - - - - - - - - - - -
-
-
-#if 0  // this code is a mess
-      // Determine gender from the first name
-      // (known person) is male
-      if(db_get_id(words[1]) !=0 &&
-      strcmp(words[2],"is")==0 &&
-      strcmp(words[3],"male")==0 ) {
-         sprintf(key, "#%d > gender", current_user_id);
-         if(strcmp(words[1], current_user_name) == "unknown")
-         gender_code = 1;
-         db_add_pair(key, "male");
-         continue;
-      }
-#endif
-
+      // - - - - MUST BE LOGGED IN TO GET PAST THIS POINT - - - - - - -  - - - - - -
 
       // my gender is male
       if(number_of_words == 4 &&
