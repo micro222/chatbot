@@ -29,7 +29,6 @@ int isword(char*);
 int is_nonsense_word(char*);
 int isconsonant(char);
 int isvowel(char);
-void handle_help(void);
 int tokenize(char*, char*, char);
 int separate_words(char*, char[MAX_WORDS][MAX_LETTERS]);
 //int template_search(char*, template_info_type*);

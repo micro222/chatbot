@@ -45,7 +45,7 @@ can * *, handle_ability_question(2, 3)                    // ex: can cows fly
 // RATING STATEMENTS
 I hate *,         handle_rating_statement(1, 3, 0)
 I dont like *,    handle_rating_statement(1, 4, 3)
-I like *,         handle_rating_statement(1, 3, 7)        // ex: i like beer
+I like *,         hand le_rating_statement(1, 3, 7)        // ex: i like beer
 I love *,         handle_rating_statement(1, 3, 10)
 * hates *,        handle_rating_statement(1, 3, 0)        // ex: bob hates beer
 * doesn't like *, handle_rating_statement(1, 4, 3)

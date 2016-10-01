@@ -8,25 +8,23 @@ int main(void) {
 
 //   char out[MAX_WORDS][MAX_LETTERS];
    int n;
-//   int result;
-//   int same, token;
-//   template_info_type template_info;
+   char temp[40][20];
    char key[80];
 
 // Some initializing
    gender_code = 0;
    current_user_id = 0;
    strcpy(current_user_name, "unknown");
+   expecting_name = FALSE;
 
    printf("type 'help' for a list of sentences I understand\r\n");
 
    // THE MAIN LOOP
    while(1) {
       printf(">"); // user prompt
-      get_string(); // get user input
+      get_string(); // get user input and store in user_input[]
       parse(); // separate the sentence into individual words
 
-//printf("%s,",words[4]);
 #if 1
       // word substitutions
       for(n=1; n<=number_of_words; n++) {
@@ -38,12 +36,12 @@ int main(void) {
          if (strcmp(words[n],"likes")==0)strcpy(words[n], "like");
          if (strcmp(words[n],"i")==0)    strcpy(words[n], current_user_name);
          if (strcmp(words[n],"u")==0)    strcpy(words[n], "you");
-         //	  if (strcmp(words[n],"you")==0)  strcpy(words[n], "bot");
          if (strcmp(words[n],"am")==0)	  strcpy(words[n], "is");
          if (strcmp(words[n],"an")==0)	  strcpy(words[n], "a");
+         if (strcmp(words[n],"you")==0)	  strcpy(words[n], "ivan");
       }
 #endif
-//printf("%s\n",words[4]);
+
       //---------------
 #if 0
       // Work in progress
@@ -121,13 +119,25 @@ int main(void) {
          handle_help();
       }
 
+      //Dealing with 1 word replies to robot questions
+      //expected template: my name is *
+      if (expecting_name == TRUE && number_of_words == 1) {
+         strcpy(temp[1],"my");
+         strcpy(temp[2],"name");
+         strcpy(temp[3],"is");
+         strcpy(temp[4], words[1]);
+         memcpy(words, temp, 800);  // MAX_WORDS * MAX_LETTERS
+         number_of_words = 4;
+         printf("%s,%s,%s,%s\n", words[1],words[2],words[3],words[4]);
+      }
+      expecting_name = FALSE;
+
       // Log in?
       // my name is ___
       if(number_of_words==4 &&
       strcmp(words[1],"my")==0 &&
       strcmp(words[2],"name")==0 &&
       strcmp(words[3],"is")==0) {
-
          handle_login(words[4]);
          continue;
       }
@@ -149,6 +159,7 @@ int main(void) {
          handle_greetings();
          continue;
       }
+
 
 #if 0
       // Logged in? If not, go no further. This can be disabled for testing purposes
