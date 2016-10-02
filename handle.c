@@ -33,7 +33,7 @@ void handle_class_statement(char* user_subject, char* user_class) {
    //  preparatiom for 2, 3 & 4
 //  ex: lookup "cat"
    sprintf(key, "%s > class", user_subject);
-   result = db_lookup(key, value);
+   result = db_get_value(key, value);
 
 //  2)
    if(result == NOT_FOUND) {
@@ -96,7 +96,7 @@ void handle_color_statement(char* user_subject,char* user_color) {
 
    // 3 is grass already associated with that color? if not, add it
    sprintf(key, "%s > color", user_subject);
-   color_result = db_lookup(key, value1);
+   color_result = db_get_value(key, value1);
    if(color_result == NOT_FOUND) {
       sprintf(key, "%s > color", user_subject);
       db_add_pair(key, user_color);
@@ -122,7 +122,7 @@ void handle_class_question(char* subject) {
    char key[20];
 
    sprintf(key, "%s > class", subject);
-   result = db_lookup(key, value);
+   result = db_get_value(key, value);
    if(result==FOUND) printf("It's a %s\n", value);
    else printf("I've never heard of ""%s""\n", subject);
 
@@ -136,7 +136,7 @@ void handle_color_question(char* subject) {
    char key[60];
 
    sprintf(key, "%s > color", subject);
-   result = db_lookup(key, value);
+   result = db_get_value(key, value);
    if(result == FOUND) {
       printf("%s\n", value);
       return;
@@ -158,7 +158,7 @@ void handle_color_confirmation_question(char* subject, char*value1) {
    char key[60];
 
    sprintf(key, "%s > color", subject);
-   db_lookup(key, value);
+   db_get_value(key, value);
    result = strcmp(value, value1);
    if (result == 0) {
       printf("yes\n");
@@ -249,7 +249,7 @@ void handle_location_question(char* subject) {
 //    strcpy(key, subject);
 //    strcat(key, " > location");
    sprintf(key, "%s > location", subject);
-   result = db_lookup(key, value);
+   result = db_get_value(key, value);
    if(result==FOUND) {
       printf("%s\n", value);
       return;
@@ -259,7 +259,7 @@ void handle_location_question(char* subject) {
    //strcpy(key, subject);
    //strcat(key, " > class");
    sprintf(key, "%s > class", subject);
-   result = db_lookup(key, value);
+   result = db_get_value(key, value);
    if(result==FOUND) {
       printf(" I don't know where %s is\n", subject);
       return;
@@ -299,7 +299,7 @@ void handle_ability_question(char* subject, char* action) {
 
    // Look up ability
    sprintf(key,"%s > ability > %s", subject, action);
-   db_lookup(key, value);
+   db_get_value(key, value);
    printf("RESULT: %s\n", value);
 // TODO (pi#1#): improve the output
 
@@ -396,7 +396,7 @@ void handle_attribute_statement(char* user_subject,char* user_attribute) {
 
    // 3) is green in db?
    sprintf(key, "%s > class", user_attribute);
-   if(db_lookup(key, db_class) == NOT_FOUND) {
+   if(db_get_value(key, db_class) == NOT_FOUND) {
       printf("I'm unfamiliar with %s\n", user_attribute);
       return;
    }
@@ -411,11 +411,11 @@ void handle_attribute_statement(char* user_subject,char* user_attribute) {
 
    // Get the type of the attribute. ex: "green is a color"
    sprintf(key, "%s > class", user_attribute);  // assemble key, ex: "green > class"
-   db_lookup(key, attribute_type);  // ex: returns "color"
+   db_get_value(key, attribute_type);  // ex: returns "color"
 
    // Get the attribute from db if any
    sprintf(key, "%s > %s", user_subject, attribute_type);  // assemble key, ex: "green > color"
-   result = db_lookup(key, db_attribute);  // ex: returns "green"
+   result = db_get_value(key, db_attribute);  // ex: returns "green"
 
    // 5) Is the attribute already known?
     if(strcmp(user_attribute, db_attribute) == 0) {   // compare "green"(what the user typed) with green(from db)
@@ -618,7 +618,7 @@ i have a dog
 
    // is dog in db? no
    sprintf(key, "%s > class", parameter2);
-   if(db_lookup(key, db_class) == NOT_FOUND) {
+   if(db_get_value(key, db_class) == NOT_FOUND) {
       printf("I'm unfamiliar with %s\n", parameter2);
       return;
    }
@@ -711,7 +711,7 @@ void handle_login(char* name) {
       new2 = FALSE;
       // get gender
       sprintf(key,"#%d > gender", id_number);
-      result = db_lookup(key, value);
+      result = db_get_value(key, value);
       if(result != FOUND) {
          gender_code=0;
       }
@@ -828,4 +828,29 @@ void handle_help(void) {
    //printf("lookup ___\r\n");
    // continue;
 }
+void handle_have_question(char* p1, char* p2) {
+// WORK IN PROGRESS
+   int r;
+
+   // is p1 an id number? how do we tell?
+
+// DEBUG
+   if(p1[0]=='#'){
+      printf("has ID,");
+   }else printf("no ID,");
+printf("ID:%c", p1[0]);
+
+
+sprintf(key, "%s > condition", p1);
+   r = db_get_value(p1, p2);
+
+   if(r == 0) {
+      printf("not that I'm aware of\n");
+   } else {
+      printf("yes\n");
+   }
+
+}
+
+
 

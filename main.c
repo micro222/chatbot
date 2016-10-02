@@ -261,6 +261,23 @@ int main(void) {
          continue;
       }
 
+      // does jane have acne
+      if(number_of_words==4 &&
+      strcmp(words[1],"does")==0 &&
+      strcmp(words[3],"have")==0) {
+         handle_have_question(words[2],words[4]);
+         continue;
+      }
+/*
+      // does jane have a dog
+      if(number_of_words==5 &&
+      strcmp(words[1],"does")==0 &&
+      strcmp(words[3],"have")==0) &&
+      strcmp(words[4],"a")==0) {
+         handle_have_question(words[1],words[5]);
+         continue;
+      }
+*/
       // - - - - - - COLORS - - - - - - - - - - - - - - - -
       //
       // what color is ___
@@ -452,7 +469,7 @@ int main(void) {
       if(number_of_words==1) {
          sprintf(key, "%s > class", words[1]);  // assemble a key
  //        if(db_lookup(key, value) == FOUND) {
-          if(db_lookup(key, value) == FOUND) {
+          if(db_get_value(key, value) == FOUND) {
             printf("That's a %s\n", value);
             continue;
          }

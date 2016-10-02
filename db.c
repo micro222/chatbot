@@ -24,7 +24,7 @@ remove pair (key)
 //  5) goes to step 2 if not
 //  6) returns value
 //
-int db_lookup(char*target_key, char*db_value){
+int db_get_value(char*target_key, char*db_value){
 
     FILE *general;
     int linepos;
@@ -129,7 +129,7 @@ int db_get_id(char* firstname)
     {
         snprintf (id_string, sizeof(id_string), "%d",id); // convert id number from integer to string (integer, string, base)
         sprintf(key, "#%s > firstname", id_string);
-        result = db_lookup(key, name);
+        result = db_get_value(key, name);
 
         // look up the first name
         if(result==FOUND)
@@ -238,7 +238,7 @@ int db_next_available_id(void){
    for(i=1; i<1000; i++){
       // look for id
       snprintf(key, sizeof(key), "#%d > class", i); // ex: "#23 > class"
-      if(db_lookup(key,value) != FOUND){
+      if(db_get_value(key,value) != FOUND){
           return i;
       }
    }
@@ -333,7 +333,7 @@ int db_root_check(char* startingwith, char* lookingfor){
    strcpy(subject, startingwith);
    for(n=0; n<5; n++){
        sprintf(key, "%s > class", subject);
-       result = db_lookup(key, value); // lookup
+       result = db_get_value(key, value); // lookup
        if(result == NOT_FOUND) return NOT_FOUND; // if not in database at all, exit
        if(strcmp(value,lookingfor)==0)return FOUND;  // is it what we're looking for?
        if(strcmp(value,"root")==0)return NOT_FOUND; // has it reached to root?
@@ -353,7 +353,7 @@ int db_check(char* subject){
    char value[20];
 
    sprintf(key, "%s > class", subject);
-   return db_lookup(key, value); // lookup
+   return db_get_value(key, value); // lookup
 
 }
 

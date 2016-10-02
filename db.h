@@ -24,7 +24,7 @@ C1,
 };
 
 int db_check(char*);
-int db_lookup(char*,char*);
+int db_get_value(char*,char*);
 int db_root_check(char*,char*);
 int db_add_pair(char*, char*);
 int db_add_pair2(char*, char*, char*);
