@@ -152,6 +152,47 @@ int db_get_id(char* firstname)
 }
 
 
+//--------------------------------
+//    look up a first name and return the id number
+//    returns 0 if error
+//
+//
+int db_get_id_string(char* firstname, char* id_string)
+{
+
+    int id;
+//    char id_string[20], name[20];
+    char key[80];
+    int result;
+
+    for(id=1; id<1000; id++)
+    {
+        snprintf (id_string, sizeof(id_string), "%d",id); // convert id number from integer to string (integer, string, base)
+        sprintf(key, "#%s > firstname", id_string);
+//        result = db_get_value(key, name);
+
+        // look up the first name
+        if(result==FOUND)
+        {
+//            result = strcmp(name, firstname);
+            if(result==0)
+            {
+                // That's the entity we're looking for
+
+                return result;
+
+            }
+            // That's not the entity we're looking for, so try again
+            else {
+                continue;
+            }
+        }
+    }
+
+    return 0; // database size limit reached (DGI)
+
+}
+
 //--------------------------------------------------------
 //
 // looks for the specified key and changes its value
@@ -357,6 +398,81 @@ int db_check(char* subject){
 
 }
 
+//-----------------------------------------------------------------------
+int db_check_pair(char*target_key, char*target_value) {
+
+   FILE *general;
+   int linepos;
+   char *status;
+   char line[80];
+   char db_key[60];
+   char db_value[60];
+
+   //  open general knowlege database
+   general = fopen("general.txt","r");
+   if(general == NULL) return CANT_OPEN_FILE;
+
+   // search for key and value
+   while(1) {
+      // get a line
+      status = fgets(line,80,general);
+      if (status==0) {
+         fclose(general);
+         return NOT_FOUND;
+      }
+
+      // get the key
+      linepos =  copy_to_delimiter(line, db_key, ':', 0);
+
+      // get the value
+      if(line[linepos] == ':') linepos++;
+      if(line[linepos] == ' ') linepos++;
+      linepos =  copy_to_delimiter(line, db_value, ' ', linepos);
+
+      // is it the key and value we're looking for?
+      // if not, get another line
+      if(strcmp(target_key, db_key) == 0 && strcmp(target_value, db_value) == 0) break;
+
+   }
+
+   fclose(general);
+   return FOUND;
+}
+//===========================
+
+int db_get_id_string2(char*name, char*id_string) {
+
+   FILE *general;
+   int linepos;
+   char *status;
+   char line[80];
+   char search_term[60];
+   char *result;
+
+   //  open general knowlege database
+   general = fopen("general.txt","r");
+   if(general == NULL) return CANT_OPEN_FILE;
+
+   sprintf(search_term, "firstname:%s", name);
+   // search for key
+   while(1) {
+      // get a line
+      status = fgets(line,80,general);
+      if (status==0) {
+         fclose(general);
+         return NOT_FOUND;
+      }
+      result = strstr(line, search_term);
+      if(result != NULL) break;
+   } // end of key search
+
+   // get ID string
+   copy_to_delimiter(line, id_string, ' ', 0);
+
+   fclose(general);
+   return FOUND;  // (found)
+
+}
 
 
 
