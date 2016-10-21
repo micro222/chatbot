@@ -30,11 +30,11 @@ int db_check_pair(char*, char*);
 int db_add_pair(char*, char*);
 int db_add_pair2(char*, char*, char*);
 int db_next_available_id(void);
+int db_next_available_id_string(char* id_string);
 int db_get_id(char*);
 int db_copy_word(char*, int, char*); // copies string up to a space
 int copy_to_delimiter(char*, char*, char, int); // copies string up to a delimiter
-int db_get_id_string(char* firstname, char* id_string)
-int db_get_id_string2(char*name, char*id_string);
-
+int db_get_id_string(char*, char*);
+int db_get_id_string2(char*, char*);
 
 #endif // DB_H_INCLUDED

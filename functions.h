@@ -16,7 +16,7 @@ char words[MAX_WORDS][MAX_LETTERS];  //
 char wholeline[80];
 
 char current_user_name[20];
-int current_user_id;
+//int current_user_id;
 int gender_code;
 int code;
 int result;

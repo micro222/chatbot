@@ -24,7 +24,7 @@ remove pair (key)
 //  5) goes to step 2 if not
 //  6) returns value
 //
-int db_get_value(char*target_key, char*db_value){
+int db_get_value(char *target_key, char *db_value){
 
     FILE *general;
     int linepos;
@@ -193,13 +193,47 @@ int db_get_id_string(char* firstname, char* id_string)
 
 }
 
+int db_get_id_string2(char*name, char*id_string) {
+
+   FILE *general;
+   int linepos;
+   char *status;
+   char line[80];
+   char search_term[60];
+   char *result;
+
+   //  open general knowlege database
+   general = fopen("general.txt","r");
+   if(general == NULL) return CANT_OPEN_FILE;
+
+   sprintf(search_term, "firstname:%s", name);
+   // search for key
+   while(1) {
+      // get a line
+      status = fgets(line,80,general);
+      if (status==0) {
+         fclose(general);
+         return NOT_FOUND;
+      }
+      result = strstr(line, search_term);
+      if(result != NULL) break;
+   } // end of key search
+
+   // get ID string
+   copy_to_delimiter(line, id_string, ' ', 0);
+
+   fclose(general);
+   return FOUND;  // (found)
+
+}
+
 //--------------------------------------------------------
 //
 // looks for the specified key and changes its value
 //
 //
 
-int db_change_value(char*key, char*value){
+int db_change_value(char *key, char *value){
     FILE *general;
     FILE *temp;
 
@@ -284,6 +318,24 @@ int db_next_available_id(void){
       }
    }
    printf("error in function DNAI");
+   return 0;
+}
+int db_next_available_id_string(char* id_string){
+
+   int i;
+   char value[20];
+   int result;
+   char key[20];
+
+   for(i=1; i<1000; i++){
+      // look for id
+      snprintf(key, sizeof(key), "#%d > class", i); // ex: "#23 > class"
+      if(db_get_value(key,value) != FOUND){
+         sprintf(id_string, "#%d", i); // convert id# to db string
+         return 1;
+      }
+   }
+   printf("error in function DNAIS");
    return 0;
 }
 
@@ -439,40 +491,6 @@ int db_check_pair(char*target_key, char*target_value) {
    return FOUND;
 }
 //===========================
-
-int db_get_id_string2(char*name, char*id_string) {
-
-   FILE *general;
-   int linepos;
-   char *status;
-   char line[80];
-   char search_term[60];
-   char *result;
-
-   //  open general knowlege database
-   general = fopen("general.txt","r");
-   if(general == NULL) return CANT_OPEN_FILE;
-
-   sprintf(search_term, "firstname:%s", name);
-   // search for key
-   while(1) {
-      // get a line
-      status = fgets(line,80,general);
-      if (status==0) {
-         fclose(general);
-         return NOT_FOUND;
-      }
-      result = strstr(line, search_term);
-      if(result != NULL) break;
-   } // end of key search
-
-   // get ID string
-   copy_to_delimiter(line, id_string, ' ', 0);
-
-   fclose(general);
-   return FOUND;  // (found)
-
-}
 
 
 

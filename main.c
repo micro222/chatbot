@@ -11,9 +11,11 @@ int main(void) {
    char temp[40][20];
    char key[80];
 
+
+
 // Some initializing
    gender_code = 0;
-   current_user_id = 0;
+   strcpy(current_user_id_string, "#0");
    strcpy(current_user_name, "unknown");
    expecting_name = FALSE;
 
@@ -34,13 +36,51 @@ int main(void) {
          if (strcmp(words[n],"wants")==0)strcpy(words[n], "want");
          if (strcmp(words[n],"feels")==0)strcpy(words[n], "feel");
          if (strcmp(words[n],"likes")==0)strcpy(words[n], "like");
-         if (strcmp(words[n],"i")==0)    strcpy(words[n], current_user_name);
-         if (strcmp(words[n],"u")==0)    strcpy(words[n], "you");
+      //   if (strcmp(words[n],"i")==0)    strcpy(words[n], current_user_name);
+      if (strcmp(words[n],"u")==0)    strcpy(words[n], "you");
          if (strcmp(words[n],"am")==0)	  strcpy(words[n], "is");
          if (strcmp(words[n],"an")==0)	  strcpy(words[n], "a");
-         if (strcmp(words[n],"you")==0)	  strcpy(words[n], "ivan");
+       //  if (strcmp(words[n],"you")==0)	  strcpy(words[n], "ivan");
       }
 #endif
+
+// '''''''''''''''''''''''''''''''''''''''
+// WORK IN PROGRESS
+#define CHANGE_TO_ID 1
+#if CHANGE_TO_ID
+// substituting names and pronouns for ID strings
+//      for(n=1; n<=number_of_words; n++) {
+
+// if word is i
+ //        if(strcmp(words[n],"i")==0)
+ //           result = db_get_id_string2(current_user_name, ids);
+ //        strcpy(words[n], ids);
+
+// if word is you
+ //        else if(strcmp(words[n],"you")==0) {
+  //          strcpy(words[n], "#1");
+  //       }
+  //    }
+
+// if word is known specific entity
+//result = db_check(word[n]);
+
+// if word is unknown and on a first name list
+
+// later on, change "my *" to ID string
+
+
+
+
+
+//}
+
+#endif
+//'''''''''''''''''''''''''''''''''''''''''''
+
+
+
+
 
       //---------------
 #if 0
@@ -177,7 +217,7 @@ int main(void) {
       strcmp(words[2],"gender")==0 &&
       strcmp(words[3],"is")==0 &&
       strcmp(words[4],"male")==0 ) {
-         sprintf(key, "#%d > gender", current_user_id);
+         sprintf(key, "%s > gender", current_user_id_string);
          gender_code = 1;
          db_add_pair(key, "male");
          continue;
@@ -187,7 +227,7 @@ int main(void) {
       if(db_get_id(words[1]) !=0 &&
       strcmp(words[2],"is")==0 &&
       strcmp(words[3],"female")==0 ) {
-         sprintf(key, "#%d > gender", current_user_id);
+         sprintf(key, "%s > gender", current_user_id_string);
          if(strcmp(words[1],current_user_name)== 0)
             gender_code = 2;
          db_add_pair(key, "female");
@@ -199,7 +239,7 @@ int main(void) {
       strcmp(words[2],"gender")==0 &&
       strcmp(words[3],"is")==0 &&
       strcmp(words[4],"female")==0 ) {
-         sprintf(key, "#%d > gender", current_user_id);
+         sprintf(key, "%s > gender", current_user_id_string);
          gender_code = 2;
          db_add_pair(key, "female");
          continue;
@@ -447,15 +487,15 @@ int main(void) {
          printf("talk to you later %s\r\n\r\n",current_user_name);
 //       current_user_name[20]="unknown";
          strcpy(current_user_name, "unknown");
-         current_user_id = 0;
+         strcpy(current_user_id_string, "#0");
+         //current_user_id = 0;
          gender_code = 0;
-         continue;
-      }
+         continue;      }
 
       // Get ID number
       if(number_of_words==1 &&
       strcmp(words[1],"id")==0) {
-         printf("%d\n",current_user_id);
+         printf("%s\n",current_user_id_string);
          continue;
       }
 

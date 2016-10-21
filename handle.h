@@ -9,8 +9,9 @@
 #include <string.h>
 #include <stdio.h>
 
-extern int current_user_id;
-extern char current_user_name[];
+//extern int current_user_id;
+extern char current_user_id_string[20]; // defined in main.c
+extern char current_user_name[20];
 extern int gender_code;
 int expecting_name;
 

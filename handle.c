@@ -1,5 +1,6 @@
 #include "handle.h"
 #include "functions.h"
+#include "main.h"
 
 void handle_class_statement(char* user_subject, char* user_class) {
    /*
@@ -450,7 +451,7 @@ db_add_pair2(user_subject, attribute_type, user_attribute);
 //
 void handle_greetings(void) {
    // if not logged in
-   if(current_user_id == 0) {
+   if(strcmp(current_user_id_string, "#0") == 0) {
       printf("hi, what is your name?\r\n");
       expecting_name = TRUE;
    }
@@ -610,11 +611,36 @@ i have a dog
    char key[60];
    char key1[20];
    char key2[20];
-   int id2;
+   char id3[20];
 
 //   int subject_result;
 //   char subject_class[20];
    char db_class[20];
+
+//--- CONSTRUCTION ZONE -----------
+
+ // if (parameter1=="fred") change to #17
+   if (strcmp(parameter1,"i")==0)  {
+      strcpy(parameter1, current_user_id_string);
+      //goto a1;
+   }
+   else if (strcmp(parameter1,"you")==0) {
+      strcpy(parameter1, "#1");
+      //goto a1;
+   }
+
+   // known person or robot
+   result = db_get_id_string2(parameter1, id3);
+   if (result == FOUND){
+        strcpy(parameter1, id3);
+   }
+   else{
+      printf("%s is not a known specify entity", parameter1);
+      return;
+   }
+
+
+//------END OF CONSTRUCTION ZONE --------
 
    // is dog in db? no
    sprintf(key, "%s > class", parameter2);
@@ -644,25 +670,20 @@ i have a dog
       //  sprintf(key, "%s > %s", parameter1, "pet");  // assemble key
       //  db_add_pair(key, parameter2);
 
-      id2 = db_next_available_id(); // get an unused ID# for the dog
-      sprintf(key1, "#%d", current_user_id); // convert id# to db string
-      sprintf(key2, "#%d", id2); // convert id# to db string
+      db_next_available_id_string(key2); // get an unused ID# for the dog
       db_add_pair2(key2, "class", parameter2); // ex: #125 > class: dog
-      db_add_pair2(key2, "owner", key1); // ex: #125 > owner: #17
-      db_add_pair2(key1, "pet", key2); // ex: #17 > pet: #125
+      db_add_pair2(key2, "owner", parameter1); // ex: #125 > owner: #17
+      db_add_pair2(parameter1, "pet", key2); // ex: #17 > pet: #125
       printf("I'll take a note of that\n");
       return;
 
    }
    //  is "dog" a posession
    if(db_root_check(parameter2, "object") == FOUND) {
-      id2 = db_next_available_id(); // get an unused ID# for the posession
-      sprintf(key1, "#%d", current_user_id); // convert id# to db string
-      sprintf(key2, "#%d", id2); // convert id# to db string
-      //printf("1:%s, 2:%s", key1, key2);
+      db_next_available_id_string(key2); // get an unused ID# for the posession
       db_add_pair2(key2, "class", parameter2); // ex: #125 > class: car
-      db_add_pair2(key2, "owner", key1); // ex: #125 > owner: #17
-      db_add_pair2(key1, "posession", key2); // ex: #17 > posession: #125
+      db_add_pair2(key2, "owner", parameter1); // ex: #125 > owner: #17
+      db_add_pair2(parameter1, "posession", key2); // ex: #17 > posession: #125
       printf("I'll take a note of that\n");
       return;
 
@@ -705,12 +726,13 @@ void handle_login(char* name) {
    }
 
    // Step #2
-   id_number = db_get_id(name);
-   if(id_number != 0) {
-      known=TRUE;
+   result = db_get_id_string2(name, id_string);
+   if(result != 0){
+
+      known = TRUE;
       new2 = FALSE;
       // get gender
-      sprintf(key,"#%d > gender", id_number);
+      sprintf(key,"%s > gender", id_string);
       result = db_get_value(key, value);
       if(result != FOUND) {
          gender_code=0;
@@ -728,18 +750,17 @@ void handle_login(char* name) {
    // Step 3: add user to database
    if(known==FALSE) {
       // Get an id number
-      id_number = db_next_available_id();
+      db_next_available_id_string(id_string);
 
       // Add the following to the database
       //   #1 > class: person
       //   #1 > firstname:bob
       //   #1 > gender:male
-      snprintf (id_string, sizeof(id_string), "%d",id_number);
-      sprintf(key, "#%s > class", id_string);
+      sprintf(key, "%s > class", id_string);
       db_add_pair(key, "person");
-      sprintf(key,"#%s > firstname", id_string);
+      sprintf(key,"%s > firstname", id_string);
       db_add_pair(key, name);
-      sprintf(key,"#%s > gender", id_string);
+      sprintf(key,"%s > gender", id_string);
       gender_code = check_gender_by_name(name);
       switch(gender_code) {
       case 1:
@@ -754,7 +775,7 @@ void handle_login(char* name) {
 
    // Step 4:
    strcpy(current_user_name, name);
-   current_user_id = id_number;
+   strcpy(current_user_id_string, id_string);
    if(new2 == TRUE) {
       printf("hello %s\n", current_user_name);
    } else {
@@ -831,20 +852,30 @@ void handle_help(void) {
 void handle_have_question(char* p1, char* p2) {
 // WORK IN PROGRESS
    int r;
+   char id[20];
 
-   // is p1 an id number? how do we tell?
+// for now, we will expect p1 to be an ID number string
+// is p1 an id number? how do we tell? look for the "#"
+// make new function: get_id_string
+// new policy: id integers dont get passed to handling functions
 
 // DEBUG
-   if(p1[0]=='#'){
+   if(p1[0]=='#') {
       printf("has ID,");
-   }else printf("no ID,");
-printf("ID:%c", p1[0]);
+      strcpy(id, p1);  // use the ID provided
+   } else {
+      printf("no ID,");
+      r = db_get_id_string2(p1, id); // lookup the ID
+      if(r==NOT_FOUND) {
+         printf("I don't know of %s\n", p1);
+         return;
+      }
+   }
 
-
-sprintf(key, "%s > condition", p1);
-   r = db_get_value(p1, p2);
-
-   if(r == 0) {
+   // Lookup the condition
+   sprintf(key, "%s > condition", id);
+   r = db_check_pair(key, p2);
+   if(r == NOT_FOUND) {
       printf("not that I'm aware of\n");
    } else {
       printf("yes\n");

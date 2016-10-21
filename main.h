@@ -13,9 +13,9 @@
 //#define DEBUG TRUE
 
 // Global Variables
-extern int gender_code;
-extern int current_user_id;
-extern int expecting_name;
+int gender_code;
+int expecting_name;
+char current_user_id_string[20];
 //extern char* current_user_name;
 
 #endif // MAIN_H_INCLUDED
