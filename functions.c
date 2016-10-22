@@ -383,7 +383,7 @@ int separate_words(char* in, char out[MAX_WORDS][MAX_LETTERS]) {
    return 0;
 }
 
-int check_gender_by_name(char* name) {
+int check_gender_by_name(char* name, char* gender2) {
 
 #define LINE_LENGTH 20
    FILE *male;
@@ -414,8 +414,9 @@ int check_gender_by_name(char* name) {
       }
 
       if(strcmp(name, line) == 0) {
+         strcpy(gender2, "male");
          fclose(male);
-         return 1;
+         return FOUND;
       }
 
    }
@@ -426,7 +427,7 @@ int check_gender_by_name(char* name) {
    female = fopen("female_names.txt","r");
    if(female == NULL)
 
-      return CANT_OPEN_FILE;
+      return NOT_FOUND;
 
    for(n=0; n<1000; n++) {
       // get a line
@@ -446,13 +447,14 @@ int check_gender_by_name(char* name) {
 
       if(strcmp(name, line) == 0) {
          fclose(female);
-         return 2;
+         strcpy(gender2, "female");
+         return FOUND;
       }
 
    }
 
    fclose(female);
-   return 3;
+   return NOT_FOUND;
 }
 
 /*

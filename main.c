@@ -15,7 +15,9 @@ int main(void) {
 
 // Some initializing
    gender_code = 0;
+
    strcpy(current_user_id_string, "#0");
+   strcpy(gender, "unknown");
    strcpy(current_user_name, "unknown");
    expecting_name = FALSE;
 
@@ -44,45 +46,6 @@ int main(void) {
       }
 #endif
 
-// '''''''''''''''''''''''''''''''''''''''
-// WORK IN PROGRESS
-#define CHANGE_TO_ID 1
-#if CHANGE_TO_ID
-// substituting names and pronouns for ID strings
-//      for(n=1; n<=number_of_words; n++) {
-
-// if word is i
- //        if(strcmp(words[n],"i")==0)
- //           result = db_get_id_string2(current_user_name, ids);
- //        strcpy(words[n], ids);
-
-// if word is you
- //        else if(strcmp(words[n],"you")==0) {
-  //          strcpy(words[n], "#1");
-  //       }
-  //    }
-
-// if word is known specific entity
-//result = db_check(word[n]);
-
-// if word is unknown and on a first name list
-
-// later on, change "my *" to ID string
-
-
-
-
-
-//}
-
-#endif
-//'''''''''''''''''''''''''''''''''''''''''''
-
-
-
-
-
-      //---------------
 #if 0
       // Work in progress
       // This is the code that makes use of template_search()
@@ -219,6 +182,7 @@ int main(void) {
       strcmp(words[4],"male")==0 ) {
          sprintf(key, "%s > gender", current_user_id_string);
          gender_code = 1;
+         strcpy(gender, "male");
          db_add_pair(key, "male");
          continue;
       }
@@ -230,6 +194,7 @@ int main(void) {
          sprintf(key, "%s > gender", current_user_id_string);
          if(strcmp(words[1],current_user_name)== 0)
             gender_code = 2;
+            strcpy(gender, "female");
          db_add_pair(key, "female");
          continue;
       }
@@ -241,6 +206,7 @@ int main(void) {
       strcmp(words[4],"female")==0 ) {
          sprintf(key, "%s > gender", current_user_id_string);
          gender_code = 2;
+         strcpy(gender, "female");
          db_add_pair(key, "female");
          continue;
       }
@@ -456,6 +422,16 @@ int main(void) {
       strcmp(words[2],"is")==0 &&
       strcmp(words[3],"my")==0 &&
       strcmp(words[4],"gender")==0) {
+         printf("%s\n", gender);
+
+
+
+
+      }
+
+/*
+
+      {
          switch(gender_code) {
          case 1:
             printf("male\n");
@@ -471,7 +447,7 @@ int main(void) {
          }
          continue;
       }
-
+*/
       // "say my name"
       if(number_of_words==3 &&
       strcmp(words[1],"say")==0 &&
@@ -490,6 +466,7 @@ int main(void) {
          strcpy(current_user_id_string, "#0");
          //current_user_id = 0;
          gender_code = 0;
+         strcpy(gender, "unknown");
          continue;      }
 
       // Get ID number
@@ -502,7 +479,7 @@ int main(void) {
       // Get gender code
       if(number_of_words==1 &&
       strcmp(words[1],"g")==0) {
-         printf("%d\n",gender_code);
+         printf("%s\n",gender);
          continue;
       }
       // Single word

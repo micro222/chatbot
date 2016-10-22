@@ -706,6 +706,7 @@ void handle_login(char* name) {
    char id_string[20];
    //char s2[20];
    char value[20];
+   char gender2[10];
    char key[80];
    int id_number;
 
@@ -727,24 +728,25 @@ void handle_login(char* name) {
 
    // Step #2
    result = db_get_id_string2(name, id_string);
-   if(result != 0){
-
+   if(result == FOUND){
       known = TRUE;
       new2 = FALSE;
       // get gender
       sprintf(key,"%s > gender", id_string);
       result = db_get_value(key, value);
-      if(result != FOUND) {
-         gender_code=0;
+      if(result == NOT_FOUND) {
+         strcpy(gender, "unknown");
+printf("gender not found");
       }
-      if(strcmp(value, "male")==0) {
-         gender_code=1;
+      else{
+      check_gender_by_name(name, value);
+         strcpy(gender, value);
       }
-      if(strcmp(value, "female")==0) {
-         gender_code=2;
-      }
-   } else {
-      known=FALSE;
+
+   }
+   else {
+
+        known=FALSE;
    }
 
    // Step 3: add user to database
@@ -760,16 +762,13 @@ void handle_login(char* name) {
       db_add_pair(key, "person");
       sprintf(key,"%s > firstname", id_string);
       db_add_pair(key, name);
-      sprintf(key,"%s > gender", id_string);
-      gender_code = check_gender_by_name(name);
-      switch(gender_code) {
-      case 1:
-         db_add_pair(key, "male");
-         break;
-      case 2:
-         db_add_pair(key, "female");
+      result = check_gender_by_name(name, gender2);
+      if(result == FOUND){
+         sprintf(key,"%s > gender", id_string);
+         db_add_pair(key, gender2);
+         strcpy(gender, gender2);
       }
-      known=TRUE;
+      known = TRUE;
       new2 = TRUE;
    }
 

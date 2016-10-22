@@ -43,6 +43,26 @@ parent > class: relation
 offspring > class: relation
 owner > class: relation
 
+//------------------------------
+
+// COLORS
+
+black > class:	color
+brown > class:	color
+red > class:	color
+orange > class:	color
+yellow > class:	color
+green > class:	color
+blue > class:	color
+purple > class:	color
+gray > class:	color
+white > class:	color
+pink > class:	color
+magenta > class:color
+cyan > class:	color
+
+// CONDITIONS
+
 asthma > class: condition
 acne > class: condition
 influenza > class: condition
@@ -63,27 +83,10 @@ epilepsy > class: condition
 hepatitis > class: condition
 eczema > class: condition
 
+//-------------------------------------------------
 
 tool > class: device
 
-
-//------------------------------
-
-// COLORS
-
-black > class:	color
-brown > class:	color
-red > class:	color
-orange > class:	color
-yellow > class:	color
-green > class:	color
-blue > class:	color
-purple > class:	color
-gray > class:	color
-white > class:	color
-pink > class:	color
-magenta > class:color
-cyan > class:	color
 
 //-------------------------------------------------
 
@@ -236,6 +239,12 @@ motorcycle > class: vehicle
 //milk >
 //carrot >
 beer > class: beverage
+wine > class: beverage
+vodka > class: beverage
+coffee > class: beverage
+rum > class: beverage
+tea > class: beverage
+
 
 //-----------------------------------------------------
 
@@ -254,11 +263,11 @@ foot    > part_of: creature
 phone   > class:device
 radio   > class:device
 computer > class:device
-coffee  > class:beverage
 grass   > class:substance
 grass   > color:green
 
 france > location:europe
+life > class:concept
 
 
 //------------------------------------------
@@ -277,67 +286,67 @@ france > location:europe
 //sidewalk
 
 // BODY PARTS
-
-arm	     > part_of 	creature
-arm	     > class 	object
-back	 > part_of 	creature
-back	 > class 	object
-bone	 > part_of 	creature
-bone	 > class 	object
-brain	 > part_of 	creature
-brain	 > class 	object
-cheek	 > part_of 	creature
-cheek	 > class 	object
-chest	 > part_of 	creature
-chest	 > class 	object
-chin	 > part_of 	creature
-chin	 > class 	object
-ear	     > part_of 	creature
-ear	     > class 	object
-elbow	 > part_of 	creature
-elbow	 > class 	object
-eye	     > part_of 	creature
-eye	     > class 	object
-face	 > part_of 	creature
-face	 > class 	object
-finger	 > part_of 	creature
-finger	 > class 	object
-foot	 > part_of 	creature
-foot	 > class 	object
-hair	 > part_of 	creature
-hair	 > class 	object
-hand	 > part_of 	creature
-hand	 > class 	object
-head	 > part_of 	creature
-head	 > class 	object
-heart	 > part_of 	creature
-heart	 > class 	object
-knee	 > part_of 	creature
-knee	 > class 	object
-leg	     > part_of 	creature
-leg	     > class 	object
-liver	 > part_of 	creature
-liver	 > class 	object
-lung	 > part_of 	creature
-lung	 > class 	object
-mouth	 > part_of 	creature
-mouth	 > class 	object
-neck	 > part_of 	creature
-neck	 > class 	object
-nose	 > part_of 	creature
-nose	 > class 	object
+// (not yet implemented)
+arm > part_of:creature
+arm > class:object
+back > part_of:creature
+back > class:object
+bone > part_of:creature
+bone > class:object
+brain > part_of:creature
+brain > class:object
+cheek > part_of:creature
+cheek > class:object
+chest > part_of:creature
+chest > class:object
+chin > part_of:creature
+chin > class:object
+ear > part_of:creature
+ear > class:object
+elbow > part_of:creature
+elbow > class:object
+eye > part_of:creature
+eye > class object
+face > part_of 	creature
+face > class 	object
+finger > part_of 	creature
+finger > class 	object
+foot > part_of 	creature
+foot > class 	object
+hair > part_of 	creature
+hair > class 	object
+hand > part_of 	creature
+hand > class 	object
+head > part_of 	creature
+head > class 	object
+heart > part_of 	creature
+heart > class 	object
+knee > part_of 	creature
+knee > class 	object
+leg > part_of 	creature
+leg > class 	object
+liver > part_of 	creature
+liver > class 	object
+lung > part_of 	creature
+lung > class 	object
+mouth > part_of 	creature
+mouth > class 	object
+neck > part_of 	creature
+neck > class 	object
+nose > part_of 	creature
+nose > class 	object
 shoulder > part_of 	creature
 shoulder > class 	object
-stomach	 > part_of 	creature
-stomach	 > class 	object
-thumb	 > part_of 	creature
-thumb	 > class 	object
-tooth	 > part_of 	creature
-tooth	 > class 	object
-tongue	 > part_of 	creature
-tongue	 > class 	object
-wrist	 > part_of 	creature
-wrist	 > class 	object
+stomach > part_of 	creature
+stomach > class 	object
+thumb	> part_of 	creature
+thumb	> class 	object
+tooth	> part_of 	creature
+tooth	> class 	object
+tongue > part_of 	creature
+tongue > class 	object
+wrist	> part_of 	creature
+wrist	> class 	object
 
 //---------------------------------------------
 
@@ -358,3 +367,27 @@ robot > class: device
 //=============================================================
 // BELOW IS DATA COLLECTED DURING USER SESSIONS
 
+#2 > class:person
+#2 > firstname:bob
+#2 > gender:male
+#3 > class:person
+#3 > firstname:fran
+#4 > class:person
+#4 > firstname:jane
+#4 > gender:female
+#5 > class:person
+#5 > firstname:linda
+#5 > gender:female
+#6 > class:person
+#6 > firstname:martha
+#7 > class:person
+#7 > firstname:ann
+#7 > gender:female
+#8 > class:person
+#8 > firstname:hi
+#9 > class:person
+#9 > firstname:lucy
+#9 > gender:female
+#10 > class:person
+#10 > firstname:betty
+#10 > gender:female

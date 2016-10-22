@@ -13,9 +13,8 @@
 extern char current_user_id_string[20]; // defined in main.c
 extern char current_user_name[20];
 extern int gender_code;
+extern char gender[10];
 int expecting_name;
-
-
 
 void handle_class_question(char*);
 void handle_class_statement(char*,char*);

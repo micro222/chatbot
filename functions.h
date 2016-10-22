@@ -32,7 +32,7 @@ int isvowel(char);
 int tokenize(char*, char*, char);
 int separate_words(char*, char[MAX_WORDS][MAX_LETTERS]);
 //int template_search(char*, template_info_type*);
-int check_gender_by_name(char*);
+int check_gender_by_name(char*, char*);
 //void get_time(char*);
 int get_time(void);
 //int isvalidname(char*);
