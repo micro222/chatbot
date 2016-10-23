@@ -187,17 +187,6 @@ int main(void) {
          continue;
       }
 
-      // (known person) is female
-      if(db_get_id(words[1]) !=0 &&
-      strcmp(words[2],"is")==0 &&
-      strcmp(words[3],"female")==0 ) {
-         sprintf(key, "%s > gender", current_user_id_string);
-         if(strcmp(words[1],current_user_name)== 0)
-            gender_code = 2;
-            strcpy(gender, "female");
-         db_add_pair(key, "female");
-         continue;
-      }
       // my gender is female
       if(number_of_words==4 &&
       strcmp(words[1],"my")==0 &&
@@ -205,7 +194,6 @@ int main(void) {
       strcmp(words[3],"is")==0 &&
       strcmp(words[4],"female")==0 ) {
          sprintf(key, "%s > gender", current_user_id_string);
-         gender_code = 2;
          strcpy(gender, "female");
          db_add_pair(key, "female");
          continue;

@@ -380,6 +380,32 @@ void handle_attribute_statement(char* user_subject,char* user_attribute) {
    char db_class[20];
    char attribute_type[20];
    char db_attribute[20];
+   char id3[20];
+
+// --- CONSTRUCTION ZONE
+printf("ATTRIBUTE\n");
+   if (strcmp(user_subject,"i")==0)  {
+      strcpy(user_subject, current_user_id_string);
+      goto skip400;
+   }
+   else if (strcmp(user_subject,"you")==0) {
+      strcpy(user_subject, "#1");
+      goto skip400;
+   }
+
+   // known person or robot
+   result = db_get_id_string2(user_subject, id3);
+printf("%d  %s", result, id3);
+   if (result == FOUND){
+        strcpy(user_subject, id3);
+   }
+   else{
+      printf("%s is not a known specific entity\n", user_subject);
+      return;
+   }
+skip400:
+
+// ---
 
    // 1) ex: is "grass" in database?
    if(db_check(user_subject) == NOT_FOUND) {
@@ -622,11 +648,10 @@ i have a dog
  // if (parameter1=="fred") change to #17
    if (strcmp(parameter1,"i")==0)  {
       strcpy(parameter1, current_user_id_string);
-      //goto a1;
    }
    else if (strcmp(parameter1,"you")==0) {
       strcpy(parameter1, "#1");
-      //goto a1;
+      goto skip660;
    }
 
    // known person or robot
@@ -635,10 +660,11 @@ i have a dog
         strcpy(parameter1, id3);
    }
    else{
-      printf("%s is not a known specify entity", parameter1);
+      printf("%s is not a known specific entity\n", parameter1);
       return;
    }
 
+skip660:
 
 //------END OF CONSTRUCTION ZONE --------
 
@@ -736,7 +762,6 @@ void handle_login(char* name) {
       result = db_get_value(key, value);
       if(result == NOT_FOUND) {
          strcpy(gender, "unknown");
-printf("gender not found");
       }
       else{
       check_gender_by_name(name, value);
@@ -746,7 +771,7 @@ printf("gender not found");
    }
    else {
 
-        known=FALSE;
+        known = FALSE;
    }
 
    // Step 3: add user to database

@@ -6,27 +6,27 @@
 
 // CLASS STATEMENTS
 // parameters: subject, class
-a * is a *,  handle_class_statement(2, 5)                 // ex: a cat is an animal
-* is a *,    handle_class_statement(1, 4)                 // ex: beer is a beverage
+a * is a *, handle_class_statement(2, 5)                 // ex: a cat is an animal
+* is a *, handle_class_statement(1, 4)                 // ex: beer is a beverage
 
 // CLASS QUESTIONS
-// parameters: subject, class
-what is *,   handle_class_question(3)                     // ex: what is coffee?
-what are *,  handle_class_question(3)                     // ex: what are raccoons?
+// parameters: subject
+what is *, handle_class_question(3)                     // ex: what is coffee?
+what are *, handle_class_question(3)                     // ex: what are raccoons?
 what is a *, handle_class_question(4)                     // ex: what is a cow?
 
 // ATTRIBUTE STATEMENTS
 // parameters: subject, attribute
-* is *,      handle_attribute_statement(1, 3)             // ex: chocolate is brown
+* is *, handle_attribute_statement(1, 3)             // ex: chocolate is brown
 
 // ATTRIBUTE QUESTIONS
 // parameters: subject, attribute
 what * is *, handle_attribute_question(4, 2)              // ex: what color is chocolate
-where is *,  handle_attribute_question(3, "location")     // ex: where is lucy?
+where is *, handle_attribute_question(3, "location")     // ex: where is lucy?
 
 // ATTRIBUTE CONFIRMAION QUESTIONS
 // parameters: subject, attribute
-is * *,      handle_attribute_confirmation_question(2, 3) // ex: is chocolate brown
+is * *, handle_attribute_confirmation_question(2, 3) // ex: is chocolate brown
 
 //TO DO
     // say my name
@@ -43,37 +43,37 @@ can * *, handle_ability_question(2, 3)                    // ex: can cows fly
 * can *, handle_ability_statement(1, 3)                   // ex: crows can fly
 
 // RATING STATEMENTS
-I hate *,         handle_rating_statement(1, 3, 0)
-I dont like *,    handle_rating_statement(1, 4, 3)
-I like *,         hand le_rating_statement(1, 3, 7)        // ex: i like beer
-I love *,         handle_rating_statement(1, 3, 10)
-* hates *,        handle_rating_statement(1, 3, 0)        // ex: bob hates beer
+I hate *, handle_rating_statement(1, 3, 0)
+I dont like *, handle_rating_statement(1, 4, 3)
+I like *, handle_rating_statement(1, 3, 7)        // ex: i like beer
+I love *, handle_rating_statement(1, 3, 10)
+* hates *, handle_rating_statement(1, 3, 0)        // ex: bob hates beer
 * doesn't like *, handle_rating_statement(1, 4, 3)
-* likes *,        handle_rating_statement(1, 3, 7)        // ex: bob likes jane
-* loves *,        handle_rating_statement(1, 3, 10)       // ex: fred loves beer
+* likes *, handle_rating_statement(1, 3, 7)        // ex: bob likes jane
+* loves *, handle_rating_statement(1, 3, 10)       // ex: fred loves beer
 
 // RATING QUESTION
-do you like *,    handle_rating_question(2, 4)            // ex: do you like beer
-does * like *,    handle_rating_question(2, 4)            // ex: does fred like beer
+do you like *, handle_rating_question(2, 4)            // ex: do you like beer
+does * like *, handle_rating_question(2, 4)            // ex: does fred like beer
 
 // HAVE STATEMENTS
-i have a *,       handle_have_statement(1, 4)             // ex: i have a dog, daughter, cold
+i have a *, handle_have_statement(1, 4)             // ex: i have a dog, daughter, cold
 ** has *, handle_have_statement(??, 4) my dog has fleas
 i have *, handle_have_statement(1, 3) i have influenza
 i have * *, handle_have_statement(1, ??) i have 3 dogs,   // ex: i have 2 thumbs
 
 // HAVE QUESTIONS
-do you have a *,  handle_have_question(2, 5)              // ex: do you have a dog, daughter, cold, dollar
+do you have a *, handle_have_question(2, 5)              // ex: do you have a dog, daughter, cold, dollar
 does your * have *, handle_have_question(??, 5)           // ex: does your dog has fleas
-do you have *,    handle_have_question(2, 4)              // ex: do you have influenza
-do you have * *,  handle_have_question(2, ??)             // ex: do you have 3 dogs, do you have 2 thumbs
+do you have *, handle_have_question(2, 4)              // ex: do you have influenza
+do you have * *, handle_have_question(2, ??)             // ex: do you have 3 dogs, do you have 2 thumbs
 
 
 // MISC.
 list *, list_question, 2                                  // ex: list action
-hi,               handle_greetings()
-hey,              handle_greetings()
-hello,            handle_greetings()
+hi, handle_greetings()
+hey, handle_greetings()
+hello, handle_greetings()
 
 // TO DO
     // help
