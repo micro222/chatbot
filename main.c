@@ -15,7 +15,7 @@ int main(void) {
 
 // Some initializing
    gender_code = 0;
-
+   strcpy(debug_string, "");
    strcpy(current_user_id_string, "#0");
    strcpy(gender, "unknown");
    strcpy(current_user_name, "unknown");
@@ -25,6 +25,7 @@ int main(void) {
 
    // THE MAIN LOOP
    while(1) {
+
       printf(">"); // user prompt
       get_string(); // get user input and store in user_input[]
       parse(); // separate the sentence into individual words
@@ -121,6 +122,14 @@ int main(void) {
       strcmp(words[1], "help")==0) {
          handle_help();
       }
+
+
+      if(number_of_words==1 &&
+      strcmp(words[1],"d")==0) {
+         printf("%s",debug_string);
+         continue;
+      }
+      strcpy(debug_string, "");
 
       //Dealing with 1 word replies to robot questions
       //expected template: my name is *
@@ -470,12 +479,8 @@ int main(void) {
          printf("%s\n",gender);
          continue;
 
-      }     // Get gender code
-      if(number_of_words==1 &&
-      strcmp(words[1],"d")==0) {
-         printf("%s",debug_string);
-         continue;
       }
+
       // Single word
       if(number_of_words==1) {
          sprintf(key, "%s > class", words[1]);  // assemble a key

@@ -25,7 +25,7 @@ void handle_class_statement(char* user_subject, char* user_class) {
    char key[20];
    int result;
 
-   strcpy(debug_string, "class statement");  // debug info
+   strcat(debug_string, "class statement\n");  // debug info
 
    // 1 is "animal" in the database?
    if(db_check(user_class) != FOUND) {
@@ -57,7 +57,7 @@ void handle_class_statement(char* user_subject, char* user_class) {
 
 //  4) contradictory info
    else {
-      printf("no, it's a %s\n", value);
+      printf("no, %s is a %s\n", user_subject, value);
       return;
    }
 }
@@ -70,11 +70,11 @@ void handle_class_question(char* subject) {
    char value[20];
    char key[20];
 
-strcpy(debug_string, "class question");  // debug info
+strcat(debug_string, "class question\n");  // debug info
 
    sprintf(key, "%s > class", subject);
    result = db_get_value(key, value);
-   if(result==FOUND) printf("It's a %s\n", value);
+   if(result==FOUND) printf("%s is a %s\n", subject, value);
    else printf("I've never heard of ""%s""\n", subject);
 
 }
@@ -108,7 +108,7 @@ void handle_attribute_statement(char* user_subject,char* user_attribute) {
    char db_attribute[20];
    char id3[20];
 
-strcpy(debug_string, "attribute_statement");  // debug info
+strcat(debug_string, "attribute statement\n");  // debug info
 
    if (strcmp(user_subject,"i")==0)  {
       strcpy(user_subject, current_user_id_string);
@@ -172,7 +172,7 @@ skip400:
 
    // 6 Check if the attrubute contradicts what's in the db
    if(result == FOUND) {
-      printf("no, it's %s\n", db_attribute);
+      printf("no, %s is a %s\n", user_subject, db_attribute);
       return;
    }
 
@@ -267,10 +267,11 @@ i have a dog
 //   char subject_class[20];
    char db_class[20];
 
-strcpy(debug_string, "have_statement");  // debug info
+strcat(debug_string, "have statement\n");  // debug info
 
    if (strcmp(parameter1,"i")==0)  {
       strcpy(parameter1, current_user_id_string);
+      goto skip660;
    }
    else if (strcmp(parameter1,"you")==0) {
       strcpy(parameter1, "#1");
@@ -292,12 +293,14 @@ skip660:
    // is dog in db? no
    sprintf(key, "%s > class", parameter2);
    if(db_get_value(key, db_class) == NOT_FOUND) {
+      strcat(debug_string, "class\n");  // debug info
       printf("I'm unfamiliar with %s\n", parameter2);
       return;
    }
 
    // is "dog" a condition? no
    if(db_root_check(parameter2, "condition") == FOUND) {
+      strcat(debug_string, "condition\n");  // debug info
       db_add_pair2(parameter1, "condition", parameter2); // new function
  //  #17 > condition: toothache
       printf("I'll take a note of that\n");
@@ -306,6 +309,7 @@ skip660:
 
    //  is "dog" a relation? no
    if(db_root_check(parameter2, "relation") == FOUND) {
+      strcat(debug_string, "relation\n");  // debug info
       sprintf(key, "%s > %s", parameter1, "condition");  // assemble key
       db_add_pair(key, parameter2);
       printf("I'll take a note of that\n");
@@ -316,7 +320,7 @@ skip660:
    if(db_root_check(parameter2, "creature") == FOUND) {
       //  sprintf(key, "%s > %s", parameter1, "pet");  // assemble key
       //  db_add_pair(key, parameter2);
-
+      strcat(debug_string, "pet\n");  // debug info
       db_next_available_id_string(key2); // get an unused ID# for the dog
       db_add_pair2(key2, "class", parameter2); // ex: #125 > class: dog
       db_add_pair2(key2, "owner", parameter1); // ex: #125 > owner: #17
@@ -327,6 +331,7 @@ skip660:
    }
    //  is "dog" a posession
    if(db_root_check(parameter2, "object") == FOUND) {
+      strcat(debug_string, "possession\n");  // debug info
       db_next_available_id_string(key2); // get an unused ID# for the posession
       db_add_pair2(key2, "class", parameter2); // ex: #125 > class: car
       db_add_pair2(key2, "owner", parameter1); // ex: #125 > owner: #17
@@ -349,7 +354,7 @@ void handle_color_confirmation_question(char* subject, char*value1) {
    char value[20];
    char key[60];
 
-strcpy(debug_string, "color_confirmation_question");  // debug info
+strcat(debug_string, "color confirmation question\n");  // debug info
 
    sprintf(key, "%s > color", subject);
    db_get_value(key, value);
@@ -395,7 +400,7 @@ void handle_rating_statement(char* parameter1, char* parameter2, char* rating) {
    int result, result2;
    char key[60];
 
-strcpy(debug_string, "rating_statement");  // debug info
+strcat(debug_string, "rating statement\n");  // debug info
 
 // is the first word the first name of someone we know?
    if(db_get_id(key) == 0) {
@@ -441,7 +446,7 @@ void handle_location_question(char* subject) {
    char value[20];
    char key[60];
 
-strcpy(debug_string, "location question");  // debug info
+strcat(debug_string, "location question\n");  // debug info
 
    // DO WE KNOW THE ANSWER?
 //    strcpy(key, subject);
@@ -557,7 +562,7 @@ void handle_list_question(char* subject) {
 //
 void handle_greetings(void) {
 
-strcpy(debug_string, "greetings");  // debug info
+strcat(debug_string, "greetings\n");  // debug info
    // if not logged in
    if(strcmp(current_user_id_string, "#0") == 0) {
       printf("hi, what is your name?\r\n");
@@ -667,7 +672,7 @@ void handle_login(char* name) {
    char key[80];
    int id_number;
 
-strcpy(debug_string, "login");  // debug info
+strcat(debug_string, "login\n");  // debug info
    // Proceedure
    //
    // 1 is the person the current user?
@@ -815,7 +820,7 @@ void handle_have_question(char* p1, char* p2) {
 // make new function: get_id_string
 // new policy: id integers dont get passed to handling functions
 
-strcpy(debug_string, "have question");  // debug info
+strcat(debug_string, "have question\n");  // debug info
 
 // DEBUG
    if(p1[0]=='#') {
@@ -863,7 +868,7 @@ void handle_color_statement(char* user_subject,char* user_color) {
 //   char user_class;
    int color_result;
 
-strcpy(debug_string, "color statement");  // debug info
+strcat(debug_string, "color statement\n");  // debug info
 
    // 1 is "grass" in the database?
    if(db_check(user_subject) != FOUND) {
@@ -904,7 +909,7 @@ void handle_color_question(char* subject) {
    char value[20];
    char key[60];
 
-strcpy(debug_string, "color question");  // debug info
+strcat(debug_string, "color question\n");  // debug info
 
    sprintf(key, "%s > color", subject);
    result = db_get_value(key, value);
