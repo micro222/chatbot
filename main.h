@@ -17,6 +17,7 @@ int gender_code;
 char gender[10];
 int expecting_name;
 char current_user_id_string[20];
+extern char debug_string[200];
 //extern char* current_user_name;
 
 #endif // MAIN_H_INCLUDED

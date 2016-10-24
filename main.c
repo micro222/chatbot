@@ -164,9 +164,9 @@ int main(void) {
       }
 
 
-#if 0
+#if 1
       // Logged in? If not, go no further. This can be disabled for testing purposes
-      if(current_user_id == 0) {
+      if(strcmp(current_user_id_string, "unknown") == 0) {
          printf("what is your name?\r\n");
          continue;
       }
@@ -224,7 +224,7 @@ int main(void) {
          continue;
       }
 
-      // this needs to be placed before "___ is ___" and after "what is ___"
+      // this needs to be placed after "what is ___"
       if(number_of_words==3 &&
       strcmp(words[2],"is")==0) {
          handle_attribute_statement(words[1],words[3]);
@@ -290,7 +290,7 @@ int main(void) {
          handle_color_confirmation_question(words[2],words[3]);
          continue;
       }
-
+/*
       // ___ is <color>
       // conditions: 3 words, middle word is "is"
       if(number_of_words==3 &&
@@ -299,7 +299,7 @@ int main(void) {
          handle_color_statement(words[1],words[3]);
          continue;
       }
-
+*/
       // - - - - - - - - - - - - - - - - - - - - - -
       // LOCATION
       // where is ___
@@ -468,6 +468,12 @@ int main(void) {
       if(number_of_words==1 &&
       strcmp(words[1],"g")==0) {
          printf("%s\n",gender);
+         continue;
+
+      }     // Get gender code
+      if(number_of_words==1 &&
+      strcmp(words[1],"d")==0) {
+         printf("%s",debug_string);
          continue;
       }
       // Single word
