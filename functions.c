@@ -91,6 +91,7 @@ int is_nonsense_word(char* s1) {
    int i,inarow;
    int j;
    char *list_nonsense[] = {"ch", "gh", "sc", "sp", "th", "ck", "pp", "tt"};
+char output[80];
 
    inarow=0;
    for(i=0; i<80-3; i++) {
@@ -99,7 +100,7 @@ int is_nonsense_word(char* s1) {
       else inarow=0;
       if(inarow>=4) break;
    }
-   if(inarow>=3)printf("  3 vowels in a row  \n");
+   if(inarow>=3)sprintf(output, "  3 vowels in a row  \n"); stioc(output);
    // replace all occurances of CH GH SC SP TH CK PP ST with vowels
    for(i=0; i<80-3; i++) {
       if(user_input[i]==0) break;
@@ -117,7 +118,7 @@ int is_nonsense_word(char* s1) {
       else inarow=0;
       if(inarow>=4) break;
    }
-   if(inarow>=4)printf("  that's jiberish\n");
+   if(inarow>=4)sprintf(output, "  that's jiberish\n"); stioc(output);
 
 }
 
@@ -129,11 +130,12 @@ int isword(char*word_to_lookup) {
    int result = 1;
    char word_from_list[80];
    char *status;
+char output[80];
 
    //  open word list
    general = fopen("word100k.txt","r");
    if(general == NULL) {
-      printf("fopen failed while trying to open word100k.txt\n");
+      sprintf(output, "fopen failed while trying to open word100k.txt\n"); stioc(output);
    }
 
    while(1) {
@@ -324,16 +326,16 @@ int template_search(char*user, template_info_type* template_info) {
 
    if(line_position>0) {
       line_position = copy_to_delimiter(template_info->line, temp, ',' ,line_position);
-      //printf("temp:%s pos: %d", temp, line_position);
+      //sprintf(output, "temp:%s pos: %d", temp, line_position); stioc(output);
       snprintf(template_info->parameter1, sizeof(template_info->parameter1), temp);
    }
 
-   //printf("LP: %d", line_position);
+   //sprintf(output, "LP: %d", line_position); stioc(output);
 
    if(line_position>0) {
       // extract parameter2
       line_position = copy_to_delimiter(template_info->line, temp, ',' ,line_position);
-      //printf("temp:%s pos: %d", temp, line_position);
+      //sprintf(output, "temp:%s pos: %d", temp, line_position); stioc(output);
       snprintf(template_info->parameter2, sizeof(template_info->parameter2), temp);
    }
 
@@ -457,6 +459,28 @@ int check_gender_by_name(char* name, char* gender2) {
    return NOT_FOUND;
 }
 
+
+// send to intenet or console
+void stioc(char* output_string) {
+
+   char temp_string[80];
+   static int count = 0;
+
+   count++;
+
+   if (irc == TRUE) {
+      strcpy(temp_string, "PRIVMSG #chatbot :");
+      strcat(temp_string, output_string);
+      strcat(temp_string, "\n");
+      send(socket_desc , temp_string , strlen(temp_string) , 0);
+      printf("output: %s %d\n", output_string, count);
+   } else {
+      puts(output_string);
+   }
+
+}
+
+
 /*
  * Get current time. Store time as a string in current_time.
 
@@ -473,7 +497,7 @@ int get_time() {
       return;
 
    return (tm->tm_hour*3600) + (tm->tm_min*60) + (tm->tm_sec);
-   // sprintf(current_time, "%d:%02d:%02d on %d-%d-%d ",
+   // scurrent_time, "%d:%02d:%02d on %d-%d-%d ",
    //	  tm->tm_hour, tm->tm_min, tm->tm_sec,
    //	  1900 + tm->tm_year, tm->tm_mon, tm->tm_mday);
 

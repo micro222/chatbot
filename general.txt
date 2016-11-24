@@ -45,6 +45,11 @@ owner > class: relation
 
 //------------------------------
 
+// GENDER
+
+male > class: gender
+female > class: gender
+
 // COLORS
 
 black > class:	color
@@ -257,14 +262,14 @@ tea > class: beverage
 //pencil
 //paper
 
-foot    > class: object
-foot    > part_of: creature
+foot > class: object
+foot > part_of: creature
 //tower
-phone   > class:device
-radio   > class:device
+phone > class:device
+radio > class:device
 computer > class:device
-grass   > class:substance
-grass   > color:green
+grass > class:substance
+grass > color:green
 
 france > location:europe
 life > class:concept
@@ -371,23 +376,8 @@ robot > class: device
 #2 > firstname:bob
 #2 > gender:male
 #3 > class:person
-#3 > firstname:fran
 #4 > class:person
-#4 > firstname:jane
-#4 > gender:female
+#4 > firstname:homer
 #5 > class:person
-#5 > firstname:linda
-#5 > gender:female
-#6 > class:person
-#6 > firstname:martha
-#7 > class:person
-#7 > firstname:ann
-#7 > gender:female
-#8 > class:person
-#8 > firstname:hi
-#9 > class:person
-#9 > firstname:lucy
-#9 > gender:female
-#10 > class:person
-#10 > firstname:betty
-#10 > gender:female
+#5 > firstname:sam
+#5 > gender:male

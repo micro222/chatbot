@@ -56,6 +56,7 @@ int db_get_value(char *target_key, char *db_value){
 
     // get value
     db_copy_word(line, linepos, db_value);
+//sprintf(output,"===%s===\n", line); stioc(output);
 
     fclose(general);
 
@@ -72,10 +73,11 @@ int db_get_value(char *target_key, char *db_value){
 int db_add_pair(char*key, char*value){
 
     FILE *general;
+char output[80];
 
    //open
 	  general = fopen("general.txt","a");
-	  if(general == NULL) {printf("fopen failed while trying to open general.txt");}
+	  if(general == NULL) {sprintf(output, "fopen failed while trying to open general.txt"); stioc(output);}
 
    //add key and value
 	  fprintf(general, "%s:%s\n", key, value);
@@ -96,10 +98,11 @@ int db_add_pair(char*key, char*value){
 int db_add_pair2(char*key1, char*key2, char*value){
 
     FILE *general;
+char output[80];
 
    //open
 	  general = fopen("general.txt","a");
-	  if(general == NULL) {printf("fopen failed while trying to open general.txt");}
+	  if(general == NULL) {sprintf(output, "fopen failed while trying to open general.txt"); stioc(output);}
 
    //add key and value
 	  fprintf(general, "%s > %s:%s\n", key1, key2, value);
@@ -236,6 +239,7 @@ int db_get_id_string2(char*name, char*id_string) {
 int db_change_value(char *key, char *value){
     FILE *general;
     FILE *temp;
+char output[80];
 
     char *status;
     char line[80];
@@ -244,12 +248,12 @@ int db_change_value(char *key, char *value){
     //open files
    	general = fopen("general.txt","r");
 	   if(general == NULL) {
-       printf("DB: can't open general.txt");
+       sprintf(output, "DB: can't open general.txt"); stioc(output);
        return 2;
     }
 	temp = fopen("temp.txt","w");
    	if(temp == NULL) {
-       printf("DB: can't open temp.txt");
+       sprintf(output, "DB: can't open temp.txt"); stioc(output);
        fclose(general);
        return 2;
     }
@@ -290,8 +294,8 @@ int db_change_value(char *key, char *value){
 	   fclose(general);
 	   fclose(temp);
 
-   	if(remove("general.txt") != 0) {printf("oops, file error ""%s"" \n", strerror(1));}
-	   if(rename("temp.txt","general.txt") != 0) {printf("file error ""%s"" \n", strerror(1));}
+   	if(remove("general.txt") != 0) {sprintf(output, "oops, file error ""%s"" \n", strerror(1)); stioc(output);}
+	   if(rename("temp.txt","general.txt") != 0) {sprintf(output, "file error ""%s"" \n", strerror(1)); stioc(output);}
 
 	   return 0;  // (success)
 
@@ -309,6 +313,7 @@ int db_next_available_id(void){
    char value[20];
    int result;
    char key[20], id_string[20];
+char output[80];
 
    for(i=1; i<1000; i++){
       // look for id
@@ -317,7 +322,7 @@ int db_next_available_id(void){
           return i;
       }
    }
-   printf("error in function DNAI");
+   sprintf(output, "error in function DNAI"); stioc(output);
    return 0;
 }
 int db_next_available_id_string(char* id_string){
@@ -326,6 +331,7 @@ int db_next_available_id_string(char* id_string){
    char value[20];
    int result;
    char key[20];
+char output[80];
 
    for(i=1; i<1000; i++){
       // look for id
@@ -335,7 +341,7 @@ int db_next_available_id_string(char* id_string){
          return 1;
       }
    }
-   printf("error in function DNAIS");
+   sprintf(output, "error in function DNAIS"); stioc(output);
    return 0;
 }
 

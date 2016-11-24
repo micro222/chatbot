@@ -1,6 +1,18 @@
 #include "main.h"
+#include <sys/socket.h>
 
+/* UDP client in the internet domain */
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <netdb.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
 
+void error(const char *);
 
 //-------------------------------------------------------
 
@@ -10,10 +22,75 @@ int main(void) {
    int n;
    char temp[40][20];
    char key[80];
+   char buffer[256];
+   char output[80];
+   time_t seconds1, seconds2;
 
+ // char *output; // this causes a segmentation fault
+//------------------
 
+   struct sockaddr_in server, from;
+   char* message,server_reply[2000];
+char *ret1;
+char *ret2;
+   char *hostname = "chat.freenode.net";
+   char ip[100];
+   struct hostent *he;
+   struct in_addr **addr_list;
+   int i;
+   ssize_t ssize;
 
-// Some initializing
+   irc = TRUE;
+   // Look up the IP address
+   if ( (he = gethostbyname( hostname ) ) == NULL) {
+      herror("gethostbyname"); //gethostbyname failed
+      return 1;
+   }
+
+   //Cast the h_addr_list to in_addr , since h_addr_list also has the ip address in long format only
+   addr_list = (struct in_addr **) he->h_addr_list;
+
+   for(i = 0; addr_list[i] != NULL; i++) {
+      //Return the first one;
+      strcpy(ip , inet_ntoa(*addr_list[i]) );
+   }
+
+   sprintf(output, "%s resolved to : %s" , hostname , ip);
+
+   //Create a socket
+   socket_desc = socket(AF_INET , SOCK_STREAM , 0);
+   if (socket_desc == -1) {
+      sprintf(output, "Could not create a socket"); stioc(output);
+   }
+
+   server.sin_addr.s_addr = inet_addr(ip);
+   server.sin_family = AF_INET;
+   server.sin_port = htons( 6667 );  // IRC port number
+
+   //Connect to remote server
+   if (connect(socket_desc , (struct sockaddr *)&server , sizeof(server)) < 0) {
+      puts("connect error");
+   }
+   else puts("Connected to IRC");
+
+//Send NICK command
+   message = "NICK robot22\r\n";
+   puts(message);
+   send(socket_desc , message , strlen(message) , 0);
+
+//Send USER command
+   message = "USER user_name 8 * :real name\r\n";
+   puts(message);
+   send(socket_desc , message , strlen(message) , 0);
+
+//Join chatroom
+   message    = "JOIN #chatbot\r\n";
+//   user_input = "this is a test";
+   puts(message);
+   send(socket_desc , message , strlen(message) , 0);
+
+//-----------------
+
    gender_code = 0;
    strcpy(debug_string, "");
    strcpy(current_user_id_string, "#0");
@@ -25,9 +102,34 @@ int main(void) {
 
    // THE MAIN LOOP
    while(1) {
-
-      printf(">"); // user prompt
-      get_string(); // get user input and store in user_input[]
+      // for console I/O
+      if(irc == FALSE) {
+         printf(">"); // user prompt
+         get_string(); // get user input from console and store in user_input[]
+      }
+      // for IRC
+      else{
+         //Receive a reply from the server
+         bzero(server_reply,2000); // clear the buffer
+         recv(socket_desc, server_reply , 2000 , 0);
+         puts(server_reply);
+         // Handle pings
+         if(!strncmp(server_reply, "PING ", 5)) {
+            server_reply[1] = 'O';  // turn a ping into a pong
+            send(socket_desc , server_reply , strlen(server_reply) , 0);  // send pong
+            puts("pong\n");
+            continue;
+         }
+         ret1 = strstr(server_reply, "PRIVMSG");
+         if(ret1 == NULL) continue; // if it's not a message, go back to the top of the loop
+         ret2 = strstr(ret1, ":"); // get rid of everything before the :
+         ret2++; // move past the :
+         *(ret2 + strlen(ret2) -2) = 0; // get rid of the CR at the end
+         strcpy(user_input,ret2);
+//user_input = "this is a test";
+         printf("extracted message: %s\r\n", user_input); // show the extracted message
+      }
+  seconds1 = time(NULL);
       parse(); // separate the sentence into individual words
 
 #if 1
@@ -39,11 +141,9 @@ int main(void) {
          if (strcmp(words[n],"wants")==0)strcpy(words[n], "want");
          if (strcmp(words[n],"feels")==0)strcpy(words[n], "feel");
          if (strcmp(words[n],"likes")==0)strcpy(words[n], "like");
-      //   if (strcmp(words[n],"i")==0)    strcpy(words[n], current_user_name);
-      if (strcmp(words[n],"u")==0)    strcpy(words[n], "you");
          if (strcmp(words[n],"am")==0)	  strcpy(words[n], "is");
          if (strcmp(words[n],"an")==0)	  strcpy(words[n], "a");
-       //  if (strcmp(words[n],"you")==0)	  strcpy(words[n], "ivan");
+
       }
 #endif
 
@@ -51,70 +151,20 @@ int main(void) {
       // Work in progress
       // This is the code that makes use of template_search()
       code = template_search(user_input, &template_info);
-      printf("\ncode: %d, template: %s, ", code, template_info.template2);
-      printf("\r\nfunction: %s\r", template_info.function_name);
+      sprintf(output, "\ncode: %d, template: %s, ", code, template_info.template2);
+      sprintf(output, "\r\nfunction: %s\r", template_info.function_name);
       if(template_info.parameter1 > 0) {
-         printf("\np1: %d\r\n", template_info.parameter1);
+         sprintf(output, "\np1: %d\r\n", template_info.parameter1);
       }
       if(template_info.parameter2 > 0) {
-         printf("\np2: %d\r\n\n\n", template_info.parameter2);
+         sprintf(output, "\np2: %d\r\n\n\n", template_info.parameter2);
       }
 
       continue;
 #endif
       //----------------
 
-#if 0
-      // Does the user input = the template? If so, there are no wild cards
-      same = FALSE;
-      for(n=1; n<=number_of_words; n++) {
-         if(strcmp(words[n], out[n])==0) {
-            same=TRUE;
-            break;
-         }
-      }
-#endif
-      //------------------
-
-#if 0
-      // Experimental
-      token=0;
-      if(same==TRUE) {
-         if(strcmp(user_input, "what time is it")==0) token = 1;
-         else if(strcmp(user_input, "what is your name")==0) token = 2;
-         else if(strcmp(user_input, "hi")==0) token = 3;
-         else if(strcmp(user_input, "how are you")==0) token = 4;
-         else if(strcmp(user_input, "i am here")==0) token = 5;
-      }
-      switch(token) {
-      case 1:
-         printf("i dont have a watch\r\n ");
-         break;
-      case 2:
-         printf("joe king\r\n ");
-         break;
-      case 3:
-         printf("bye \r\n");
-         break;
-      case 4:
-         printf("could be worse \r\n");
-         break;
-      case 5:
-         printf("where is here? \r\n");
-         break;
-      }
-      //printf("%d   ", token);
-#endif
-      //----------------
-
-#if 0
-      // experimenting with delays
-      current_time = get_time();
-      while (get_time() < current_time +5);
-      //printf("time: %d", current_time);
-#endif
-      //------------------
-
+ //sprintf(output, "%ld",seconds1); stioc(output);
       // The main sentence processing starts here.
       // Soon this will be replaced by using the templates in templates2.txt
 
@@ -123,10 +173,9 @@ int main(void) {
          handle_help();
       }
 
-
       if(number_of_words==1 &&
       strcmp(words[1],"d")==0) {
-         printf("%s",debug_string);
+         sprintf(output, "%s",debug_string); stioc(output);
          continue;
       }
       strcpy(debug_string, "");
@@ -140,7 +189,7 @@ int main(void) {
          strcpy(temp[4], words[1]);
          memcpy(words, temp, 800);  // MAX_WORDS * MAX_LETTERS
          number_of_words = 4;
-         printf("%s,%s,%s,%s\n", words[1],words[2],words[3],words[4]);
+         //printf("%s,%s,%s,%s\n", words[1],words[2],words[3],words[4]);
       }
       expecting_name = FALSE;
 
@@ -167,16 +216,15 @@ int main(void) {
       }
 
       if(number_of_words==1 &&
-      strcmp(words[1], "hello")==0) {
+         strcmp(words[1], "hello")==0) {
          handle_greetings();
          continue;
       }
 
-
 #if 1
       // Logged in? If not, go no further. This can be disabled for testing purposes
       if(strcmp(current_user_id_string, "unknown") == 0) {
-         printf("what is your name?\r\n");
+         sprintf(output, "what is your name?\r\n"); stioc(output);
          continue;
       }
 #endif
@@ -190,7 +238,7 @@ int main(void) {
       strcmp(words[3],"is")==0 &&
       strcmp(words[4],"male")==0 ) {
          sprintf(key, "%s > gender", current_user_id_string);
-         gender_code = 1;
+         //gender_code = 1;
          strcpy(gender, "male");
          db_add_pair(key, "male");
          continue;
@@ -205,6 +253,23 @@ int main(void) {
          sprintf(key, "%s > gender", current_user_id_string);
          strcpy(gender, "female");
          db_add_pair(key, "female");
+         continue;
+      }
+
+      // what are you
+      if(number_of_words==333 &&
+      strcmp(words[1],"what")==0 &&
+      strcmp(words[2],"is")==0 &&
+      strcmp(words[3],"you")==0) {
+         sprintf(output, "a robot named ivan\n"); stioc(output);
+         continue;
+      }
+      // who are you
+      if(number_of_words==3 &&
+      strcmp(words[1],"who")==0 &&
+      strcmp(words[2],"is")==0 &&
+      strcmp(words[3],"you")==0) {
+         sprintf(output, "a robot named ivan\n"); stioc(output);
          continue;
       }
 
@@ -224,6 +289,7 @@ int main(void) {
          handle_class_question(words[3]);
          continue;
       }
+
       // what is a ___
       if(number_of_words==4 &&
       strcmp(words[1],"what")==0 &&
@@ -271,16 +337,16 @@ int main(void) {
          handle_have_question(words[2],words[4]);
          continue;
       }
-/*
+
       // does jane have a dog
       if(number_of_words==5 &&
       strcmp(words[1],"does")==0 &&
-      strcmp(words[3],"have")==0) &&
+      strcmp(words[3],"have")==0 &&
       strcmp(words[4],"a")==0) {
-         handle_have_question(words[1],words[5]);
+         handle_have_question(words[2],words[5]);
          continue;
       }
-*/
+
       // - - - - - - COLORS - - - - - - - - - - - - - - - -
       //
       // what color is ___
@@ -410,54 +476,33 @@ int main(void) {
       strcmp(words[2],"is")==0 &&
       strcmp(words[3],"my")==0 &&
       strcmp(words[4],"name")==0) {
-         printf("%s\n",current_user_name);
+         sprintf(output, "%s\n",current_user_name); stioc(output);
          continue;
       }
+
       // "what is my gender"
       if(number_of_words==4 &&
       strcmp(words[1],"what")==0 &&
       strcmp(words[2],"is")==0 &&
       strcmp(words[3],"my")==0 &&
       strcmp(words[4],"gender")==0) {
-         printf("%s\n", gender);
-
-
-
-
-      }
-
-/*
-
-      {
-         switch(gender_code) {
-         case 1:
-            printf("male\n");
-            break;
-         case 2:
-            printf("female\n");
-            break;
-         case 0:
-         case 3:
-            printf("I don't know\n");
-            break;
-
-         }
+         sprintf(output, "%s\n", gender); stioc(output);
          continue;
       }
-*/
+
       // "say my name"
       if(number_of_words==3 &&
       strcmp(words[1],"say")==0 &&
       strcmp(words[2],"my")==0 &&
       strcmp(words[3],"name")==0) {
-         printf("%s\n",current_user_name);
+         sprintf(output, "%s\n",current_user_name); stioc(output);
          continue;
       }
 
       // Log out
       if(number_of_words==1 &&
       strcmp(words[1],"bye")==0) {
-         printf("talk to you later %s\r\n\r\n",current_user_name);
+         sprintf(output, "talk to you later %s\r\n\r\n",current_user_name); stioc(output);
 //       current_user_name[20]="unknown";
          strcpy(current_user_name, "unknown");
          strcpy(current_user_id_string, "#0");
@@ -469,14 +514,14 @@ int main(void) {
       // Get ID number
       if(number_of_words==1 &&
       strcmp(words[1],"id")==0) {
-         printf("%s\n",current_user_id_string);
+         {sprintf(output, "%s\n",current_user_id_string); stioc(output);}
          continue;
       }
 
       // Get gender code
       if(number_of_words==1 &&
       strcmp(words[1],"g")==0) {
-         printf("%s\n",gender);
+         {sprintf(output, "%s\n",gender); stioc(output);}
          continue;
 
       }
@@ -486,88 +531,39 @@ int main(void) {
          sprintf(key, "%s > class", words[1]);  // assemble a key
  //        if(db_lookup(key, value) == FOUND) {
           if(db_get_value(key, value) == FOUND) {
-            printf("That's a %s\n", value);
+            sprintf(output, "That's a %s\n", value); stioc(output);
             continue;
          }
          if(isword(words[1])==0) {
-            printf("%s is in my dictionary, but I'm not familiar with it\n", words[1]);
+            sprintf(output, "%s is in my dictionary, but I'm not familiar with it\n", words[1]); stioc(output);
          } else
-            printf("That's not in my dictionary\n");
+            {sprintf(output, "That's not in my dictionary\n"); stioc(output);}
          continue;
       }
 
       // Nothing typed?
       if(number_of_words==0) {
-         printf("You didn't type anything..\n");
+         sprintf(output, "You didn't type anything..\n"); stioc(output);
          continue;
       }
 
       // Default
-      printf("I'm not familiar with that kind of sentence\n");
+      sprintf(output, "I'm not familiar with that kind of sentence\n"); stioc(output);
       continue;
 
-      // - - - - - -
-      // experimental
-#if 0
-      switch(F) {
-      case:
-         HELP handle_help();
-         break;
-      case:
-         handle_ability_question();
-         break;
-      case:
-         handle_attribute_statement();
-         break;
-      case:
-         handle_class_question();
-         break;
-      case:
-         handle_class_statement();
-         break;
-      case:
-         handle_ability_question();
-         break;
-      case:
-         handle_color_confirmation_question();
-         break;
-      case:
-         handle_color_question();
-         break;
-      case:
-         handle_color_statement();
-         break;
-      case:
-         handle_def_question();
-         break;
-      case:
-         handle_def_statement();
-         break;
-      case:
-         handle_list_question();
-         break;
-      case:
-         handle_location_question();
-         break;
-      case:
-         handle_login();
-         break;
-      case:
-         handle_rating_question();
-         break;
-      case:
-         handle_rating_statement();
-         break;
-      }
-#endif
-
-   } // main loop
+    } // main loop
 
    return 0;
 
 } // main
 
 
+
+void error(const char *msg)
+{
+    perror(msg);
+    exit(0);
+}
 
 
 

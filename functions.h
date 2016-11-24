@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include "db.h"
+#include <sys/socket.h>
 
 #define MAX_WORDS 40
 #define MAX_LETTERS 20
@@ -34,7 +35,10 @@ int separate_words(char*, char[MAX_WORDS][MAX_LETTERS]);
 //int template_search(char*, template_info_type*);
 int check_gender_by_name(char*, char*);
 //void get_time(char*);
+void stioc(char*);
+extern int socket_desc;
 int get_time(void);
+extern int irc;
 //int isvalidname(char*);
 
 

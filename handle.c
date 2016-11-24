@@ -24,12 +24,13 @@ void handle_class_statement(char* user_subject, char* user_class) {
    char value[20];
    char key[20];
    int result;
+char output[80];
 
    strcat(debug_string, "class statement\n");  // debug info
 
    // 1 is "animal" in the database?
    if(db_check(user_class) != FOUND) {
-      printf("I'm not familiar with %s\n", user_class);
+      sprintf(output, "I'm not familiar with %s\n", user_class); stioc(output);
       return;
    }
 
@@ -42,7 +43,7 @@ void handle_class_statement(char* user_subject, char* user_class) {
    if(result == NOT_FOUND) {
       sprintf(key, "%s > class", user_subject);
       db_add_pair(key, user_class);
-      printf("I'll take a note of that\n");
+      sprintf(output, "I'll take a note of that\n"); stioc(output);
       return;
    }
 
@@ -51,13 +52,13 @@ void handle_class_statement(char* user_subject, char* user_class) {
 
 //  3) states what already is known
    if(strcmp(user_class, value) == 0) {
-      printf("I already know that\n");
+      sprintf(output, "I already know that\n"); stioc(output);
       return;
    }
 
 //  4) contradictory info
    else {
-      printf("no, %s is a %s\n", user_subject, value);
+      sprintf(output, "no, %s is a %s\n", user_subject, value); stioc(output);
       return;
    }
 }
@@ -69,14 +70,25 @@ void handle_class_question(char* subject) {
    int result;
    char value[20];
    char key[20];
+   char output[80];
 
-strcat(debug_string, "class question\n");  // debug info
+   strcat(debug_string, "class question\n");  // debug info
+
+// Replace "you" with the ID of the robot
+   if (strcmp(subject,"you")==0) {
+      strcpy(subject, "#1");
+   }
 
    sprintf(key, "%s > class", subject);
    result = db_get_value(key, value);
-   if(result==FOUND) printf("%s is a %s\n", subject, value);
-   else printf("I've never heard of ""%s""\n", subject);
-
+   if(result==FOUND) {
+      //  sprintf(output, "%s is a %s\n", subject, value); stioc(output);
+      sprintf(output, "a %s\n", value);
+      stioc(output);
+   } else {
+      sprintf(output, "I've never heard of ""%s""\n", subject);
+      stioc(output);
+   }
 }
 
 
@@ -107,6 +119,7 @@ void handle_attribute_statement(char* user_subject,char* user_attribute) {
    char attribute_type[20];
    char db_attribute[20];
    char id3[20];
+char output[80];
 
 strcat(debug_string, "attribute statement\n");  // debug info
 
@@ -129,7 +142,7 @@ skip400:
 
    // 1) ex: is "grass" in database?
    if(db_check(user_subject) == NOT_FOUND) {
-      printf("I'm unfamiliar with %s\n", user_subject);
+      sprintf(output, "I'm unfamiliar with %s\n", user_subject); stioc(output);
       return;
    }
 
@@ -137,20 +150,20 @@ skip400:
    result1 = db_root_check(user_subject, "object");
    result2 = db_root_check(user_subject, "substance");
    if ((result1 == NOT_FOUND) && (result2 == NOT_FOUND)) {
-      printf("I don't think %s can have such an attribute\n", user_subject);
+      sprintf(output, "I don't think %s can have such an attribute\n", user_subject); stioc(output);
       return;
    }
 
    // 3) is green in db?
    sprintf(key, "%s > class", user_attribute);
    if(db_get_value(key, db_class) == NOT_FOUND) {
-      printf("I'm unfamiliar with %s\n", user_attribute);
+      sprintf(output, "I'm unfamiliar with %s\n", user_attribute); stioc(output);
       return;
    }
 
    // 4) is "green" an attribute
    if(db_root_check(user_attribute, "attribute") == NOT_FOUND) {
-      printf("%s is not an attribute\n", user_attribute);
+      sprintf(output, "%s is not an attribute\n", user_attribute); stioc(output);
       return;
    }
 
@@ -166,13 +179,13 @@ skip400:
 
    // 5) Is the attribute already known?
     if(strcmp(user_attribute, db_attribute) == 0) {   // compare "green"(what the user typed) with green(from db)
-      printf("I already know that\n");
+      sprintf(output, "I already know that\n"); stioc(output);
       return;
    }
 
    // 6 Check if the attrubute contradicts what's in the db
    if(result == FOUND) {
-      printf("no, %s is a %s\n", user_subject, db_attribute);
+      sprintf(output, "no, %s is a %s\n", user_subject, db_attribute); stioc(output);
       return;
    }
 
@@ -186,7 +199,7 @@ skip400:
 //   db_add_pair(key, user_attribute);
 db_add_pair2(user_subject, attribute_type, user_attribute);
 
-   printf("I'll take a note of that\n");
+   sprintf(output, "I'll take a note of that\n"); stioc(output);
    return;
 
 }
@@ -262,6 +275,7 @@ i have a dog
    char key1[20];
    char key2[20];
    char id3[20];
+char output[80];
 
 //   int subject_result;
 //   char subject_class[20];
@@ -271,11 +285,11 @@ strcat(debug_string, "have statement\n");  // debug info
 
    if (strcmp(parameter1,"i")==0)  {
       strcpy(parameter1, current_user_id_string);
-      goto skip660;
+      goto skip297;
    }
    else if (strcmp(parameter1,"you")==0) {
       strcpy(parameter1, "#1");
-      goto skip660;
+      goto skip297;
    }
 
    // known person or robot
@@ -284,17 +298,17 @@ strcat(debug_string, "have statement\n");  // debug info
         strcpy(parameter1, id3);
    }
    else{
-      printf("%s is not a known specific entity\n", parameter1);
+      sprintf(output, "%s is not a known specific entity\n", parameter1); stioc(output);
       return;
    }
 
-skip660:
+skip297:
 
    // is dog in db? no
    sprintf(key, "%s > class", parameter2);
    if(db_get_value(key, db_class) == NOT_FOUND) {
       strcat(debug_string, "class\n");  // debug info
-      printf("I'm unfamiliar with %s\n", parameter2);
+      sprintf(output, "I'm unfamiliar with %s\n", parameter2); stioc(output);
       return;
    }
 
@@ -303,7 +317,7 @@ skip660:
       strcat(debug_string, "condition\n");  // debug info
       db_add_pair2(parameter1, "condition", parameter2); // new function
  //  #17 > condition: toothache
-      printf("I'll take a note of that\n");
+      sprintf(output, "I'll take a note of that\n"); stioc(output);
       return;
    }
 
@@ -312,7 +326,7 @@ skip660:
       strcat(debug_string, "relation\n");  // debug info
       sprintf(key, "%s > %s", parameter1, "condition");  // assemble key
       db_add_pair(key, parameter2);
-      printf("I'll take a note of that\n");
+      sprintf(output, "I'll take a note of that\n"); stioc(output);
       return;
    }
 
@@ -325,7 +339,7 @@ skip660:
       db_add_pair2(key2, "class", parameter2); // ex: #125 > class: dog
       db_add_pair2(key2, "owner", parameter1); // ex: #125 > owner: #17
       db_add_pair2(parameter1, "pet", key2); // ex: #17 > pet: #125
-      printf("I'll take a note of that\n");
+      sprintf(output, "I'll take a note of that\n"); stioc(output);
       return;
 
    }
@@ -336,12 +350,12 @@ skip660:
       db_add_pair2(key2, "class", parameter2); // ex: #125 > class: car
       db_add_pair2(key2, "owner", parameter1); // ex: #125 > owner: #17
       db_add_pair2(parameter1, "posession", key2); // ex: #17 > posession: #125
-      printf("I'll take a note of that\n");
+      sprintf(output, "I'll take a note of that\n"); stioc(output);
       return;
 
    }
 
-   printf("I don't know how you can have a %s\n", parameter2);
+   sprintf(output, "I don't know how you can have a %s\n", parameter2); stioc(output);
    return;
 
 }
@@ -353,6 +367,7 @@ void handle_color_confirmation_question(char* subject, char*value1) {
    int result;
    char value[20];
    char key[60];
+char output[80];
 
 strcat(debug_string, "color confirmation question\n");  // debug info
 
@@ -360,8 +375,8 @@ strcat(debug_string, "color confirmation question\n");  // debug info
    db_get_value(key, value);
    result = strcmp(value, value1);
    if (result == 0) {
-      printf("yes\n");
-   } else printf("no\n");
+      sprintf(output, "yes\n"); stioc(output);
+   } else {sprintf(output, "no\n"); stioc(output);}
 }
 
 //----------------------------------------------------
@@ -399,20 +414,32 @@ void handle_rating_statement(char* parameter1, char* parameter2, char* rating) {
 
    int result, result2;
    char key[60];
+   char id3[60];
+char output[80];
 
 strcat(debug_string, "rating statement\n");  // debug info
 
-// is the first word the first name of someone we know?
-   if(db_get_id(key) == 0) {
-      printf("I don't know %s\n", key);
+      if (strcmp(parameter1,"i")==0)  {
+      strcpy(parameter1, current_user_id_string);
+      goto skip436;
+   }
+   else if (strcmp(parameter1,"you")==0) {
+      strcpy(parameter1, "#1");
+      goto skip436;
+   }
+
+   // known person or robot
+   result = db_get_id_string2(parameter1, id3);
+   if (result == FOUND){
+        strcpy(parameter1, id3);
+   }
+   else{
+      sprintf(output, "%s is not a known specific entity\n", parameter1); stioc(output);
       return;
    }
 
-   if(db_root_check(key,"firstname") == NOT_FOUND){
-      printf("%s?\n", key);
-// TODO (pi#1#): better reply
-      return;
-   }
+skip436:
+
 
 // is the 2nd parameter a known person?
 //
@@ -425,8 +452,8 @@ strcat(debug_string, "rating statement\n");  // debug info
    result = db_root_check(parameter2, "object");
    result2 = db_root_check(parameter2, "substance");
 
-   if(result == NOT_FOUND || result2 == NOT_FOUND ) {
-      printf("I dont see how %s makes sense\n", parameter2);
+   if(result == NOT_FOUND && result2 == NOT_FOUND ) {
+      sprintf(output, "I dont see how %s makes sense\n", parameter2); stioc(output);
       return;
    }
 
@@ -445,6 +472,7 @@ void handle_location_question(char* subject) {
    int result;
    char value[20];
    char key[60];
+char output[80];
 
 strcat(debug_string, "location question\n");  // debug info
 
@@ -454,7 +482,7 @@ strcat(debug_string, "location question\n");  // debug info
    sprintf(key, "%s > location", subject);
    result = db_get_value(key, value);
    if(result==FOUND) {
-      printf("%s\n", value);
+      sprintf(output, "%s\n", value); stioc(output);
       return;
    }
 
@@ -464,12 +492,12 @@ strcat(debug_string, "location question\n");  // debug info
    sprintf(key, "%s > class", subject);
    result = db_get_value(key, value);
    if(result==FOUND) {
-      printf(" I don't know where %s is\n", subject);
+      sprintf(output, " I don't know where %s is\n", subject); stioc(output);
       return;
    }
 
    // WE DON'T KNOW THE SUBJECT
-   printf(" I never heard of %s\n", key);
+   sprintf(output, " I never heard of %s\n", key); stioc(output);
    return;
 
 }
@@ -481,29 +509,30 @@ void handle_ability_question(char* subject, char* action) {
 //   int result;
    char key[40];
    char value[20];
+char output[80];
 
    // Is suject in the database?
    if(db_check(subject) == NOT_FOUND) {
-      printf(" I never heard of %s\n", subject);
+      sprintf(output, " I never heard of %s\n", subject); stioc(output);
       return;
    }
 //--
    // Is subject an object?
    if(db_root_check(subject, "object") == NOT_FOUND) {
-      printf("%s is not an object\n", subject);
+      sprintf(output, "%s is not an object\n", subject); stioc(output);
       return;
    }
 
    // Is action really an action?
    if(db_root_check(action, "action") == NOT_FOUND) {
-      printf("%s is not an action\n", action);
+      sprintf(output, "%s is not an action\n", action); stioc(output);
       return;
    }
 
    // Look up ability
    sprintf(key,"%s > ability > %s", subject, action);
    db_get_value(key, value);
-   printf("RESULT: %s\n", value);
+   sprintf(output, "RESULT: %s\n", value); stioc(output);
 // TODO (pi#1#): improve the output
 
 }
@@ -513,6 +542,7 @@ void handle_ability_question(char* subject, char* action) {
 // p is what the rating is of
 //
 void handle_rating_question(char* key, char* p) {
+char output[80];
 
    int result;
    char value[20];
@@ -520,22 +550,22 @@ void handle_rating_question(char* key, char* p) {
    char temp[20]="rating-";
 
    result = db_get_id(key);
-   //printf("result %d %s %s %s      ", result, key, p, id);
+   //sprintf(output, "result %d %s %s %s      ", result, key, p, id); stioc(output);
    //return;
 
    if(result !=0) {
-      printf("I dont know %s\n", key);
+      sprintf(output, "I dont know %s\n", key); stioc(output);
       return;
    }
 
-//printf("result %d     ", result);
+//sprintf(output, "result %d     ", result); stioc(output);
 //  return;
 
 //check if the subject of rating is known
 
 //   result = db_subject_search(p);
    if(result!=0) {
-      printf("What is %s?\n", key);
+      sprintf(output, "What is %s?\n", key); stioc(output);
       return;
    }
 
@@ -543,8 +573,10 @@ void handle_rating_question(char* key, char* p) {
    strcat(temp, p);
 //  result = db_search(key,temp,value);
 
-   if(result==0) printf("%s\n", value);
-   else printf("I dont know (code:%d)\n", result);
+   if(result==0) {
+      sprintf(output, "%s\n", value); stioc(output);
+   }
+   else sprintf(output, "I dont know (code:%d)\n", result); stioc(output);
 
 }
 
@@ -562,15 +594,17 @@ void handle_list_question(char* subject) {
 //
 void handle_greetings(void) {
 
+char output[80];
+
 strcat(debug_string, "greetings\n");  // debug info
    // if not logged in
    if(strcmp(current_user_id_string, "#0") == 0) {
-      printf("hi, what is your name?\r\n");
+      sprintf(output, "hi, what is your name?\r\n"); stioc(output);
       expecting_name = TRUE;
    }
    // if logged in
    else {
-      printf("hi %s\r\n", current_user_name);
+      sprintf(output, "hi %s\r\n", current_user_name); stioc(output);
    }
 }
 
@@ -622,7 +656,7 @@ void handle_is_statement(char*user_subject, char*user_attribute) {
 
    // 1 is "animal" in the database?
    if(db_check(user_class) != FOUND) {
-      printf("I'm not familiar with %s\n", user_class);
+      sprintf(output, "I'm not familiar with %s\n", user_class); stioc(output);
       return;
    }
 
@@ -635,7 +669,7 @@ void handle_is_statement(char*user_subject, char*user_attribute) {
    if(result == NOT_FOUND) {
       sprintf(key, "%s > class", user_subject);
       db_add_pair(key, user_class);
-      printf("I'll take a note of that\n");
+      sprintf(output, "I'll take a note of that\n"); stioc(output);
       return;
    }
 
@@ -644,13 +678,13 @@ void handle_is_statement(char*user_subject, char*user_attribute) {
 
 //  3) states what already is known
    if(strcmp(user_class, value) == 0) {
-      printf("I already know that\n");
+      sprintf(output, "I already know that\n"); stioc(output);
       return;
    }
 
 //  4) contradictory info
    else {
-      printf("no, it's a %s\n", value);
+      sprintf(output, "no, it's a %s\n", value); stioc(output);
       return;
    }
 }
@@ -671,6 +705,7 @@ void handle_login(char* name) {
    char gender2[10];
    char key[80];
    int id_number;
+char output[80];
 
 strcat(debug_string, "login\n");  // debug info
    // Proceedure
@@ -684,7 +719,7 @@ strcat(debug_string, "login\n");  // debug info
 
    // Step 1: check if already current user
    if(strcmp(name, current_user_name)==0) {
-      printf("You told me that already\n");
+      sprintf(output, "You told me that already\n"); stioc(output);
       known=TRUE;
       return;
    }
@@ -738,9 +773,9 @@ strcat(debug_string, "login\n");  // debug info
    strcpy(current_user_name, name);
    strcpy(current_user_id_string, id_string);
    if(new2 == TRUE) {
-      printf("hello %s\n", current_user_name);
+      sprintf(output, "hello %s\n", current_user_name); stioc(output);
    } else {
-      printf("hi %s\n", current_user_name);
+      sprintf(output, "hi %s\n", current_user_name); stioc(output);
    }
 }
 
@@ -760,89 +795,128 @@ strcat(debug_string, "login\n");  // debug info
 //--------------------------------------------------
 
 void handle_help(void) {
-   printf("I can handle the following sentences\r\n\r\n");
-   printf(" my name is ___\n");
-   printf(" what is my name\n");
-   printf(" what is my gender\n");
-   printf(" I am male\n");
-   printf(" I am female\n");
-   printf(" my gender is male\n");
-   printf(" my gender is female\n");
-   printf(" say my name\n");
-   printf(" what color is ___, ex: what color is grass\n");
-   printf(" is <subject> <color>, ex: is grass green\n" );
-   printf(" where is <object>\n" );
-   printf(" can ___ ___, ");
-   printf(" what are ___\n" );
-   printf(" what is a ___\n" );
-   printf(" what is ___\n" );
-   printf(" a <object> is a ___, ex: a cat is an animal\n" );
-   printf(" ___ is <color>\n" );
-   printf(" ___ like ___, ex: I like pizza\n" );
-   printf(" ___ hate ___\n" );
-   printf(" ___ love ___\n" );
-   printf(" ___ dont like ___\n" );
-   printf(" do you like ___\n" );
-   //printf("who am i, ");
-   //printf("i am ___\r\n");
-   printf("bye\r\n");
-   //printf("is ___ ___, ");
-   //printf("what is ___, ");
-   //printf("have you heard of ___, ");
-   //printf("___ is ___\r\n");
-   //printf("can ___ ___, ");
-   //printf("do ___ ___, ");
-   //printf("___ can ___\r\n");
-   //printf("___ like ___, ");
-   //printf("do ___ like ___\r\n");
-   //printf("___ hates ___, ");
-   //printf("do ___ hate ___\r\n");
-   //printf("___ is in ___, ");
-   //printf("where is ___\r\n");
-   //printf("how old is/are ___\r\n");
-   //printf("do ___ feel ___, ");
-   //printf("___ feels ___\r\n");
-   //printf("do ___ want ___, ");
-   //printf("___ want _\r\n");
-   //printf("do ___ have ___\r\n");
-   //printf("what is the ___ of ___, ___ is the ___ of___\r\n");
-   //printf("what time is it\r\n");
-   //printf("lookup ___\r\n");
+
+char output[80];
+
+   sprintf(output, "I can handle the following sentences\r\n\r\n"); stioc(output);
+   sprintf(output, " my name is ___\n"); stioc(output);
+   sprintf(output, " what is my name\n"); stioc(output);
+   sprintf(output, " what is my gender\n"); stioc(output);
+   sprintf(output, " I am male\n"); stioc(output);
+   sprintf(output, " I am female\n"); stioc(output);
+   sprintf(output, " my gender is male\n"); stioc(output);
+   sprintf(output, " my gender is female\n"); stioc(output);
+   sprintf(output, " say my name\n"); stioc(output);
+   sprintf(output, " what color is ___, ex: what color is grass\n"); stioc(output);
+   sprintf(output, " is <subject> <color>, ex: is grass green\n" ); stioc(output);
+   sprintf(output, " where is <object>\n" ); stioc(output);
+   sprintf(output, " can ___ ___, "); stioc(output);
+   sprintf(output, " what are ___\n" ); stioc(output);
+   sprintf(output, " what is a ___\n" ); stioc(output);
+   sprintf(output, " what is ___\n" ); stioc(output);
+   sprintf(output, " a <object> is a ___, ex: a cat is an animal\n" ); stioc(output);
+   sprintf(output, " ___ is <color>\n" ); stioc(output);
+   sprintf(output, " ___ like ___, ex: I like pizza\n" ); stioc(output);
+   sprintf(output, " ___ hate ___\n" ); stioc(output);
+   sprintf(output, " ___ love ___\n" ); stioc(output);
+   sprintf(output, " ___ dont like ___\n" ); stioc(output);
+   sprintf(output, " do you like ___\n" ); stioc(output);
+   //sprintf(output, "who am i, "); stioc(output);
+   //sprintf(output, "i am ___\r\n"); stioc(output);
+   sprintf(output, "bye\r\n"); stioc(output);
+   //sprintf(output, "is ___ ___, "); stioc(output);
+   //sprintf(output, "what is ___, "); stioc(output);
+   //sprintf(output, "have you heard of ___, "); stioc(output);
+   //sprintf(output, "___ is ___\r\n"); stioc(output);
+   //sprintf(output, "can ___ ___, "); stioc(output);
+   //sprintf(output, "do ___ ___, "); stioc(output);
+   //sprintf(output, "___ can ___\r\n"); stioc(output);
+   //sprintf(output, "___ like ___, "); stioc(output);
+   //sprintf(output, "do ___ like ___\r\n"); stioc(output);
+   //sprintf(output, "___ hates ___, "); stioc(output);
+   //sprintf(output, "do ___ hate ___\r\n"); stioc(output);
+   //sprintf(output, "___ is in ___, "); stioc(output);
+   //sprintf(output, "where is ___\r\n"); stioc(output);
+   //sprintf(output, "how old is/are ___\r\n"); stioc(output);
+   //sprintf(output, "do ___ feel ___, "); stioc(output);
+   //sprintf(output, "___ feels ___\r\n"); stioc(output);
+   //sprintf(output, "do ___ want ___, "); stioc(output);
+   //sprintf(output, "___ want _\r\n"); stioc(output);
+   //sprintf(output, "do ___ have ___\r\n"); stioc(output);
+   //sprintf(output, "what is the ___ of ___, ___ is the ___ of___\r\n"); stioc(output);
+   //sprintf(output, "what time is it\r\n"); stioc(output);
+   //sprintf(output, "lookup ___\r\n"); stioc(output);
    // continue;
 }
 void handle_have_question(char* p1, char* p2) {
 // WORK IN PROGRESS
    int r;
-   char id[20];
+   char id3[20];
+   char value2[30];
+char output[80];
 
-// for now, we will expect p1 to be an ID number string
-// is p1 an id number? how do we tell? look for the "#"
-// make new function: get_id_string
-// new policy: id integers dont get passed to handling functions
+   strcat(debug_string, "have question\n");  // debug info
+//
 
-strcat(debug_string, "have question\n");  // debug info
+   if (strcmp(p1,"i")==0)  {
+      strcpy(p1, current_user_id_string);
+      goto skip840;
+   }
+   else if (strcmp(p1,"you")==0) {
+      strcpy(p1, "#1");
+      goto skip840;
+   }
 
-// DEBUG
-   if(p1[0]=='#') {
-      printf("has ID,");
-      strcpy(id, p1);  // use the ID provided
-   } else {
-      printf("no ID,");
-      r = db_get_id_string2(p1, id); // lookup the ID
-      if(r==NOT_FOUND) {
-         printf("I don't know of %s\n", p1);
+   // known person or robot
+   result = db_get_id_string2(p1, id3);
+   if (result == FOUND){
+        strcpy(p1, id3);
+   }
+   else{
+      sprintf(output, "%s is not a known specific entity\n", p1); stioc(output);
+      return;
+   }
+
+skip840:
+
+//
+   sprintf(key, "%s > condition", p1);  // assemble key
+   if(db_check_pair(key, p2) == FOUND) {
+      strcat(debug_string, "condition\n");  // debug info
+      sprintf(output, "yes\n"); stioc(output);
+      return;
+   }
+
+   //  is "dog" a relation? no
+   sprintf(key, "%s > relation", p1);  // assemble key
+   if(db_check_pair(key, p2) == FOUND) {
+      strcat(debug_string, "relation\n");  // debug info
+      sprintf(output, "yes\n"); stioc(output);
+      return;
+   }
+
+   //  is "dog" a pet? yes
+   sprintf(key, "%s > pet", p1);  // assemble key
+   if(db_check_pair(key, p2) == FOUND) {
+      strcat(debug_string, "pet\n");  // debug info
+      sprintf(output, "yes\n"); stioc(output);
+      return;
+
+   }
+
+   //  is "dog" a posession
+   sprintf(key, "%s > possession", p1);  // assemble key
+   if(db_get_value(key, value2) == FOUND) {
+      sprintf(output, "%s,%s,%s\n",p1,p2,value2); stioc(output);
+      strcat(debug_string, "possession\n");  // debug info
+      sprintf(key, "%s > class", value2);  // assemble key
+      if(db_check_pair(key, p2) == FOUND){
+         sprintf(output, "yes\n"); stioc(output);
          return;
       }
    }
-
-   // Lookup the condition
-   sprintf(key, "%s > condition", id);
-   r = db_check_pair(key, p2);
-   if(r == NOT_FOUND) {
-      printf("not that I'm aware of\n");
-   } else {
-      printf("yes\n");
-   }
+   sprintf(output, "not that I know about"); stioc(output);
+   return;
 
 }
 
@@ -867,18 +941,19 @@ void handle_color_statement(char* user_subject,char* user_color) {
 //   int subject_result;
 //   char user_class;
    int color_result;
+char output[80];
 
 strcat(debug_string, "color statement\n");  // debug info
 
    // 1 is "grass" in the database?
    if(db_check(user_subject) != FOUND) {
-      printf("I'm not familiar with %s\n", user_subject);
+      sprintf(output, "I'm not familiar with %s\n", user_subject); stioc(output);
       return;
    }
 
    // 2 is "grass" something that can have a color?
    if(db_root_check(user_subject, "substance")!=MATCH && db_root_check(user_subject, "object") != MATCH) {
-      printf("I don't think %s can have a color\r\n", user_subject);
+      sprintf(output, "I don't think %s can have a color\r\n", user_subject); stioc(output);
       return;
    }
 
@@ -888,18 +963,18 @@ strcat(debug_string, "color statement\n");  // debug info
    if(color_result == NOT_FOUND) {
       sprintf(key, "%s > color", user_subject);
       db_add_pair(key, user_color);
-      printf("I'll take a note of that\n");
+      sprintf(output, "I'll take a note of that\n"); stioc(output);
       return;
    }
 
    // 4 if already associated with the given color
    if(strcmp(user_color, value1) == 0) {
-      printf("I already know that\n");
+      sprintf(output, "I already know that\n"); stioc(output);
       return;
    }
 
    // 5 if associated with a different color
-   else printf("no, it's %s\n", value1);
+   else {sprintf(output, "no, it's %s\n", value1); stioc(output);}
 }
 
 //------------------------------------------------------
@@ -908,19 +983,20 @@ void handle_color_question(char* subject) {
    int result;
    char value[20];
    char key[60];
+char output[80];
 
 strcat(debug_string, "color question\n");  // debug info
 
    sprintf(key, "%s > color", subject);
    result = db_get_value(key, value);
    if(result == FOUND) {
-      printf("%s\n", value);
+      sprintf(output, "%s\n", value); stioc(output);
       return;
    } else {
-      printf("I don't know\n");
+      sprintf(output, "I don't know\n"); stioc(output);
       return;
    }
 
-   //else if(result==3)printf("I've never heard of %s\n",key);
-// else printf(" I don't know (result %d)\n", result);
+   //else if(result==3)sprintf(output, "I've never heard of %s\n",key); stioc(output);
+// else sprintf(output, " I don't know (result %d)\n", result); stioc(output);
 }
