@@ -1,5 +1,5 @@
 // This is the main database. Most of the robot's knowledge is contained here.
-// Individua pieces of information is stored as key-value pairs.
+// Individual pieces of information is stored as key-value pairs.
 // It uses terms that are organized in a tree structure.
 
 
