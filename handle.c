@@ -91,7 +91,6 @@ void handle_class_question(char* subject) {
    }
 }
 
-
 //--------------------------------------------------
 
 void handle_attribute_statement(char* user_subject,char* user_attribute) {
@@ -411,30 +410,28 @@ void handle_rating_statement(char* parameter1, char* parameter2, char* rating) {
 //  known object?    add info
 //  known substance? add info
 //  unknown
-
    int result, result2;
    char key[60];
    char id3[60];
-char output[80];
+   char output[80];
 
-strcat(debug_string, "rating statement\n");  // debug info
+   strcat(debug_string, "rating statement\n");  // debug info
 
-      if (strcmp(parameter1,"i")==0)  {
+   if (strcmp(parameter1,"i")==0)  {
       strcpy(parameter1, current_user_id_string);
       goto skip436;
-   }
-   else if (strcmp(parameter1,"you")==0) {
+   } else if (strcmp(parameter1,"you")==0) {
       strcpy(parameter1, "#1");
       goto skip436;
    }
 
    // known person or robot
    result = db_get_id_string2(parameter1, id3);
-   if (result == FOUND){
-        strcpy(parameter1, id3);
-   }
-   else{
-      sprintf(output, "%s is not a known specific entity\n", parameter1); stioc(output);
+   if (result == FOUND) {
+      strcpy(parameter1, id3);
+   } else{
+      sprintf(output, "%s is not a known specific entity\n", parameter1);
+      stioc(output);
       return;
    }
 
@@ -453,7 +450,8 @@ skip436:
    result2 = db_root_check(parameter2, "substance");
 
    if(result == NOT_FOUND && result2 == NOT_FOUND ) {
-      sprintf(output, "I dont see how %s makes sense\n", parameter2); stioc(output);
+      sprintf(output, "I dont see how %s makes sense\n", parameter2);
+      stioc(output);
       return;
    }
 
@@ -461,7 +459,8 @@ add_info:
    // bob > rating > beer: 7
    sprintf(key,"%s > rating > %s", parameter1, parameter2 );
    db_add_pair(key, rating);
-
+   sprintf(output, "I'll take note of that\n");
+   stioc(output);
   }
 
 //--------------------------------------------------
@@ -473,6 +472,7 @@ void handle_location_question(char* subject) {
    char value[20];
    char key[60];
 char output[80];
+char id[60];
 
 strcat(debug_string, "location question\n");  // debug info
 
@@ -486,6 +486,14 @@ strcat(debug_string, "location question\n");  // debug info
       return;
    }
 
+//
+result = db_get_id_string2(subject, id);
+if(result == FOUND){
+   sprintf(output, "%s\n", subject); stioc(output);
+      return;
+}
+
+
    // DO WE KNOW THE SUBJECT BUT NOT THE ANSWER?
    //strcpy(key, subject);
    //strcat(key, " > class");
@@ -497,7 +505,7 @@ strcat(debug_string, "location question\n");  // debug info
    }
 
    // WE DON'T KNOW THE SUBJECT
-   sprintf(output, " I never heard of %s\n", key); stioc(output);
+   sprintf(output, " I never heard of %s\n", subject); stioc(output);
    return;
 
 }
@@ -1000,3 +1008,117 @@ strcat(debug_string, "color question\n");  // debug info
    //else if(result==3)sprintf(output, "I've never heard of %s\n",key); stioc(output);
 // else sprintf(output, " I don't know (result %d)\n", result); stioc(output);
 }
+
+void handle_pronouns(void){
+
+int i;
+// - - IN PROGRESS - - -
+int verb_position;
+int shifting_needed;
+// i
+   for(i=1; i<+number_of_words; i++) {
+      if (strcmp(words[i],"i")==0)  {
+         strcpy(words[i], current_user_id_string);
+      }
+   }
+
+// you
+   for(i=1; i<+number_of_words; i++) {
+      if (strcmp(words[i],"you")==0) {
+         strcpy(words[i], "#1");
+      }
+   }
+
+// my
+//   verb_position = find_verb();
+   for(i=1; i<=number_of_words; i++){
+      if(strcmp(words[i],"my")!=0) continue;
+      // is there a verb on the left? can only check if verb_position > 1
+      if(i-1 == verb_position) {
+      // get id words[i+1]
+      // put id in words[i], store and get an id if needed
+      shifting_needed = TRUE;
+      // shift remaining words left
+
+      }
+   if(shifting_needed == TRUE) number_of_words++;
+   shifting_needed = FALSE;
+
+   }
+
+
+// your
+
+
+
+   // known person or robot
+ //  result = db_get_id_string2(p1, id3);
+   if (result == FOUND){
+ //       strcpy(p1, id3);
+   }
+   else{
+  //    sprintf(output, "%s is not a known specific entity\n", p1); stioc(output);
+      return;
+   }
+
+//skip840:
+
+
+}
+
+void handle_attribute_question(char* p1, char* p2){
+
+// what is your name
+// what color is chocolate
+//
+// p1 is chocolate
+// p2 is color
+
+  int r;
+  char id3[20];
+  char value2[30];
+  char output[80];
+
+  strcat(debug_string, "attribute question\n");  // debug info
+//
+
+   if (strcmp(p1,"i")==0)  {
+      strcpy(p1, current_user_id_string);
+      goto skip1100;
+   }
+   else if (strcmp(p1,"you")==0) {
+      strcpy(p1, "#1");
+      goto skip1100;
+   }
+/*
+   // known person or robot
+   result = db_get_id_string2(p1, id3);
+   if (result == FOUND){
+        strcpy(p1, id3);
+   }
+   else{
+      sprintf(output, "%s is not a known specific entity\n", p1); stioc(output);
+      return;
+   }
+*/
+skip1100:
+
+//
+   sprintf(key, "%s > %s", p1, p2);  // assemble key
+   if(db_get_value(key, value2) == FOUND) {
+      sprintf(output, "%s\n", value2); stioc(output);
+      return;
+   }
+   sprintf(output, "I don't know"); stioc(output);
+   return;
+
+
+
+}
+
+
+
+
+
+
+

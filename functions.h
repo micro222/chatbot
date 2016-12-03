@@ -39,6 +39,7 @@ void stioc(char*);
 extern int socket_desc;
 int get_time(void);
 extern int irc;
+extern char channel[20];
 //int isvalidname(char*);
 
 

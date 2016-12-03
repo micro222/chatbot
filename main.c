@@ -8,7 +8,7 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <stdio.h>
-#include <stdlib.h>
+//#include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
 
@@ -30,17 +30,23 @@ int main(void) {
 //------------------
 
    struct sockaddr_in server, from;
-   char* message,server_reply[2000];
+   char* message[2000];
+   char server_reply[2000];
 char *ret1;
 char *ret2;
    char *hostname = "chat.freenode.net";
+
    char ip[100];
    struct hostent *he;
    struct in_addr **addr_list;
    int i;
    ssize_t ssize;
 
-   irc = TRUE;
+
+  // irc = TRUE;
+   irc = FALSE;
+      strcpy(channel, "#test");
+
    // Look up the IP address
    if ( (he = gethostbyname( hostname ) ) == NULL) {
       herror("gethostbyname"); //gethostbyname failed
@@ -74,18 +80,19 @@ char *ret2;
    else puts("Connected to IRC");
 
 //Send NICK command
-   message = "NICK robot22\r\n";
+ //  message = "NICK robot22\r\n";
+     strcpy(message, "NICK robot22\r\n");
    puts(message);
    send(socket_desc , message , strlen(message) , 0);
 
 //Send USER command
-   message = "USER user_name 8 * :real name\r\n";
+   strcpy(message, "USER user_name 8 * :real name\r\n");
    puts(message);
    send(socket_desc , message , strlen(message) , 0);
 
 //Join chatroom
-   message    = "JOIN #chatbot\r\n";
-//   user_input = "this is a test";
+   sprintf(message,"JOIN %s\r\n", channel);
+   //user_input = "this is a test";
    puts(message);
    send(socket_desc , message , strlen(message) , 0);
 
@@ -117,7 +124,7 @@ char *ret2;
          if(!strncmp(server_reply, "PING ", 5)) {
             server_reply[1] = 'O';  // turn a ping into a pong
             send(socket_desc , server_reply , strlen(server_reply) , 0);  // send pong
-            puts("pong\n");
+            printf("%s\n",server_reply);
             continue;
          }
          ret1 = strstr(server_reply, "PRIVMSG");
@@ -126,7 +133,6 @@ char *ret2;
          ret2++; // move past the :
          *(ret2 + strlen(ret2) -2) = 0; // get rid of the CR at the end
          strcpy(user_input,ret2);
-//user_input = "this is a test";
          printf("extracted message: %s\r\n", user_input); // show the extracted message
       }
   seconds1 = time(NULL);
@@ -164,15 +170,17 @@ char *ret2;
 #endif
       //----------------
 
- //sprintf(output, "%ld",seconds1); stioc(output);
+ //sprintf(output, "%ld",seconds1); stioc(output); // DEBUG
       // The main sentence processing starts here.
       // Soon this will be replaced by using the templates in templates2.txt
 
+      // Help
       if(number_of_words==1 &&
       strcmp(words[1], "help")==0) {
          handle_help();
       }
 
+      // Show debug info
       if(number_of_words==1 &&
       strcmp(words[1],"d")==0) {
          sprintf(output, "%s",debug_string); stioc(output);
@@ -189,7 +197,6 @@ char *ret2;
          strcpy(temp[4], words[1]);
          memcpy(words, temp, 800);  // MAX_WORDS * MAX_LETTERS
          number_of_words = 4;
-         //printf("%s,%s,%s,%s\n", words[1],words[2],words[3],words[4]);
       }
       expecting_name = FALSE;
 
@@ -203,12 +210,14 @@ char *ret2;
          continue;
       }
 
+      // Hi
       if(number_of_words==1 &&
       strcmp(words[1], "hi")==0) {
          handle_greetings();
          continue;
       }
 
+      // Hello
       if(number_of_words==1 &&
       strcmp(words[1], "hey")==0) {
          handle_greetings();
@@ -238,7 +247,6 @@ char *ret2;
       strcmp(words[3],"is")==0 &&
       strcmp(words[4],"male")==0 ) {
          sprintf(key, "%s > gender", current_user_id_string);
-         //gender_code = 1;
          strcpy(gender, "male");
          db_add_pair(key, "male");
          continue;
@@ -256,22 +264,18 @@ char *ret2;
          continue;
       }
 
-      // what are you
-      if(number_of_words==333 &&
-      strcmp(words[1],"what")==0 &&
-      strcmp(words[2],"is")==0 &&
-      strcmp(words[3],"you")==0) {
-         sprintf(output, "a robot named ivan\n"); stioc(output);
-         continue;
-      }
-      // who are you
-      if(number_of_words==3 &&
-      strcmp(words[1],"who")==0 &&
-      strcmp(words[2],"is")==0 &&
-      strcmp(words[3],"you")==0) {
-         sprintf(output, "a robot named ivan\n"); stioc(output);
-         continue;
-      }
+
+      if(strcmp(user_input, "what are you")==0){sprintf(output, "a robot.\n"); stioc(output); continue;}
+      if(strcmp(user_input, "are you human")==0){sprintf(output, "no\n"); stioc(output); continue;}
+      if(strcmp(user_input, "are you a robot")==0){sprintf(output, "yes\n"); stioc(output); continue;}
+      if(strcmp(user_input, "are you a person")==0){sprintf(output, "no\n"); stioc(output); continue;}
+      if(strcmp(user_input, "where are you")==0){sprintf(output, "home\n"); stioc(output); continue;}
+      if(strcmp(user_input, "who are you")==0){sprintf(output, "a robot\n"); stioc(output); continue;}
+      if(strcmp(user_input, "where is home")==0){sprintf(output, "canada\n"); stioc(output); continue;}
+      if(strcmp(user_input, "how are you")==0){sprintf(output, "partialy functional\n"); stioc(output); continue;}
+      if(strcmp(user_input, "what is your name")==0){sprintf(output, "ivan\n"); stioc(output); continue;}
+      //if(strcmp(user_input, "")==0){printf(output, "\n"); stioc(output); continue;}
+
 
       // CLASS (SUBSET OF)
       // what is ___
@@ -299,6 +303,14 @@ char *ret2;
          continue;
       }
 
+      if(number_of_words==3 &&
+      strcmp(words[1],"where")==0 &&
+      strcmp(words[2],"is")==0 ) {
+         handle_location_question(words[3]);
+      //   handle_attribute_question(words[3], "location");
+         continue;
+      }
+
       // this needs to be placed after "what is ___"
       if(number_of_words==3 &&
       strcmp(words[2],"is")==0) {
@@ -309,10 +321,10 @@ char *ret2;
       // a __ is a __
       // ex: a cat is an animal
       if(number_of_words==5 &&
-         strcmp(words[1],"a")==0 &&
-         strcmp(words[3],"is")==0 &&
-         strcmp(words[4],"a")==0
-      ) {
+      strcmp(words[1],"a")==0 &&
+      strcmp(words[3],"is")==0 &&
+      strcmp(words[4],"a")==0
+        ) {
          handle_class_statement(words[2],words[5]);
          continue;
       }
@@ -354,10 +366,19 @@ char *ret2;
       strcmp(words[1],"what")==0 &&
       strcmp(words[2],"color")==0&&
       strcmp(words[3],"is")==0) {
+         handle_attribute_question(words[4], words[2]);
+         continue;
+      }
+ /*
+      // what color is ___
+      if(number_of_words==4 &&
+      strcmp(words[1],"what")==0 &&
+      strcmp(words[2],"color")==0&&
+      strcmp(words[3],"is")==0) {
          handle_color_question(words[4]);
          continue;
       }
-
+*/
       // is ___ <color>?
       if(number_of_words==3 &&
       strcmp(words[1],"is")==0 &&
@@ -365,16 +386,16 @@ char *ret2;
          handle_color_confirmation_question(words[2],words[3]);
          continue;
       }
-/*
-      // ___ is <color>
-      // conditions: 3 words, middle word is "is"
-      if(number_of_words==3 &&
-      strcmp(words[2],"is")==0 &&
-      db_root_check(words[3],"color")==FOUND) {
-         handle_color_statement(words[1],words[3]);
-         continue;
-      }
-*/
+      /*
+            // ___ is <color>
+            // conditions: 3 words, middle word is "is"
+            if(number_of_words==3 &&
+            strcmp(words[2],"is")==0 &&
+            db_root_check(words[3],"color")==FOUND) {
+               handle_color_statement(words[1],words[3]);
+               continue;
+            }
+      */
       // - - - - - - - - - - - - - - - - - - - - - -
       // LOCATION
       // where is ___
@@ -443,15 +464,15 @@ char *ret2;
       }
 
 
-     // Template: i have *
+      // Template: i have *
       // Example: i have rabies
       if(number_of_words==3 &&
-      strcmp(words[2],"have")==0 ){
+      strcmp(words[2],"have")==0 ) {
          handle_have_statement(words[1], words[3]);
          continue;
       }
 
-    // Template: i have a *
+      // Template: i have a *
       // Example: i have a dog
       if(number_of_words==4 &&
       strcmp(words[2],"have")==0 &&
@@ -476,7 +497,8 @@ char *ret2;
       strcmp(words[2],"is")==0 &&
       strcmp(words[3],"my")==0 &&
       strcmp(words[4],"name")==0) {
-         sprintf(output, "%s\n",current_user_name); stioc(output);
+         sprintf(output, "%s\n",current_user_name);
+         stioc(output);
          continue;
       }
 
@@ -486,7 +508,17 @@ char *ret2;
       strcmp(words[2],"is")==0 &&
       strcmp(words[3],"my")==0 &&
       strcmp(words[4],"gender")==0) {
-         sprintf(output, "%s\n", gender); stioc(output);
+         sprintf(output, "%s\n", gender);
+         stioc(output);
+         continue;
+      }
+      // "what is my *"
+      if(number_of_words==4 &&
+      strcmp(words[1],"what")==0 &&
+      strcmp(words[2],"is")==0 &&
+      strcmp(words[3],"your")==0 ) {
+         handle_attribute_question("#1", words[4]);
+         //stioc(output);
          continue;
       }
 
@@ -495,33 +527,42 @@ char *ret2;
       strcmp(words[1],"say")==0 &&
       strcmp(words[2],"my")==0 &&
       strcmp(words[3],"name")==0) {
-         sprintf(output, "%s\n",current_user_name); stioc(output);
+         sprintf(output, "%s\n",current_user_name);
+         stioc(output);
          continue;
       }
 
       // Log out
       if(number_of_words==1 &&
       strcmp(words[1],"bye")==0) {
-         sprintf(output, "talk to you later %s\r\n\r\n",current_user_name); stioc(output);
+         sprintf(output, "talk to you later %s\r\n\r\n",current_user_name);
+         stioc(output);
 //       current_user_name[20]="unknown";
          strcpy(current_user_name, "unknown");
          strcpy(current_user_id_string, "#0");
          //current_user_id = 0;
          gender_code = 0;
          strcpy(gender, "unknown");
-         continue;      }
+         continue;
+      }
 
       // Get ID number
       if(number_of_words==1 &&
       strcmp(words[1],"id")==0) {
-         {sprintf(output, "%s\n",current_user_id_string); stioc(output);}
+         {
+            sprintf(output, "%s\n",current_user_id_string);
+            stioc(output);
+         }
          continue;
       }
 
       // Get gender code
       if(number_of_words==1 &&
-      strcmp(words[1],"g")==0) {
-         {sprintf(output, "%s\n",gender); stioc(output);}
+            strcmp(words[1],"g")==0) {
+         {
+            sprintf(output, "%s\n",gender);
+            stioc(output);
+         }
          continue;
 
       }
@@ -529,26 +570,32 @@ char *ret2;
       // Single word
       if(number_of_words==1) {
          sprintf(key, "%s > class", words[1]);  // assemble a key
- //        if(db_lookup(key, value) == FOUND) {
-          if(db_get_value(key, value) == FOUND) {
-            sprintf(output, "That's a %s\n", value); stioc(output);
+//        if(db_lookup(key, value) == FOUND) {
+         if(db_get_value(key, value) == FOUND) {
+            sprintf(output, "That's a %s\n", value);
+            stioc(output);
             continue;
          }
          if(isword(words[1])==0) {
-            sprintf(output, "%s is in my dictionary, but I'm not familiar with it\n", words[1]); stioc(output);
-         } else
-            {sprintf(output, "That's not in my dictionary\n"); stioc(output);}
+            sprintf(output, "%s is in my dictionary, but I'm not familiar with it\n", words[1]);
+            stioc(output);
+         } else {
+            sprintf(output, "That's not in my dictionary\n");
+            stioc(output);
+         }
          continue;
       }
 
       // Nothing typed?
       if(number_of_words==0) {
-         sprintf(output, "You didn't type anything..\n"); stioc(output);
+         sprintf(output, "You didn't type anything..\n");
+         stioc(output);
          continue;
       }
 
       // Default
-      sprintf(output, "I'm not familiar with that kind of sentence\n"); stioc(output);
+      sprintf(output, "I'm not familiar with that kind of sentence\n");
+      stioc(output);
       continue;
 
     } // main loop

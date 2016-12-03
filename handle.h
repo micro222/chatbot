@@ -34,5 +34,6 @@ void handle_list_question(char*);
 void handle_login(char*);
 void handle_greetings(void);
 void handle_help(void);
+void handle_pronouns(void);
 
 #endif // HANDLE_H_INCLUDED

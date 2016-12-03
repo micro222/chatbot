@@ -343,9 +343,6 @@ int template_search(char*user, template_info_type* template_info) {
 
    return FOUND;  // (found)
 
-
-
-
 }
 
 //-----------------------------------------------------
@@ -460,56 +457,19 @@ int check_gender_by_name(char* name, char* gender2) {
 }
 
 
-// send to intenet or console
+// Send to intenet or console
 void stioc(char* output_string) {
 
    char temp_string[80];
-   static int count = 0;
-
-   count++;
 
    if (irc == TRUE) {
-      strcpy(temp_string, "PRIVMSG #chatbot :");
-      strcat(temp_string, output_string);
-      strcat(temp_string, "\n");
+      sprintf(temp_string, "PRIVMSG %s :%s\n",channel, output_string);
       send(socket_desc , temp_string , strlen(temp_string) , 0);
-      printf("output: %s %d\n", output_string, count);
+
    } else {
       puts(output_string);
    }
 
 }
-
-
-/*
- * Get current time. Store time as a string in current_time.
-
-int get_time() {
-   time_t t;
-   struct tm *tm;
-
-   //  current_time[0] = '\0';
-
-   t = time(NULL);
-   tm = localtime(&t);
-
-   if (tm == NULL)
-      return;
-
-   return (tm->tm_hour*3600) + (tm->tm_min*60) + (tm->tm_sec);
-   // scurrent_time, "%d:%02d:%02d on %d-%d-%d ",
-   //	  tm->tm_hour, tm->tm_min, tm->tm_sec,
-   //	  1900 + tm->tm_year, tm->tm_mon, tm->tm_mday);
-
-} */
-
-/*
-int unit_test(){
-
-   // WORK IN PROGRESS
-   out("hi");
-
-}
-*/
 
 

@@ -16,6 +16,7 @@ posession > class: root
 condition > class: root
 state > class: root
 pet > class: root
+place > class: root
 
 //------------------------------
 
@@ -233,7 +234,7 @@ motorcycle > class: vehicle
 
 // FOOD
 //(TO DO)
-//fruit >
+fruit > class: object
 //apple >
 //orange >
 //toast >
@@ -257,9 +258,9 @@ tea > class: beverage
 
 //fire
 //water
-//rock
-//pen
-//pencil
+//rock > class: object
+//pen > class: object
+//pencil > class: object
 //paper
 
 foot > class: object
@@ -279,16 +280,16 @@ life > class:concept
 
 // to add later on
 
-//house >
-//wall
-//floor
-//door
+house > class: object
+wall > class: object
+floor > class: object
+door > class: object
 //carpet
-//stairs
+stairs > class: object
 
-//window
-//road
-//sidewalk
+window > class: object
+road > class: object
+sidewalk > class: object
 
 // BODY PARTS
 // (not yet implemented)
@@ -357,17 +358,18 @@ wrist	> class 	object
 
 //MISC
 
-//guitar
-//piano
-//chair
-//table
+guitar > class: object
+piano > class: object
+chair > class: object
+table > class: object
 bed > class:furnature
 //tv
 
 // ABOUT THE ROBOT
 robot > class: device
 #1 > class: robot
-#1 > first_name: ivan
+#1 > first_name: hal
+#1 > location: carp
 
 //=============================================================
 // BELOW IS DATA COLLECTED DURING USER SESSIONS
@@ -375,9 +377,3 @@ robot > class: device
 #2 > class:person
 #2 > firstname:bob
 #2 > gender:male
-#3 > class:person
-#4 > class:person
-#4 > firstname:homer
-#5 > class:person
-#5 > firstname:sam
-#5 > gender:male
