@@ -11,6 +11,8 @@
 //#include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <fcntl.h>
+#include <assert.h>
 
 void error(const char *);
 
@@ -19,18 +21,24 @@ void error(const char *);
 int main(void) {
 
 //   char out[MAX_WORDS][MAX_LETTERS];
-   int n;
+  int n,flags,length;
    char temp[40][20];
    char key[80];
    char buffer[256];
    char output[80];
    time_t seconds1, seconds2;
+ // int current_time;
+ // int time_of_last_output;
+ // int time_of_last_input;
+time_t current_time;
+  time_t time_of_last_output;
+  time_t time_of_last_input;
 
  // char *output; // this causes a segmentation fault
 //------------------
 
    struct sockaddr_in server, from;
-   char* message[2000];
+   char message[2000];
    char server_reply[2000];
 char *ret1;
 char *ret2;
@@ -40,12 +48,12 @@ char *ret2;
    struct hostent *he;
    struct in_addr **addr_list;
    int i;
+
    ssize_t ssize;
 
-
-  // irc = TRUE;
-   irc = FALSE;
-      strcpy(channel, "#test");
+   irc = TRUE;
+   // irc = FALSE;
+      strcpy(channel, "#chatbot");
 
    // Look up the IP address
    if ( (he = gethostbyname( hostname ) ) == NULL) {
@@ -81,7 +89,7 @@ char *ret2;
 
 //Send NICK command
  //  message = "NICK robot22\r\n";
-     strcpy(message, "NICK robot22\r\n");
+   strcpy(message, "NICK robot23\r\n");
    puts(message);
    send(socket_desc , message , strlen(message) , 0);
 
@@ -107,6 +115,21 @@ char *ret2;
 
    printf("type 'help' for a list of sentences I understand\r\n");
 
+   flags = fcntl(socket_desc,F_GETFL,0);
+   assert(flags != -1);
+   fcntl(socket_desc, F_SETFL, flags | O_NONBLOCK);
+
+   flags = fcntl(socket_desc, F_GETFL, 0);
+   if ((flags & O_NONBLOCK) == O_NONBLOCK) {
+     printf("it's nonblocking\n");
+   }
+   else {
+     printf("it's blocking.\n");
+   }
+
+//current_time = 0;
+time_of_last_input=time(NULL);
+time_of_last_output=time(NULL);
    // THE MAIN LOOP
    while(1) {
       // for console I/O
@@ -118,7 +141,30 @@ char *ret2;
       else{
          //Receive a reply from the server
          bzero(server_reply,2000); // clear the buffer
-         recv(socket_desc, server_reply , 2000 , 0);
+         length = recv(socket_desc, server_reply , 2000 , 0);
+         if (length <  0) {
+            /*
+                        if(strcmp(current_user_id_string, "#0") != 0 &&
+             //           current_time > time_of_last_input + 10 &&
+             //           current_time > time_of_last_output + 10) {
+                        time(NULL) > time_of_last_input + 10 &&
+                        time(NULL) > time_of_last_output + 10) {
+                           printf(" are you still there?\n");
+                           time_of_last_output = time(NULL);
+                        }
+            */
+            if(strcmp(current_user_id_string, "#0") != 0 &&
+            time(NULL) > time_of_last_input + 200 &&
+            time(NULL) > time_of_last_output + 9) {
+               sprintf(output, " it looks like %s has wandered off somewhere\n", current_user_name);
+               stioc(output);
+               strcpy(current_user_id_string, "#0");
+               strcpy(current_user_name, "unknown");
+               time_of_last_output = time(NULL);
+            }
+
+            continue;
+         }
          puts(server_reply);
          // Handle pings
          if(!strncmp(server_reply, "PING ", 5)) {
@@ -134,8 +180,9 @@ char *ret2;
          *(ret2 + strlen(ret2) -2) = 0; // get rid of the CR at the end
          strcpy(user_input,ret2);
          printf("extracted message: %s\r\n", user_input); // show the extracted message
+         time_of_last_input = time(NULL);
       }
-  seconds1 = time(NULL);
+      seconds1 = time(NULL);
       parse(); // separate the sentence into individual words
 
 #if 1
@@ -153,26 +200,9 @@ char *ret2;
       }
 #endif
 
-#if 0
-      // Work in progress
-      // This is the code that makes use of template_search()
-      code = template_search(user_input, &template_info);
-      sprintf(output, "\ncode: %d, template: %s, ", code, template_info.template2);
-      sprintf(output, "\r\nfunction: %s\r", template_info.function_name);
-      if(template_info.parameter1 > 0) {
-         sprintf(output, "\np1: %d\r\n", template_info.parameter1);
-      }
-      if(template_info.parameter2 > 0) {
-         sprintf(output, "\np2: %d\r\n\n\n", template_info.parameter2);
-      }
-
-      continue;
-#endif
       //----------------
 
- //sprintf(output, "%ld",seconds1); stioc(output); // DEBUG
       // The main sentence processing starts here.
-      // Soon this will be replaced by using the templates in templates2.txt
 
       // Help
       if(number_of_words==1 &&
@@ -197,6 +227,7 @@ char *ret2;
          strcpy(temp[4], words[1]);
          memcpy(words, temp, 800);  // MAX_WORDS * MAX_LETTERS
          number_of_words = 4;
+         printf("*");
       }
       expecting_name = FALSE;
 
@@ -232,8 +263,10 @@ char *ret2;
 
 #if 1
       // Logged in? If not, go no further. This can be disabled for testing purposes
-      if(strcmp(current_user_id_string, "unknown") == 0) {
-         sprintf(output, "what is your name?\r\n"); stioc(output);
+      if(strcmp(current_user_id_string, "#0") == 0) {
+         //sprintf(output, "what is your name?\r\n"); stioc(output);
+         //expecting_name = TRUE;
+         handle_greetings();
          continue;
       }
 #endif
