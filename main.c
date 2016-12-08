@@ -115,9 +115,9 @@ char *ret2;
 
    printf("type 'help' for a list of sentences I understand\r\n");
 
-   flags = fcntl(socket_desc,F_GETFL,0);
-   assert(flags != -1);
-   fcntl(socket_desc, F_SETFL, flags | O_NONBLOCK);
+   flags = fcntl(socket_desc,F_GETFL,0); // return the flags
+   assert(flags != -1); // quit if the above failed
+   fcntl(socket_desc, F_SETFL, flags | O_NONBLOCK); // set the non blocking flag
 
    flags = fcntl(socket_desc, F_GETFL, 0);
    if ((flags & O_NONBLOCK) == O_NONBLOCK) {
@@ -130,6 +130,7 @@ char *ret2;
 //current_time = 0;
 time_of_last_input=time(NULL);
 time_of_last_output=time(NULL);
+
    // THE MAIN LOOP
    while(1) {
       // for console I/O
@@ -162,7 +163,6 @@ time_of_last_output=time(NULL);
                strcpy(current_user_name, "unknown");
                time_of_last_output = time(NULL);
             }
-
             continue;
          }
          puts(server_reply);
