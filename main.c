@@ -21,7 +21,7 @@ void error(const char *);
 int main(void) {
 
 //   char out[MAX_WORDS][MAX_LETTERS];
-  int n,flags,length;
+  int n,flags,length, flag;
    char temp[40][20];
    char key[80];
    char buffer[256];
@@ -53,7 +53,7 @@ char *ret2;
 
    irc = TRUE;
    // irc = FALSE;
-      strcpy(channel, "#chatbot");
+      strcpy(channel, "#test22");
 
    // Look up the IP address
    if ( (he = gethostbyname( hostname ) ) == NULL) {
@@ -112,8 +112,9 @@ char *ret2;
    strcpy(gender, "unknown");
    strcpy(current_user_name, "unknown");
    expecting_name = FALSE;
+   expecting_gender = FALSE;
 
-   printf("type 'help' for a list of sentences I understand\r\n");
+   //printf("type 'help' for a list of sentences I understand\r\n");
 
    flags = fcntl(socket_desc,F_GETFL,0); // return the flags
    assert(flags != -1); // quit if the above failed
@@ -121,10 +122,10 @@ char *ret2;
 
    flags = fcntl(socket_desc, F_GETFL, 0);
    if ((flags & O_NONBLOCK) == O_NONBLOCK) {
-     printf("it's nonblocking\n");
+     printf("nonblocking\n");
    }
    else {
-     printf("it's blocking.\n");
+     printf("blocking.\n");
    }
 
 //current_time = 0;
@@ -144,20 +145,11 @@ time_of_last_output=time(NULL);
          bzero(server_reply,2000); // clear the buffer
          length = recv(socket_desc, server_reply , 2000 , 0);
          if (length <  0) {
-            /*
-                        if(strcmp(current_user_id_string, "#0") != 0 &&
-             //           current_time > time_of_last_input + 10 &&
-             //           current_time > time_of_last_output + 10) {
-                        time(NULL) > time_of_last_input + 10 &&
-                        time(NULL) > time_of_last_output + 10) {
-                           printf(" are you still there?\n");
-                           time_of_last_output = time(NULL);
-                        }
-            */
+
             if(strcmp(current_user_id_string, "#0") != 0 &&
             time(NULL) > time_of_last_input + 200 &&
             time(NULL) > time_of_last_output + 9) {
-               sprintf(output, " it looks like %s has wandered off somewhere\n", current_user_name);
+               sprintf(output, "it looks like %s has wandered off somewhere\n", current_user_name);
                stioc(output);
                strcpy(current_user_id_string, "#0");
                strcpy(current_user_name, "unknown");
@@ -208,6 +200,7 @@ time_of_last_output=time(NULL);
       if(number_of_words==1 &&
       strcmp(words[1], "help")==0) {
          handle_help();
+         continue;
       }
 
       // Show debug info
@@ -227,9 +220,19 @@ time_of_last_output=time(NULL);
          strcpy(temp[4], words[1]);
          memcpy(words, temp, 800);  // MAX_WORDS * MAX_LETTERS
          number_of_words = 4;
-         printf("*");
       }
       expecting_name = FALSE;
+
+//expected template: my gender is *
+      if (expecting_gender == TRUE && number_of_words == 1) {
+         strcpy(temp[1],"my");
+         strcpy(temp[2],"gender");
+         strcpy(temp[3],"is");
+         strcpy(temp[4], words[1]);
+         memcpy(words, temp, 800);  // MAX_WORDS * MAX_LETTERS
+         number_of_words = 4;
+      }
+      expecting_gender = FALSE;
 
       // Log in?
       // my name is ___
@@ -336,6 +339,7 @@ time_of_last_output=time(NULL);
          continue;
       }
 
+      // where is ___
       if(number_of_words==3 &&
       strcmp(words[1],"where")==0 &&
       strcmp(words[2],"is")==0 ) {
@@ -344,6 +348,7 @@ time_of_last_output=time(NULL);
          continue;
       }
 
+      // ___ is ___
       // this needs to be placed after "what is ___"
       if(number_of_words==3 &&
       strcmp(words[2],"is")==0) {
@@ -600,6 +605,21 @@ time_of_last_output=time(NULL);
 
       }
 
+     // Too many words?
+      if(number_of_words>5){
+         sprintf(output, "Try shorter sentences\n"); stioc(output);
+         continue;
+      }
+
+      // A single verb?
+      if(number_of_words==1) {
+         result = isverb(words[1]);
+         if(result == 0) {
+            sprintf(output, "is a verb\n"); stioc(output);
+            continue;
+         }
+      }
+
       // Single word
       if(number_of_words==1) {
          sprintf(key, "%s > class", words[1]);  // assemble a key
@@ -618,6 +638,23 @@ time_of_last_output=time(NULL);
          }
          continue;
       }
+
+      // No verbs?
+      if(number_of_words>1) {
+         flag = 0;
+         for(i=1; i<=number_of_words; i++) {
+            if(isverb(words[i]) == 0) {
+               flag = 1;
+               break;
+            }
+         }
+         if(flag==0){
+            sprintf(output, "I need complete sentences that include a verb\n"); stioc(output);
+            continue;
+         }
+
+      }
+
 
       // Nothing typed?
       if(number_of_words==0) {

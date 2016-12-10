@@ -1,7 +1,8 @@
 // This is the main database. Most of the robot's knowledge is contained here.
 // Individual pieces of information is stored as key-value pairs.
 // It uses terms that are organized in a tree structure.
-
+//
+// Lines starting with "!" are NOT true
 
 // Level 0 (ROOT)
 
@@ -38,7 +39,6 @@ part_of > class: attribute
 
 material > class: substance
 beverage > class: substance
-material > class: substance
 
 parent > class: relation
 offspring > class: relation
@@ -275,6 +275,14 @@ grass > color:green
 france > location:europe
 life > class:concept
 
+//-----------------------------------------
+
+religion > class: attribute
+christian > class: religion
+jewish > class: religion
+muslim > class: religion
+protestant > class: religion
+mormon > class: religion
 
 //------------------------------------------
 
@@ -354,6 +362,39 @@ tongue > class 	object
 wrist	> part_of 	creature
 wrist	> class 	object
 
+//--------------------------------
+
+city > class: place
+country > class: place
+town > class: place
+continent > class: place
+
+ottawa > class: city
+toronto > class: city
+vancouver > class: city
+calgary > class: city
+regina > class: city
+montreal > class: city
+halifax > class: city
+
+canada > class: country
+england > class: country
+france > class: country
+mexico > class: country
+german > class: country
+poland > class: country
+russia > class: country
+china > class: country
+japan > class: country
+spain > class: country
+italy > class: country
+korea > class: country
+
+africa > class: continent
+antarctica > class: continent
+asia > class: continent
+europe > class: continent
+
 //---------------------------------------------
 
 //MISC
@@ -368,8 +409,6 @@ bed > class:furnature
 // ABOUT THE ROBOT
 robot > class: device
 #1 > class: robot
-#1 > first_name: hal
-#1 > location: carp
 
 //=============================================================
 // BELOW IS DATA COLLECTED DURING USER SESSIONS

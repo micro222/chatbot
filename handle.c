@@ -24,7 +24,7 @@ void handle_class_statement(char* user_subject, char* user_class) {
    char value[20];
    char key[20];
    int result;
-char output[80];
+   char output[80];
 
    strcat(debug_string, "class statement\n");  // debug info
 
@@ -371,7 +371,10 @@ char output[80];
 strcat(debug_string, "color confirmation question\n");  // debug info
 
    sprintf(key, "%s > color", subject);
-   db_get_value(key, value);
+   result = db_get_value(key, value);
+   if(result == NOT_FOUND){
+      sprintf(output, "I do not have that information\n"); stioc(output);
+   }
    result = strcmp(value, value1);
    if (result == 0) {
       sprintf(output, "yes\n"); stioc(output);
@@ -773,6 +776,14 @@ strcat(debug_string, "login\n");  // debug info
          db_add_pair(key, gender2);
          strcpy(gender, gender2);
       }
+      // TO DO
+      // if not found, say that the name is unusual and ask their gender. Allow a 1 word answer. Allow a non-answer
+      else{
+         sprintf(output, "I haven't heard of that name before. Are you male or female?\n");
+         stioc(output);
+         expecting_gender = TRUE;
+      }
+
       known = TRUE;
       new2 = TRUE;
    }
@@ -780,6 +791,9 @@ strcat(debug_string, "login\n");  // debug info
    // Step 4:
    strcpy(current_user_name, name);
    strcpy(current_user_id_string, id_string);
+
+   if(expecting_gender == TRUE) return;
+
    if(new2 == TRUE) {
       sprintf(output, "hello %s\n", current_user_name); stioc(output);
    } else {
@@ -804,7 +818,13 @@ strcat(debug_string, "login\n");  // debug info
 
 void handle_help(void) {
 
-char output[80];
+char output[300];
+
+ sprintf(output, "I've been programmed for simple questions and statements based on the words what, is, are, have, and like. If i don't know something, you can always try explaining. Just keep it really simple. \n"); stioc(output);
+/*
+
+
+
 
    sprintf(output, "I can handle the following sentences\r\n\r\n"); stioc(output);
    sprintf(output, " my name is ___\n"); stioc(output);
@@ -829,9 +849,10 @@ char output[80];
    sprintf(output, " ___ love ___\n" ); stioc(output);
    sprintf(output, " ___ dont like ___\n" ); stioc(output);
    sprintf(output, " do you like ___\n" ); stioc(output);
+ */
    //sprintf(output, "who am i, "); stioc(output);
    //sprintf(output, "i am ___\r\n"); stioc(output);
-   sprintf(output, "bye\r\n"); stioc(output);
+   //sprintf(output, "bye\r\n"); stioc(output);
    //sprintf(output, "is ___ ___, "); stioc(output);
    //sprintf(output, "what is ___, "); stioc(output);
    //sprintf(output, "have you heard of ___, "); stioc(output);

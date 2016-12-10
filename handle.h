@@ -15,12 +15,13 @@ extern char current_user_name[20];
 extern int gender_code;
 extern char gender[10];
 int expecting_name;
+int expecting_gender;
 char debug_string[200];
-
 
 void handle_class_question(char*);
 void handle_class_statement(char*,char*);
 void handle_attribute_statement(char*, char*);
+void handle_attribute_question(char*, char*);
 void handle_color_question(char*);
 void handle_color_confirmation_question(char*,char*);
 void handle_color_statement(char*,char*);

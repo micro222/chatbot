@@ -155,6 +155,38 @@ char output[80];
    return result;
 
 }
+//--------------------------------------------------------
+
+int isverb(char* word_to_lookup){
+   FILE *verbs;
+   int result = 1;
+   char word_from_list[80];
+   char *status;
+   char output[80];
+
+   //  open word list
+   verbs = fopen("verbs.txt","r");
+   if(verbs == NULL) {
+      sprintf(output, "fopen failed while trying to open verbs.txt\n"); stioc(output);
+   }
+
+   while(1) {
+      status = fgets(word_from_list,40,verbs);
+      if (status==0)break;
+      // remove the newline character
+      word_from_list[strlen(word_from_list)-1] = '\0';
+
+      if (strcmp(word_to_lookup, word_from_list) == 0) {
+         result = 0;
+         break;
+      }
+
+   }// end of while
+
+   fclose(verbs);
+   return result;
+
+}
 
 //-------------------------------------------------------------
 // Experimental. Not in use.
@@ -256,6 +288,8 @@ int tokenize(char* in_string, char* word_array, char delimiter) {
 
 //int template_search(char*user, char*template2)
 //int template_search(char*user, char out[MAX_WORDS][MAX_LETTERS]){
+
+#if 0
 int template_search(char*user, template_info_type* template_info) {
 
 
@@ -344,6 +378,8 @@ int template_search(char*user, template_info_type* template_info) {
    return FOUND;  // (found)
 
 }
+#endif // 0
+
 
 //-----------------------------------------------------
 
@@ -460,7 +496,7 @@ int check_gender_by_name(char* name, char* gender2) {
 // Send to intenet or console
 void stioc(char* output_string) {
 
-   char temp_string[80];
+   char temp_string[300];
 
    if (irc == TRUE) {
       sprintf(temp_string, "PRIVMSG %s :%s\n",channel, output_string);
