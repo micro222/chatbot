@@ -91,6 +91,15 @@ eczema > class: condition
 
 //-------------------------------------------------
 
+// STATES
+
+tired > class: state
+sore > class: state
+happy > class: state
+sad > class: state
+
+//-------------------------------------------------
+
 tool > class: device
 
 
