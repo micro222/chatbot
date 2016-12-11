@@ -11,7 +11,8 @@ struct nlist { /* table entry: */
 
 struct hashtable {
     int size;
-    unsigned int **data;
+  //    unsigned int **data;
+    struct nlist **data;
 };
 
 typedef struct nlist nlist;
