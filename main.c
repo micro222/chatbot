@@ -53,7 +53,7 @@ char *ret2;
 
    irc = TRUE;
    // irc = FALSE;
-      strcpy(channel, "#test22");
+      strcpy(channel, "#chatbot");
 
    // Look up the IP address
    if ( (he = gethostbyname( hostname ) ) == NULL) {
@@ -153,6 +153,7 @@ time_of_last_output=time(NULL);
                stioc(output);
                strcpy(current_user_id_string, "#0");
                strcpy(current_user_name, "unknown");
+               strcpy(gender, "unknown");
                time_of_last_output = time(NULL);
             }
             continue;
