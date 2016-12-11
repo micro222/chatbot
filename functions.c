@@ -397,15 +397,15 @@ int separate_words(char* in, char out[MAX_WORDS][MAX_LETTERS]) {
       for(letter_position = 0; letter_position < MAX_LETTERS; letter_position++) {
 
          // End of sentence?
-         if(in[position]==NULL || position >= 200) {
-            out[word_position][letter_position] = NULL;
+         if(in[position]=='\0' || position >= 200) {
+            out[word_position][letter_position] = '\0';
             number_of_words = word_position;
             return number_of_words;
          }
 
          //end of word?
          if(in[position]==' ') {
-            out[word_position][letter_position] = NULL;  // terminate the word
+            out[word_position][letter_position] = '\0';  // terminate the word
             letter_position = 0;  // probably not needed
             position++;  // skip over the space
             break;

@@ -22,6 +22,6 @@ void destroy_hashtable(hashtable *ht);
 hashtable *regrow_hashtable(hashtable *ht, int new_hash_size);
 
 nlist *lookup(hashtable *ht, char *s);
-nlist *write(hashtable *ht, char *name, char *defn);
+nlist *write_hashtable(hashtable *ht, char *name, char *defn);
 
 #endif // HASHTABLE_H_INCLUDED
