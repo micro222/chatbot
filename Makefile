@@ -32,8 +32,8 @@ endif
 
 TARGET=linux_chat
 CC=gcc
-#CCFLAGS += -g -O3 -Wall -I./
-CCFLAGS += -g -O3 -I./
+CCFLAGS += -g -O3 -Wall -I./
+#CCFLAGS += -g -O3 -I./
 
 .PHONY: default all clean
 

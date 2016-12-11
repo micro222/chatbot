@@ -6,6 +6,7 @@ remove pair (key)
 */
 
 #include "db.h"
+#include "functions.h"
 
 //--------------------------------------------------
 //
@@ -395,11 +396,11 @@ int copy_to_delimiter(char* from, char* to, char delimiter, int start){
 
    for(i=0; i<80; i++){
       if (from[i+start] == delimiter){
-         to[i] = NULL; //
+         to[i] = '\0'; //
          return i + 1 + start;
       }
       else if (from[i+start] == 10 || from[i+start] == 13){
-         to[i] = NULL; //
+         to[i] = '\0'; //
          return 0;
       }
       else{
@@ -407,7 +408,7 @@ int copy_to_delimiter(char* from, char* to, char delimiter, int start){
       }
    }
    i++;
-   to[i+start] = NULL;
+   to[i+start] = '\0';
 return i;
 }
 
