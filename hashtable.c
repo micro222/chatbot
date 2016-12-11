@@ -1,6 +1,10 @@
-#define NULL 0
+//#define NULL 0
 
 #include "hashtable.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 
 /* hash: form hash value for string s */
 unsigned hash(char *s, int hash_size)
@@ -26,7 +30,7 @@ hashtable *create_hashtable(int expected_size)
     ht->data = malloc(ht->size*sizeof(unsigned int*));
     if (ht->data == NULL)
         return NULL;
-    memset(ht->data, ht->size*sizeof(unsigned int*), NULL);
+    memset(ht->data, 0, ht->size*sizeof(unsigned int*));
     return ht;
 }
 
@@ -60,7 +64,7 @@ struct nlist *lookup(hashtable *ht, char *s)
 }
 
 /* Helper function: make a duplicate of s */
-char *strdup(char *s)
+char *mystrdup(char *s)
 {
     char *p;
     p = (char *) malloc(strlen(s)+1); /* +1 for ’\0’ */
@@ -69,8 +73,8 @@ char *strdup(char *s)
     return p;
 }
 
-/* Main interface for 'write': put (name, defn) in hashtab */
-struct nlist *write(hashtable *ht, char *name, char *defn)
+/* Main interface for 'write_hashtable': put (name, defn) in hashtab */
+struct nlist *write_hashtable(hashtable *ht, char *name, char *defn)
 {
     struct nlist *np;
     unsigned hashval;

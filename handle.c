@@ -93,7 +93,7 @@ void handle_class_question(char* subject) {
 
 //--------------------------------------------------
 
-void handle_attribute_statement(char* user_subject,char* user_attribute) {
+void  (char* user_subject,char* user_attribute) {
    /*
    example: grass is green
 

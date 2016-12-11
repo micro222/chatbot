@@ -5,7 +5,7 @@
 #define FOUND       1
 #define MATCH       2
 #define NO_MATCH    3
-#define EOF         4
+#define DB_EOF         4
 #define CANT_OPEN_FILE 5
 #define MAX_WORDS 40
 #define MAX_LETTERS 20

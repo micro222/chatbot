@@ -49,6 +49,7 @@ char *ret2;
    struct in_addr **addr_list;
    int i;
 
+
    ssize_t ssize;
 
    irc = TRUE;
@@ -111,6 +112,70 @@ char *ret2;
    strcpy(current_user_id_string, "#0");
    strcpy(gender, "unknown");
    strcpy(current_user_name, "unknown");
+
+   ssize_t ssize;
+
+   irc = TRUE;
+   // irc = FALSE;
+      strcpy(channel, "#chatbot");
+
+   // Look up the IP address
+   if ( (he = gethostbyname( hostname ) ) == NULL) {
+      herror("gethostbyname"); //gethostbyname failed
+      return 1;
+   }
+
+   //Cast the h_addr_list to in_addr , since h_addr_list also has the ip address in long format only
+   addr_list = (struct in_addr **) he->h_addr_list;
+
+   for(i = 0; addr_list[i] != NULL; i++) {
+      //Return the first one;
+      strcpy(ip , inet_ntoa(*addr_list[i]) );
+   }
+
+   sprintf(output, "%s resolved to : %s" , hostname , ip);
+
+   //Create a socket
+   socket_desc = socket(AF_INET , SOCK_STREAM , 0);
+   if (socket_desc == -1) {
+      sprintf(output, "Could not create a socket"); stioc(output);
+   }
+
+   server.sin_addr.s_addr = inet_addr(ip);
+   server.sin_family = AF_INET;
+   server.sin_port = htons( 6667 );  // IRC port number
+
+   //Connect to remote server
+   if (connect(socket_desc , (struct sockaddr *)&server , sizeof(server)) < 0) {
+      puts("connect error");
+   }
+   else puts("Connected to IRC");
+
+//Send NICK command
+ //  message = "NICK robot22\r\n";
+   strcpy(message, "NICK robot23\r\n");
+   puts(message);
+   send(socket_desc , message , strlen(message) , 0);
+
+//Send USER command
+   strcpy(message, "USER user_name 8 * :real name\r\n");
+   puts(message);
+   send(socket_desc , message , strlen(message) , 0);
+
+//Join chatroom
+   sprintf(message,"JOIN %s\r\n", channel);
+   //user_input = "this is a test";
+   puts(message);
+   send(socket_desc , message , strlen(message) , 0);
+
+//-----------------
+
+   gender_code = 0;
+   strcpy(debug_string, "");
+   strcpy(current_user_id_string, "#0");
+   strcpy(gender, "unknown");
+   strcpy(current_user_name, "unknown");
+
    expecting_name = FALSE;
    expecting_gender = FALSE;
 
