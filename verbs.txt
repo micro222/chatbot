@@ -130,6 +130,7 @@ take
 talk
 teach
 tell
+test
 think
 throw
 toss
