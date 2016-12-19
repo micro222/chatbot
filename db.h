@@ -15,14 +15,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
-
-
-// ENUM TEST
-enum{
-A1,
-B1,
-C1,
-};
+#include "functions.h"
 
 int db_check(char*);
 int db_get_value(char*, char*);

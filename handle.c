@@ -1,6 +1,5 @@
 #include "handle.h"
-#include "functions.h"
-#include "main.h"
+
 
 void handle_class_statement(char* user_subject, char* user_class) {
    /*

@@ -12,7 +12,8 @@
 #include "hashtable.h"
 #include "functions.h"
 #include "main.h"
-
+#include "fa.h"
+#include "irc.h"
 //#define DEBUG TRUE
 
 // Global Variables
@@ -23,7 +24,7 @@ int expecting_gender;
 char current_user_id_string[20];
 extern char debug_string[200];
 //extern char* current_user_name;
-int irc;
-  char channel[20];
- int socket_desc;
+ time_t time_of_last_output;
+  time_t time_of_last_input;
+
 #endif // MAIN_H_INCLUDED

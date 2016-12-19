@@ -1,3 +1,5 @@
+#include "db.h"
+
 /*
 lookup value (key, value)
 add pair (key, value)
@@ -5,8 +7,8 @@ change value (key, value)
 remove pair (key)
 */
 
-#include "db.h"
-#include "functions.h"
+
+
 
 //--------------------------------------------------
 //
@@ -25,7 +27,7 @@ remove pair (key)
 //  5) goes to step 2 if not
 //  6) returns value
 //
-int db_get_value(char *target_key, char *db_value){
+int db_get_value(char *target_key, char *db_value) {
 
     FILE *general;
     int linepos;
@@ -322,6 +324,7 @@ char output[80];
    sprintf(output, "error in function DNAI"); stioc(output);
    return 0;
 }
+
 int db_next_available_id_string(char* id_string){
 
    int i;

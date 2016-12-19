@@ -2,7 +2,8 @@
 #define FUNCTIONS_H_INCLUDED
 
 #include <stdio.h>
-#include "db.h"
+//#include "db.h"
+#include "main.h"
 #include <sys/socket.h>
 
 #define MAX_WORDS 40

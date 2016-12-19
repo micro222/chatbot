@@ -8,6 +8,8 @@
 #include "db.h"
 #include <string.h>
 #include <stdio.h>
+#include "functions.h"
+#include "main.h"
 
 //extern int current_user_id;
 extern char current_user_id_string[20]; // defined in main.c
