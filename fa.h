@@ -11,4 +11,5 @@ int  f5(void);
 int  fnota(void);
 
 extern char words[MAX_WORDS][MAX_LETTERS];
+extern char gender[10];
 #endif // FA_H_INCLUDED

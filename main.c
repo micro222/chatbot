@@ -7,17 +7,15 @@ void error(const char *);
 int main(void)
 {
 
+    // Declare vaiables
 //   char out[MAX_WORDS][MAX_LETTERS];
-
     char temp[40][20];
-    char key[80];
-    char buffer[256];
+//    char key[80];
+//    char buffer[256];
     char output[80];
-    time_t seconds1, seconds2;
-    time_t current_time;
-// char *output; // this causes a segmentation fault
+//  char *output; // this causes a segmentation fault
 
-    ssize_t ssize;
+//    ssize_t ssize;
 
     irc = TRUE;
     // irc = FALSE;
@@ -46,11 +44,12 @@ int main(void)
         }
         // for IRC
         else
-        {
+        {   // Checks the IRC server for incoming data. Handles pings. Returns 1 if
+            // there are words to be processed. Words will be in user_input
             result = irc_io();
             if(result == 0) continue;
         }
-        seconds1 = time(NULL);
+
         parse(); // separate the sentence into individual words
 
 #if 1
@@ -148,15 +147,15 @@ int main(void)
 // - - - - MUST BE LOGGED IN TO GET PAST THIS POINT - - - - - - -  - - - - - -
 
         // A few quick answers. Will be processed normally at some point
-        if(strcmp(user_input, "what are you")==0)      stioc("a robot.\n"); continue;
-        if(strcmp(user_input, "are you human")==0)     stioc("no"); continue;
-        if(strcmp(user_input, "are you a robot")==0)   stioc("yes\n"); continue;
-        if(strcmp(user_input, "are you a person")==0)  stioc("no\n"); continue;
-        if(strcmp(user_input, "where are you")==0)     stioc("home\n"); continue;
-        if(strcmp(user_input, "who are you")==0)       stioc("a robot\n"); continue;
-        if(strcmp(user_input, "where is home")==0)     stioc("canada\n"); continue;
-        if(strcmp(user_input, "how are you")==0)       stioc("partialy functional\n"); continue;
-        if(strcmp(user_input, "what is your name")==0) stioc("ivan\n"); continue;
+        if(strcmp(user_input, "what are you")==0)      {stioc("a robot.\n"); continue;}
+        if(strcmp(user_input, "are you human")==0)     {stioc("no"); continue;}
+        if(strcmp(user_input, "are you a robot")==0)   {stioc("yes\n"); continue;}
+        if(strcmp(user_input, "are you a person")==0)  {stioc("no\n"); continue;}
+        if(strcmp(user_input, "where are you")==0)     {stioc("home\n"); continue;}
+        if(strcmp(user_input, "who are you")==0)       {stioc("a robot\n"); continue;}
+        if(strcmp(user_input, "where is home")==0)     {stioc("canada\n"); continue;}
+        if(strcmp(user_input, "how are you")==0)       {stioc("partialy functional\n"); continue;}
+        if(strcmp(user_input, "what is your name")==0) {stioc("ivan\n"); continue;}
 
         // No verbs?
         if(number_of_words>1)
@@ -176,9 +175,7 @@ int main(void)
                 stioc(output);
                 continue;
             }
-
         }
-
 
         switch(number_of_words)
         {

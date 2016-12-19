@@ -44,6 +44,7 @@ fight
 fill
 find
 finish
+fix
 fly
 forget
 forgive

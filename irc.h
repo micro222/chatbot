@@ -16,8 +16,8 @@
 #include <fcntl.h>
 #include <assert.h>
 #include "functions.h"
-//#include "main.h"
-
+#include "main.h"
+extern char user_input[80];
  int irc;
 
 void irc_init(void);
