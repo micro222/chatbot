@@ -8,29 +8,22 @@ I wanted to make a chatbot that is better than the AIML types. Something that wo
 Note: There's more info in the wiki.
 
 ## About this program
-* This is a text based robot with learning as the main emphasis
-* It tends to try to learn about the people it talks to and the world in general
+* This is a text based robot that tries to get to know its users over a period of time
+* It will try to make sense of every word in a sentence. It will never pretend to know its meaning. It will attempt to explain what it's having trouble with. The user may be able to explain new words that are new to it.
 * Its database relies on a classification of basic knowledge
 * It uses templates to interpret sentences
 * Only certain types of words are allowed to fit in the templates
-* It keeps track of the people that talk to it
 * It starts out with simple features and is expandable
-* ID numbers are used identify specific members of a category, usually people could also be pets, buildings database entries start with a number sign followed by the id number 
-
-## Short term goals
-All of these are working to some extent
-* Will expect to know who it's talking to
+* ID numbers are used identify specific members of a category, usually people could also be pets, buildings database entries start with a number sign followed by the id number* Will expect to know who it's talking to
 * Will remember elements of conversations
 * Will try to use people to expand it's knowledge
-* Will try to make sense of every part of a sentence and will reject any word it can't make sense of.
-
 ## Long term goals
 * Will form opinions of the people it talks to
 * Will initiate conversation if the user doesn't
 * Will be thinking of various things when it's not in a conversation. This activity may have an effect on its mood, may cause it to arrive at some conclusions. It may be prompted to ask related questions. It can be asked "what are you thinking about".
 
 ## The database
-The database is working. It's a text file called general.txt. Information is stored as a list of key-value pairs, one pair per line. The key is a series of increasingly specific keywords separated by the ">" character. Any information that is gathered during user sessions gets added to the end of the file. Specific entities such as "ronald" or "my computer" are given ID numbers. 
+It's a text file called general.txt. Information is stored as a list of key-value pairs, one pair per line. The key is a series of increasingly specific keywords separated by the ">" character. Any information that is gathered during user sessions gets added to the end of the file. Specific entities such as "ronald" or "my computer" are given ID numbers. 
 
 There is a set of functions for easy access to it.
 * db_check - checks to see if a word is in the database
