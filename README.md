@@ -16,6 +16,7 @@ Note: There's more info in the wiki.
 * Will remember elements of conversations
 * Will try to use people to expand it's knowledge
 * The source code is documented so that even non-programmers should be able to figure out what's goin on.
+
 ## Long term goals
 * Will form opinions of the people it talks to
 * Will initiate conversation if the user doesn't
