@@ -23,7 +23,7 @@ Note: There's more info in the wiki.
 * Will be thinking of various things when it's not in a conversation. This activity may have an effect on its mood, may cause it to arrive at some conclusions. It may be prompted to ask related questions. It can be asked "what are you thinking about".
 
 ## The database
-It's a text file called general.txt. Information is stored as a list of key-value pairs, one pair per line. The key is a series of increasingly specific keywords separated by the ">" character. Any information that is gathered during user sessions gets added to the end of the file. Specific entities loke people, pet and objects are inernally given ID numbers. 
+It's a text file called general.txt. Information is stored as a list of key-value pairs, one pair per line. The key is a series of increasingly specific keywords separated by the ">" character. Any information that is gathered during user sessions gets added to the end of the file. Specific entities like people, pets and objects are internally given ID numbers. 
 
 There is a set of functions for easy access to it.
 * db_check - checks to see if a word is in the database
