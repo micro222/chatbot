@@ -2,7 +2,7 @@ A text-based learning robot that tries to get to know its users over a period of
 
 I've been working on this chatbot on and off for about 12 years, and while I've made a lot of progress, there's a great deal of work left to do. I was thinking that if this was a group project, development would pick up speed considerably, plus it could be more fun to work on. I'd like see if there's any interest out there.
 
-I wanted to make a chatbot that is better than the AIML types that are so common. Something that would pay attention to who it was talking to and try to learn from that person. It would not guess at an answer when it has no understanding of that was said.
+I wanted to make a chatbot that is better than the AIML types that are so common. Something that would pay attention to who it was talking to and try to learn from that person. It would not guess at an answer when it has no understanding of what was said.
 
 Note: There's more info in the wiki.
 
