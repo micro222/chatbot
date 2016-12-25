@@ -157,7 +157,6 @@ int db_get_id(char* firstname)
 
 }
 
-
 //--------------------------------
 //    look up a first name and return the id number
 //    returns 0 if error

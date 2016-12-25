@@ -83,7 +83,7 @@ int isconsonant(char c1) {
 
 int is_nonsense_word(char* s1) {
    //
-   //  curently has trouble with: you, crackpot,apple,substance
+   //  curently has trouble with: you, crackpot, apple, substance
    //
    //
 
@@ -159,7 +159,7 @@ char output[80];
 
 int isverb(char* word_to_lookup){
    FILE *verbs;
-   int result = 1;
+   int result = 0;
    char word_from_list[80];
    char *status;
    char output[80];
@@ -177,14 +177,14 @@ int isverb(char* word_to_lookup){
       word_from_list[strlen(word_from_list)-1] = '\0';
 
       if (strcmp(word_to_lookup, word_from_list) == 0) {
-         result = 0;
+         return 1;
          break;
       }
 
    }// end of while
 
    fclose(verbs);
-   return result;
+   return 0;
 
 }
 
@@ -223,164 +223,6 @@ int tokenize(char* in_string, char* word_array, char delimiter) {
 
 }
 
-
-
-// new function for chat 10
-// compares user input with a sentence template
-//
-// example:
-//  user input: what color is grass?
-//  template  : what color is *, color_question, 4
-//
-// the old way:
-//  else if(number_of_words==4 && strcmp(words[1],"what")==0 && strcmp(words[2],"color")==0&& strcmp(words[3],"is")==0){
-//     handle_color_question(words[4]);
-
-
-// number of words: 4
-// word 1: what
-// word 2: color
-// word 3: is
-
-// function: color_question()
-// parameter 1: word 4
-
-// new proceedure:
-// parse template by comma
-// parse template sentence by space
-// compare specified words in user sentence with template sentence
-
-
-/*
-
-  void template_search (void)
-  open template.txt
-
-  outer loop
-  read template
-
-  inner loop
-  tokenize(template, token_array, ',');
-  tokenize(token_array[0], word_array, ' ');
-
-  // do the words match?
-  for(i=0, i<WORD_MAX, i++){
-  if(words!=word_array[i]) break;
-  if(w=='*') continue;
-  }
-*/
-
-//--------------------------------------------------
-// This partialy works, but is not currently in use
-//  TEMPLATE SEARCH
-//
-//  inputs
-//      what the user typed
-//
-//  returns
-//      the matching template
-//      the result code
-
-//  1) opens the tempate file
-//  2) gets a line
-//  3) extracts the template
-//  4) checks the template to see if it's a match
-
-//int template_search(char*user, char*template2)
-//int template_search(char*user, char out[MAX_WORDS][MAX_LETTERS]){
-
-#if 0
-int template_search(char*user, template_info_type* template_info) {
-
-
-#define TEMPLATE_LINE_LENGTH 120
-
-   FILE *template_file_handle;
-   int line_position;
-   char *status;
-   char line[TEMPLATE_LINE_LENGTH];
-   char out[MAX_WORDS][MAX_LETTERS];
-   char template2[MAX_WORDS][MAX_LETTERS];
-   int n;
-   int match;
-   int number_of_template_words;
-   char temp[80];
-
-   //  open template file
-   template_file_handle = fopen("templates.txt","r");
-   if(template_file_handle == NULL) return CANT_OPEN_FILE;
-
-   // search for template
-   while(1) {
-      // get a template line
-      status = fgets(template_info->line, TEMPLATE_LINE_LENGTH, template_file_handle);
-
-      if (status==0) {
-         fclose(template_file_handle);
-         return 0;
-      }
-
-      // skip the comments
-      if (template_info->line[0] == '/' && template_info->line[1] == '/') continue;  // skip comments
-
-      // skip any line that begins with a space or control character
-      if(template_info->line[0] <= ' ')continue;
-
-      // extract the template from the line
-      line_position = copy_to_delimiter(template_info->line, template_info->template2, ',', 0);
-
-      // separate the words
-      number_of_template_words = separate_words(template_info->template2, out);  // 1d 2d
-
-      // check if the number of words are the same
-      if(number_of_template_words != number_of_words) continue;
-
-      // check the words one by one
-      match = TRUE;
-      for(n=1; n<=number_of_template_words; n++) {
-         if(strcmp(out[n], "*") == 0) continue;
-         if(strcmp(out[n], words[n]) != 0) {
-            match = FALSE;
-            break;
-         }
-      }
-
-      if(match == TRUE) {
-         break;
-      }
-   }
-
-   // extract function name
-   line_position = copy_to_delimiter(template_info->line, template_info->function_name, ',' ,line_position);
-
-   template_info->parameter1 = 0;
-   template_info->parameter2 = 0;
-
-   // extract parameter1
-
-   if(line_position>0) {
-      line_position = copy_to_delimiter(template_info->line, temp, ',' ,line_position);
-      //sprintf(output, "temp:%s pos: %d", temp, line_position); stioc(output);
-      snprintf(template_info->parameter1, sizeof(template_info->parameter1), temp);
-   }
-
-   //sprintf(output, "LP: %d", line_position); stioc(output);
-
-   if(line_position>0) {
-      // extract parameter2
-      line_position = copy_to_delimiter(template_info->line, temp, ',' ,line_position);
-      //sprintf(output, "temp:%s pos: %d", temp, line_position); stioc(output);
-      snprintf(template_info->parameter2, sizeof(template_info->parameter2), temp);
-   }
-
-   fclose(template_file_handle);
-
-   return FOUND;  // (found)
-
-}
-#endif // 0
-
-
 //-----------------------------------------------------
 
 int separate_words(char* in, char out[MAX_WORDS][MAX_LETTERS]) {
@@ -417,6 +259,8 @@ int separate_words(char* in, char out[MAX_WORDS][MAX_LETTERS]) {
    }
    return 0;
 }
+
+//------------------------------------------------------------
 
 int check_gender_by_name(char* name, char* gender2) {
 
@@ -492,6 +336,7 @@ int check_gender_by_name(char* name, char* gender2) {
    return NOT_FOUND;
 }
 
+//-------------------------------------------------------------
 
 // Send to intenet or console
 void stioc(char* output_string) {
@@ -506,6 +351,43 @@ void stioc(char* output_string) {
       puts(output_string);
    }
 
+}
+
+//------------------------------------------------------------------------------
+
+int isquestion(void){
+
+   // If the first word is one of the 9 listed below , the sentence is a question
+
+   int i;
+   char w[10][6] = {"who", "what", "where", "when", "why", "how", "is", "do", "can"};
+
+   for(i=0; i<9; i++){
+      if(strcmp(words[1], w[i]) == 0) return i+1;
+   }
+   return 0;
+}
+
+//------------------------------------------------------------------------------
+
+int isstatement(void)
+{
+    // If the second word is a verb, the sentence is a statement
+
+    if(number_of_words < 3) return 0; // at least 3 words are needed
+    if(isverb(words[2]))return 1;
+    else return 0;
+
+}
+
+//----------------------------------------------------------------------
+
+int iscommand(void)
+{
+    // If the first word is a verb, the sentence is a command
+
+    if(isverb(words[1]))return 1;
+    else return 0;
 }
 
 

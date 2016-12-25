@@ -157,10 +157,31 @@ int main(void)
         if(strcmp(user_input, "how are you")==0)       {stioc("partialy functional\n"); continue;}
         if(strcmp(user_input, "what is your name")==0) {stioc("ivan\n"); continue;}
 
+        //modify_nouns(); // comming soon
+
+        if(number_of_words == 1) {f1(); continue;}
+
+        // Determine if the sentence is a question, statement or command
+        if(isquestion())  {handle_question();  continue;}
+        if(isstatement()) {handle_statement(); continue;} // 3 or more words needed
+        if(iscommand())   {handle_command();   continue;}
+
+
+// If we haven't figured out the sentence by now, all we can do is make suggestions
+
+        // Too many words?
+        if(number_of_words>5)
+        {
+            sprintf(output, "Try shorter sentences\n");
+            stioc(output);
+            continue;
+        }
+
         // No verbs?
         if(number_of_words>1)
         {
             flag = 0;
+            // check each word to see if it's a verb
             for(i=1; i<=number_of_words; i++)
             {
                 if(isverb(words[i]) == 0)
@@ -177,34 +198,7 @@ int main(void)
             }
         }
 
-        switch(number_of_words)
-        {
-        case 1:
-            if(f1()) continue;
-            else break;
-        case 2:
-            if(f2()) continue;
-            else break;
-        case 3:
-            if(f3()) continue;
-            else break;
-        case 4:
-            if(f4()) continue;
-            else break;
-        case 5:
-            if(f5()) continue;
-            else break;
-        default:
-            fnota();// continue;
-        }
 
-        // Too many words?
-        if(number_of_words>5)
-        {
-            sprintf(output, "Try shorter sentences\n");
-            stioc(output);
-            continue;
-        }
 
         // Nothing typed?
         if(number_of_words==0)

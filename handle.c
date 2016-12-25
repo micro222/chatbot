@@ -1131,8 +1131,294 @@ skip1100:
    }
    sprintf(output, "I don't know"); stioc(output);
    return;
+}
+
+int handle_question(void)
+{
+   char output[80];
+
+strcat(debug_string, " question ");  // debug info
+// stioc(debug_string);
+
+//
+if(number_of_words == 3){
+   // what is ___
+    if(strcmp(words[1],"what")==0 &&
+            strcmp(words[2],"is")==0)
+    {
+        handle_class_question(words[3]);
+        return 1;
+    }
+
+    // what are ___
+    if(strcmp(words[1],"what")==0 &&
+            strcmp(words[2],"are")==0)
+    {
+        handle_class_question(words[3]);
+        return 1;
+    }
+
+    // where is ___
+    if(strcmp(words[1],"where")==0 &&
+            strcmp(words[2],"is")==0 )
+    {
+        handle_location_question(words[3]);
+        //   handle_attribute_question(words[3], "location");
+        return 1;
+    }
+
+    // where is ___
+    if(strcmp(words[1],"where")==0 &&
+            strcmp(words[2],"is")==0)
+    {
+        handle_location_question(words[3]);
+        return 1;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - -
+    // ABILITY
+    // can <subject> <action>
+    if(strcmp(words[1],"can")==0 )
+    {
+        handle_ability_question(words[2],words[3]);
+        return 1;
+    }
+}
+
+  if(number_of_words == 4){
 
 
+    // what is a ___
+    if(strcmp(words[1],"what")==0 &&
+            strcmp(words[2],"is")==0 &&
+            strcmp(words[3],"a")==0)
+    {
+        handle_class_question(words[4]);
+        return 1;
+    }
+
+
+    // "what is your *"
+    if(strcmp(words[1],"what")==0 &&
+            strcmp(words[2],"is")==0 &&
+            strcmp(words[3],"your")==0 )
+    {
+        handle_attribute_question("#1", words[4]);
+        //stioc(output);
+        return 1;
+    }
+
+    // "what is my name"
+    if(strcmp(words[1],"what")==0 &&
+            strcmp(words[2],"is")==0 &&
+            strcmp(words[3],"my")==0 &&
+            strcmp(words[4],"name")==0)
+    {
+        sprintf(output, "%s\n",current_user_name);
+        stioc(output);
+        return 1;
+    }
+
+    // "what is my gender"
+    if(strcmp(words[1],"what")==0 &&
+            strcmp(words[2],"is")==0 &&
+            strcmp(words[3],"my")==0 &&
+            strcmp(words[4],"gender")==0)
+    {
+        sprintf(output, "%s\n", gender);
+        stioc(output);
+        return 1;
+    }
+    // "what is my *"
+    if(strcmp(words[1],"what")==0 &&
+            strcmp(words[2],"is")==0 &&
+            strcmp(words[3],"your")==0 )
+    {
+        handle_attribute_question("#1", words[4]);
+        //stioc(output);
+        return 1;
+    }
+
+
+    // does jane have acne
+    if(strcmp(words[1],"does")==0 &&
+            strcmp(words[3],"have")==0)
+    {
+        handle_have_question(words[2],words[4]);
+        return 1;
+    }
+
+strcat(output, "silly question\n");
+ stioc(output);
+
+
+   }
+
+}
+
+int handle_statement(void)
+{
+  char output[80];
+  strcat(debug_string, " statement ");  // debug info
+  //stioc(debug_string);
+
+  if(number_of_words == 3){
+    // ___ is ___
+    // this needs to be placed after "what is ___"
+    if(strcmp(words[2],"is")==0)
+    {
+        handle_attribute_statement(words[1],words[3]);
+        return 1;
+    }
+
+    if(strcmp(words[2],"is")==0 )
+    {
+        handle_class_statement(words[1],words[3]);
+        return 1;
+    }
+
+     // - - - - - - - - - - - - - - - - - - - - - -
+    // rating
+    // Template: do you like <subject>
+    // Example: do you like beer
+    //    else if(number_of_words==4 && strcmp(words[1],"do")==0 && strcmp(words[2],"you")==0 && strcmp(words[3],"like")==0 ){
+    //       handle_rating_question();
+    //    }
+    // Template: __ like __
+    // Example: i like beer
+    if(strcmp(words[2],"like")==0)
+    {
+        handle_rating_statement(words[1], words[3], "7");
+        return 1;
+    }
+
+    // Template: <person> hate __
+    // Example: i hate beer
+    if(strcmp(words[2],"hate")==0)
+    {
+        handle_rating_statement(words[1], words[3], "0");
+        return 1;
+    }
+
+    // <creature> love ___
+    // conditions: 3 words, middle word is "love"
+    if(strcmp(words[2],"love")==0)
+    {
+        handle_rating_statement(words[1], words[3], "10");
+        return 1;
+    }
+
+    // Template: i have *
+    // Example: i have rabies
+    if(strcmp(words[2],"have")==0 )
+    {
+        handle_have_statement(words[1], words[3]);
+        return 1;
+    }
+}
+
+if(number_of_words == 4){
+
+    if(strcmp(words[2],"is")==0 &&
+            strcmp(words[3],"a")==0)
+    {
+        handle_class_statement(words[1],words[4]);
+        return 1;
+    }
+
+        // ___ dont like ___
+    if(strcmp(words[2],"dont")==0 &&
+            strcmp(words[3],"like")==0)
+    {
+        handle_rating_statement(words[1], words[3], "3");
+        return 1;
+    }
+
+   // Template: i have a *
+    // Example: i have a dog
+    if(strcmp(words[2],"have")==0 &&
+            strcmp(words[3],"a")==0 )
+    {
+        handle_have_statement(words[1], words[4]);
+        return 1;
+    }
+
+   // my gender is male
+    if(strcmp(words[1],"my")==0 &&
+            strcmp(words[2],"gender")==0 &&
+            strcmp(words[3],"is")==0 &&
+            strcmp(words[4],"male")==0 )
+    {
+        sprintf(key, "%s > gender", current_user_id_string);
+        strcpy(gender, "male");
+        db_add_pair(key, "male");
+        return 1;
+    }
+
+    // my gender is female
+    if(strcmp(words[1],"my")==0 &&
+            strcmp(words[2],"gender")==0 &&
+            strcmp(words[3],"is")==0 &&
+            strcmp(words[4],"female")==0 )
+    {
+        sprintf(key, "%s > gender", current_user_id_string);
+        strcpy(gender, "female");
+        db_add_pair(key, "female");
+        return 1;
+    }
+
+
+}
+
+if(number_of_words == 5){
+
+   // a __ is a __
+    // ex: a cat is an animal
+    if(strcmp(words[1],"a")==0 &&
+            strcmp(words[3],"is")==0 &&
+            strcmp(words[4],"a")==0
+      )
+    {
+        handle_class_statement(words[2],words[5]);
+        return 1;
+    }
+
+
+
+}
+
+}
+
+int handle_command(void)
+{
+  char output[80];
+strcat(debug_string, " command ");  // debug info
+//  stioc(debug_string);
+
+  // To add later
+  // go - forward, backward
+  // turn - left, right
+  // stop
+  // move
+
+     // "say my name"
+    if(strcmp(words[1],"say")==0 &&
+            strcmp(words[2],"my")==0 &&
+            strcmp(words[3],"name")==0)
+    {
+        sprintf(output, "%s\n",current_user_name);
+        stioc(output);
+        return 1;
+    }
+
+    // Template: list <class>
+    // Example: list action
+    if(strcmp(words[1],"list")==0)
+    {
+        handle_list_question(words[2]);
+        return 1;
+    }
+return 0;
 
 }
 

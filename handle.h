@@ -38,5 +38,8 @@ void handle_login(char*);
 void handle_greetings(void);
 void handle_help(void);
 void handle_pronouns(void);
+int handle_question(void);
+int handle_statement(void);
+int handle_command(void);
 
 #endif // HANDLE_H_INCLUDED
