@@ -5,6 +5,7 @@ int f1(void)
 
     char output[80];
 
+    strcat(debug_string, " f1 ");  // debug info
 // Log out
     if(strcmp(words[1],"bye")==0)
     {

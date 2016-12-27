@@ -113,6 +113,7 @@ int main(void)
             strcpy(temp[4], words[1]);
             memcpy(words, temp, 800);  // MAX_WORDS * MAX_LETTERS
             number_of_words = 4;
+            printf(" #ow%d \n", number_of_words);// DEBUG
         }
         expecting_gender = FALSE;
 
@@ -124,6 +125,7 @@ int main(void)
                 strcmp(words[3],"is")==0)
         {
             handle_login(words[4]);
+            printf("w4:%s\n", words[4]);// DEBUG
             continue;
         }
 
@@ -184,7 +186,7 @@ int main(void)
             // check each word to see if it's a verb
             for(i=1; i<=number_of_words; i++)
             {
-                if(isverb(words[i]) == 0)
+                if(isverb(words[i]))
                 {
                     flag = 1;
                     break;
