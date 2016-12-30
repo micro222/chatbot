@@ -381,11 +381,10 @@ strcat(debug_string, "color confirmation question\n");  // debug info
 }
 
 //----------------------------------------------------
-
-void handle_rating_statement(char* parameter1, char* parameter2, char* rating) {
+void handle_like_statement(char* parameter1, char* parameter2) {
 // UNDER RENOVATIONS
 //
-// in: firstname, firstname or object or substance, rating:0-9
+// in: firstname, firstname or object or substance
 //
 //  examples:
 //  i like beer
@@ -402,7 +401,6 @@ void handle_rating_statement(char* parameter1, char* parameter2, char* rating) {
 //     3) i know nothing of this "beer" you speak of
 //     4)
 //
-// TODO (pi#1#):
 // Problem: will make multiple entries
 
 // second parameter
@@ -416,58 +414,87 @@ void handle_rating_statement(char* parameter1, char* parameter2, char* rating) {
    char key[60];
    char id3[60];
    char output[80];
+   int i;
+   strcat(debug_string, "like statement\n");  // debug info
 
-   strcat(debug_string, "rating statement\n");  // debug info
+   // Check parameter1
+   for(i = 0; i < 1; i++) { // the for loop is only here so break can be used
+      if (strcmp(parameter1, "i") == 0) {
+         strcpy(parameter1, current_user_id_string);
+         break;
 
-   if (strcmp(parameter1,"i")==0)  {
-      strcpy(parameter1, current_user_id_string);
-      goto skip436;
-   } else if (strcmp(parameter1,"you")==0) {
-      strcpy(parameter1, "#1");
-      goto skip436;
+      } else
+         if (strcmp(parameter1, "you") == 0) {
+            strcpy(parameter1, "#1");
+            break;
+         }
+
+      // known person or robot
+
+      result = db_get_id_string2(parameter1, id3);
+      if (result == FOUND) {
+         strcpy(parameter1, id3);
+      } else {
+         sprintf(output, "%s is not a known specific entity\n", parameter1);
+         stioc(output);
+         return;
+      }
    }
 
-   // known person or robot
-   result = db_get_id_string2(parameter1, id3);
-   if (result == FOUND) {
-      strcpy(parameter1, id3);
-   } else{
-      sprintf(output, "%s is not a known specific entity\n", parameter1);
-      stioc(output);
+
+
+// Check parameter2
+   for(i = 0; i < 1; i++) { // the for loop is only here so break can be used
+
+// Is known specific entity
+      if (db_get_id_string2(parameter2, id3) == FOUND) {
+      strcpy(parameter2, id3);
+         break;
+      }
+
+// not in the database?
+if(db_check(parameter2) != FOUND){
+  sprintf(output, "I've never heard of %s\n", parameter2);
+         stioc(output);
+         return;
+
+}
+
+
+      //  Check if object or substance?
+      result = db_root_check(parameter2, "object");
+      result2 = db_root_check(parameter2, "substance");
+
+      if(result == NOT_FOUND && result2 == NOT_FOUND ) {
+         sprintf(output, "I dont see how %s makes sense\n", parameter2);
+         stioc(output);
+         return;
+      }
+
+   }
+   //=======
+
+   // Is the info already known?
+   sprintf(key, "%s > like", parameter1);  //
+   if(db_check_pair(key, parameter2) == FOUND) {
+      sprintf(output, "I already know that\n"); stioc(output);
       return;
    }
 
-skip436:
+   //========
+   // add_info
 
-
-// is the 2nd parameter a known person?
-//
-   result = db_get_id(parameter2);  // a known entity?
-   if(result==FOUND) {
-      goto add_info;
-   }
-
-   //  Check if the 2nd parameter a object or substance?
-   result = db_root_check(parameter2, "object");
-   result2 = db_root_check(parameter2, "substance");
-
-   if(result == NOT_FOUND && result2 == NOT_FOUND ) {
-      sprintf(output, "I dont see how %s makes sense\n", parameter2);
-      stioc(output);
-      return;
-   }
-
-add_info:
-   // bob > rating > beer: 7
-   sprintf(key,"%s > rating > %s", parameter1, parameter2 );
-   db_add_pair(key, rating);
+   // ex: bob > like: beer
+   sprintf(key, "%s > like", parameter1);
+   db_add_pair(key, parameter2);
    sprintf(output, "I'll take note of that\n");
    stioc(output);
-  }
+
+}
 
 //--------------------------------------------------
 
-
+// This is a temporary function. It will be replaced by a function that deals with attributes.
 void handle_location_question(char* subject) {
 
    int result;
@@ -548,23 +575,35 @@ char output[80];
 }
 
 //------------------------------------------------------
-// key is someones first name
-// p is what the rating is of
+// p1 is someones first name or ID
+// p2 is what that person likes
 //
-void handle_rating_question(char* key, char* p) {
+void handle_like_question(char* p1, char* p2) {
 char output[80];
+
+/*
+p1
+ get ID
+ must have a first name
+p2
+ must be in db
+add to db
+check if already known+
+*/
+
+
 
    int result;
    char value[20];
-//   char id[20];
-   char temp[20]="rating-";
+   char id[20];
+char temp[20];
 
-   result = db_get_id(key);
-   //sprintf(output, "result %d %s %s %s      ", result, key, p, id); stioc(output);
+   result = db_get_id_string2(p1, id);
+   //sprintf(output, "result %d %s %s %s      ", result, p1, p2, id); stioc(output);
    //return;
 
    if(result !=0) {
-      sprintf(output, "I dont know %s\n", key); stioc(output);
+      sprintf(output, "I dont know %s\n", p1); stioc(output);
       return;
    }
 
@@ -575,12 +614,12 @@ char output[80];
 
 //   result = db_subject_search(p);
    if(result!=0) {
-      sprintf(output, "What is %s?\n", key); stioc(output);
+      sprintf(output, "What is %s?\n", p1); stioc(output);
       return;
    }
 
 // get rating if any
-   strcat(temp, p);
+   strcat(temp, p2);
 //  result = db_search(key,temp,value);
 
    if(result==0) {
@@ -1288,18 +1327,20 @@ int handle_statement(void)
     // Example: i like beer
     if(strcmp(words[2],"like")==0)
     {
-        handle_rating_statement(words[1], words[3], "7");
+        handle_like_statement(words[1], words[3]);
         return 1;
     }
-
+/*
     // Template: <person> hate __
     // Example: i hate beer
     if(strcmp(words[2],"hate")==0)
     {
-        handle_rating_statement(words[1], words[3], "0");
+        handle_like_statement(words[1], words[3]);
         return 1;
     }
+*/
 
+/*
     // <creature> love ___
     // conditions: 3 words, middle word is "love"
     if(strcmp(words[2],"love")==0)
@@ -1307,6 +1348,7 @@ int handle_statement(void)
         handle_rating_statement(words[1], words[3], "10");
         return 1;
     }
+*/
 
     // Template: i have *
     // Example: i have rabies
@@ -1326,6 +1368,7 @@ if(number_of_words == 4){
         return 1;
     }
 
+/*
         // ___ dont like ___
     if(strcmp(words[2],"dont")==0 &&
             strcmp(words[3],"like")==0)
@@ -1333,6 +1376,7 @@ if(number_of_words == 4){
         handle_rating_statement(words[1], words[3], "3");
         return 1;
     }
+*/
 
    // Template: i have a *
     // Example: i have a dog

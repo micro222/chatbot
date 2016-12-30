@@ -89,7 +89,7 @@ int main(void)
             stioc(output);
             continue;
         }
-        strcpy(debug_string, "");
+        strcpy(debug_string, ""); // clear the debug string
 
         //Dealing with 1 word replies to robot questions
         //expected template: my name is *
@@ -149,7 +149,7 @@ int main(void)
 // - - - - MUST BE LOGGED IN TO GET PAST THIS POINT - - - - - - -  - - - - - -
 
         // A few quick answers. Will be processed normally at some point
-        if(strcmp(user_input, "what are you")==0)      {stioc("a robot.\n"); continue;}
+        if(strcmp(user_input, "what are you")==0)      {stioc("a robot\n"); continue;}
         if(strcmp(user_input, "are you human")==0)     {stioc("no"); continue;}
         if(strcmp(user_input, "are you a robot")==0)   {stioc("yes\n"); continue;}
         if(strcmp(user_input, "are you a person")==0)  {stioc("no\n"); continue;}
@@ -169,7 +169,7 @@ int main(void)
         if(iscommand())   {handle_command();   continue;}
 
 
-// If we haven't figured out the sentence by now, all we can do is make suggestions
+// If we haven't figured out the sentence by now, all we can do is offer suggestions
 
         // Too many words?
         if(number_of_words>5)

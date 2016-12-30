@@ -372,7 +372,7 @@ int isquestion(void){
 
 int isstatement(void)
 {
-    // If the second word is a verb, the sentence is a statement
+    // If the second or third word is a verb, the sentence is a statement
 
     if(number_of_words < 3) return 0; // at least 3 words are needed
     if(isverb(words[2])) return 1;
