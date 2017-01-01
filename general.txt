@@ -107,6 +107,7 @@ delighted > class: state
 excited > class: state
 
 fine > class: state
+functional > class: state
 
 tired > class: state
 sore > class: state
@@ -534,8 +535,9 @@ bed > class:furnature
 
 // ABOUT THE ROBOT
 robot > class: device
-robot > location: canada
 #1 > class: robot
+#1 > location: canada
+#1 > state: functional
 
 //======================================================
 // BELOW IS DATA COLLECTED DURING USER SESSIONS
@@ -543,3 +545,10 @@ robot > location: canada
 #2 > class:person
 #2 > firstname:bob
 #2 > gender:male
+#3 > class:person
+#3 > firstname:ann
+#3 > gender:female
+#3 > state:fine
+#3 > state:happy
+#2 > state:lazy
+#2 > color:green

@@ -92,7 +92,7 @@ void handle_class_question(char* subject) {
 
 //--------------------------------------------------
 
-void handle_attribute_statement (char* user_subject,char* user_attribute) {
+void handle_attribute_statement (char* user_subject, char* user_attribute) {
    /*
    example: grass is green
 
@@ -117,26 +117,26 @@ void handle_attribute_statement (char* user_subject,char* user_attribute) {
    char attribute_type[20];
    char db_attribute[20];
    char id3[20];
-char output[80];
+   char output[80];
 
-strcat(debug_string, "attribute statement\n");  // debug info
+   strcat(debug_string, "attribute statement\n");  // debug info
 
-   for(i = 0; i < 1; i++){
-   if (strcmp(user_subject,"i")==0)  {
-      strcpy(user_subject, current_user_id_string);
-      break;
-   }
-   else if (strcmp(user_subject,"you")==0) {
-      strcpy(user_subject, "#1");
-      break;
-   }
+   for(i = 0; i < 1; i++) {
+      if (strcmp(user_subject, "i") == 0)  {
+         strcpy(user_subject, current_user_id_string);
+         break;
+      } else
+         if (strcmp(user_subject, "you") == 0) {
+            strcpy(user_subject, "#1");
+            break;
+         }
 
-   // known person or robot
-   result = db_get_id_string2(user_subject, id3);
-   if (result == FOUND){
-        strcpy(user_subject, id3);
+      // known person or robot
+      result = db_get_id_string2(user_subject, id3);
+      if (result == FOUND) {
+         strcpy(user_subject, id3);
+      }
    }
-}
 
    // 1) ex: is "grass" in database?
    if(db_check(user_subject) == NOT_FOUND) {
@@ -144,11 +144,19 @@ strcat(debug_string, "attribute statement\n");  // debug info
       return;
    }
 
+//===== NEW ======
+// Handling states
+  if (db_root_check(user_attribute, "state") == FOUND) {
+      db_add_pair2(user_subject, "state", user_attribute);
+      sprintf(output, "I'll take a note of that\n"); stioc(output);
+      return;
+   }
+//===============================
    // 2) Is grass an object or substance?
    result1 = db_root_check(user_subject, "object");
    result2 = db_root_check(user_subject, "substance");
    if ((result1 == NOT_FOUND) && (result2 == NOT_FOUND)) {
-      sprintf(output, "I don't think %s can have such an attribute\n", user_subject); stioc(output);
+      sprintf(output, "I don't think %s can have such an attribute or state\n", user_subject); stioc(output);
       return;
    }
 
@@ -176,12 +184,12 @@ strcat(debug_string, "attribute statement\n");  // debug info
    result = db_get_value(key, db_attribute);  // ex: returns "green"
 
    // 5) Is the attribute already known?
-    if(strcmp(user_attribute, db_attribute) == 0) {   // compare "green"(what the user typed) with green(from db)
+   if(strcmp(user_attribute, db_attribute) == 0) {   // compare "green"(what the user typed) with green(from db)
       sprintf(output, "I already know that\n"); stioc(output);
       return;
    }
 
-   // 6 Check if the attrubute contradicts what's in the db
+   // 6 Check if the attribute contradicts what's in the db
    if(result == FOUND) {
       sprintf(output, "no, %s is a %s\n", user_subject, db_attribute); stioc(output);
       return;
@@ -195,7 +203,7 @@ strcat(debug_string, "attribute statement\n");  // debug info
 
 //   sprintf(key, "%s > %s", user_subject, attribute_type);  // assemble key, ex: grass > color
 //   db_add_pair(key, user_attribute);
-db_add_pair2(user_subject, attribute_type, user_attribute);
+   db_add_pair2(user_subject, attribute_type, user_attribute);
 
    sprintf(output, "I'll take a note of that\n"); stioc(output);
    return;
@@ -471,52 +479,6 @@ void handle_like_statement(char* parameter1, char* parameter2) {
 
 //--------------------------------------------------
 
-// This is a temporary function. It will be replaced by a function that deals with attributes.
-void handle_location_question(char* subject) {
-
-   int result;
-   char value[20];
-   char key[60];
-char output[80];
-char id[60];
-
-strcat(debug_string, "location question\n");  // debug info
-
-   // DO WE KNOW THE ANSWER?
-//    strcpy(key, subject);
-//    strcat(key, " > location");
-   sprintf(key, "%s > location", subject);
-   result = db_get_value(key, value);
-   if(result==FOUND) {
-      sprintf(output, "%s\n", value); stioc(output);
-      return;
-   }
-
-//
-result = db_get_id_string2(subject, id);
-if(result == FOUND){
-   sprintf(output, "%s\n", subject); stioc(output);
-      return;
-}
-
-
-   // DO WE KNOW THE SUBJECT BUT NOT THE ANSWER?
-   //strcpy(key, subject);
-   //strcat(key, " > class");
-   sprintf(key, "%s > class", subject);
-   result = db_get_value(key, value);
-   if(result==FOUND) {
-      sprintf(output, " I don't know where %s is\n", subject); stioc(output);
-      return;
-   }
-
-   // WE DON'T KNOW THE SUBJECT
-   sprintf(output, " I never heard of %s\n", subject); stioc(output);
-   return;
-
-}
-
-//-------------------------------------------------------
 
 void handle_ability_question(char* subject, char* action) {
 
@@ -869,7 +831,7 @@ void handle_help(void) {
 
 char output[300];
 
- sprintf(output, "I've been programmed for simple questions and statements based on the words what, is, are, have, and like. I know a few hundred nouns. If I don't know something, you can always try explaining. Just keep it really simple. \n"); stioc(output);
+ sprintf(output, "I've been programmed for simple questions and statements based on the words what, where, is, are, have, and like. I know a few hundred nouns. If I don't know something, you can always try explaining. Just keep it really simple. \n"); stioc(output);
 /*
 
 
@@ -1160,12 +1122,13 @@ for(i = 0; i < 1; i++) { // the FOR loop is only here so BREAK can be used
       strcpy(p1, "#1");
       break;
    }
-/*
+
    // known person or robot
    result = db_get_id_string2(p1, id3);
    if (result == FOUND){
         strcpy(p1, id3);
    }
+   /*
    else{
       sprintf(output, "%s is not a known specific entity\n", p1); stioc(output);
       return;
@@ -1175,6 +1138,8 @@ for(i = 0; i < 1; i++) { // the FOR loop is only here so BREAK can be used
 
 //
    sprintf(key, "%s > %s", p1, p2);  // assemble key
+
+   puts(key); // DEBUG
    if(db_get_value(key, value2) == FOUND) {
       sprintf(output, "%s\n", value2); stioc(output);
       return;
@@ -1212,18 +1177,36 @@ if(number_of_words == 3){
     if(strcmp(words[1],"where")==0 &&
             strcmp(words[2],"is")==0 )
     {
-        //handle_attribute_question(words[3]);
         handle_attribute_question(words[3], "location");
         return 1;
     }
 
-    // where is ___
-    if(strcmp(words[1],"where")==0 &&
-            strcmp(words[2],"is")==0)
+
+//==========================
+    // how is ___
+    if(strcmp(words[1],"how")==0 &&
+            strcmp(words[2],"is")==0 )
     {
-        handle_location_question(words[3]);
+        handle_attribute_question(words[3], "state");
         return 1;
     }
+
+//==========================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // - - - - - - - - - - - - - - - - - - - - - -
     // ABILITY
@@ -1322,36 +1305,20 @@ int handle_statement(void)
 
   if(number_of_words == 3){
     // ___ is ___
-    // this needs to be placed after "what is ___"
     if(strcmp(words[2],"is")==0)
     {
         handle_attribute_statement(words[1],words[3]);
         return 1;
     }
 
-    if(strcmp(words[2],"is")==0 )
-    {
-        handle_class_statement(words[1],words[3]);
-        return 1;
-    }
-
-     // - - - - - - - - - - - - - - - - - - - - - -
-    // rating
-    // Template: do you like <subject>
-    // Example: do you like beer
-    //    else if(number_of_words==4 && strcmp(words[1],"do")==0 && strcmp(words[2],"you")==0 && strcmp(words[3],"like")==0 ){
-    //       handle_rating_question();
-    //    }
-    // Template: __ like __
-    // Example: i like beer
+    // __ like __, Example: i like beer
     if(strcmp(words[2],"like")==0)
     {
         handle_like_statement(words[1], words[3]);
         return 1;
     }
 
-    // Template: i have *
-    // Example: i have rabies
+    // i have *, Example: i have rabies
     if(strcmp(words[2],"have")==0 )
     {
         handle_have_statement(words[1], words[3]);
@@ -1369,8 +1336,7 @@ if(number_of_words == 4){
     }
 
 
-   // Template: i have a *
-    // Example: i have a dog
+   // i have a *, Example: i have a dog
     if(strcmp(words[2],"have")==0 &&
             strcmp(words[3],"a")==0 )
     {

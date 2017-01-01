@@ -153,10 +153,10 @@ int main(void)
         if(strcmp(user_input, "are you human")==0)     {stioc("no"); continue;}
         if(strcmp(user_input, "are you a robot")==0)   {stioc("yes\n"); continue;}
         if(strcmp(user_input, "are you a person")==0)  {stioc("no\n"); continue;}
-        if(strcmp(user_input, "where are you")==0)     {stioc("home\n"); continue;}
+       // if(strcmp(user_input, "where are you")==0)     {stioc("home\n"); continue;}
         if(strcmp(user_input, "who are you")==0)       {stioc("a robot\n"); continue;}
         if(strcmp(user_input, "where is home")==0)     {stioc("canada\n"); continue;}
-        if(strcmp(user_input, "how are you")==0)       {stioc("partialy functional\n"); continue;}
+       // if(strcmp(user_input, "how are you")==0)       {stioc("partialy functional\n"); continue;}
         if(strcmp(user_input, "what is your name")==0) {stioc("ivan\n"); continue;}
 
         //modify_nouns(); // comming soon
