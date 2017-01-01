@@ -121,13 +121,14 @@ char output[80];
 
 strcat(debug_string, "attribute statement\n");  // debug info
 
+   for(i = 0; i < 1; i++){
    if (strcmp(user_subject,"i")==0)  {
       strcpy(user_subject, current_user_id_string);
-      goto skip400;
+      break;
    }
    else if (strcmp(user_subject,"you")==0) {
       strcpy(user_subject, "#1");
-      goto skip400;
+      break;
    }
 
    // known person or robot
@@ -135,8 +136,7 @@ strcat(debug_string, "attribute statement\n");  // debug info
    if (result == FOUND){
         strcpy(user_subject, id3);
    }
-
-skip400:
+}
 
    // 1) ex: is "grass" in database?
    if(db_check(user_subject) == NOT_FOUND) {
@@ -281,13 +281,14 @@ char output[80];
 
 strcat(debug_string, "have statement\n");  // debug info
 
+for(i = 0; i < 1; i++) { // the FOR loop is only here so BREAK can be used
    if (strcmp(parameter1,"i")==0)  {
       strcpy(parameter1, current_user_id_string);
-      goto skip297;
+      break;
    }
    else if (strcmp(parameter1,"you")==0) {
       strcpy(parameter1, "#1");
-      goto skip297;
+      break;
    }
 
    // known person or robot
@@ -299,8 +300,8 @@ strcat(debug_string, "have statement\n");  // debug info
       sprintf(output, "%s is not a known specific entity\n", parameter1); stioc(output);
       return;
    }
+}
 
-skip297:
 
    // is dog in db? no
    sprintf(key, "%s > class", parameter2);
@@ -382,8 +383,7 @@ strcat(debug_string, "color confirmation question\n");  // debug info
 
 //----------------------------------------------------
 void handle_like_statement(char* parameter1, char* parameter2) {
-// UNDER RENOVATIONS
-//
+
 // in: firstname, firstname or object or substance
 //
 //  examples:
@@ -391,49 +391,32 @@ void handle_like_statement(char* parameter1, char* parameter2) {
 //     1) i'll take note of that
 //     2) what is beer?
 //     3) i already knew that
-//     4) but I thought you hated beer
-//  i like jane
-//     1) rating added
-//     2) i know nothing of this "jane" you speak of
-//  jane likes beer
-//     1) rating added
-//     2) i know nothing of this "jane" you speak of
-//     3) i know nothing of this "beer" you speak of
-//     4)
-//
-// Problem: will make multiple entries
 
-// second parameter
-//
-//  known person?    add info
-//  unknown person?  dont know this person
-//  known object?    add info
-//  known substance? add info
-//  unknown
    int result, result2;
    char key[60];
-   char id3[60];
+   char id_string[60];
    char output[80];
    int i;
+
    strcat(debug_string, "like statement\n");  // debug info
 
    // Check parameter1
-   for(i = 0; i < 1; i++) { // the for loop is only here so break can be used
+   for(i = 0; i < 1; i++) { // the FOR loop is only here so BREAK can be used
+      // The current user?
       if (strcmp(parameter1, "i") == 0) {
          strcpy(parameter1, current_user_id_string);
          break;
 
       } else
+         // The robot?
          if (strcmp(parameter1, "you") == 0) {
             strcpy(parameter1, "#1");
             break;
          }
 
-      // known person or robot
-
-      result = db_get_id_string2(parameter1, id3);
-      if (result == FOUND) {
-         strcpy(parameter1, id3);
+      // A known person?
+      if (db_get_id_string2(parameter1, id_string) == FOUND) {
+         strcpy(parameter1, id_string);
       } else {
          sprintf(output, "%s is not a known specific entity\n", parameter1);
          stioc(output);
@@ -441,25 +424,22 @@ void handle_like_statement(char* parameter1, char* parameter2) {
       }
    }
 
-
-
 // Check parameter2
    for(i = 0; i < 1; i++) { // the for loop is only here so break can be used
 
-// Is known specific entity
-      if (db_get_id_string2(parameter2, id3) == FOUND) {
-      strcpy(parameter2, id3);
+      // Is known specific entity
+      if (db_get_id_string2(parameter2, id_string) == FOUND) {
+         strcpy(parameter2, id_string);
          break;
       }
 
 // not in the database?
-if(db_check(parameter2) != FOUND){
-  sprintf(output, "I've never heard of %s\n", parameter2);
+      if(db_check(parameter2) != FOUND) {
+         sprintf(output, "I've never heard of %s\n", parameter2);
          stioc(output);
          return;
 
-}
-
+      }
 
       //  Check if object or substance?
       result = db_root_check(parameter2, "object");
@@ -472,22 +452,19 @@ if(db_check(parameter2) != FOUND){
       }
 
    }
-   //=======
 
-   // Is the info already known?
-   sprintf(key, "%s > like", parameter1);  //
-   if(db_check_pair(key, parameter2) == FOUND) {
-      sprintf(output, "I already know that\n"); stioc(output);
-      return;
+   // already is known?
+   sprintf(key, "%s > like", parameter1);
+   result = db_check_pair(key, parameter2);
+   if(result == FOUND){
+      sprintf(output, "I already know that\n");
    }
 
-   //========
    // add_info
+   else{db_add_pair(key, parameter2);
+      sprintf(output, "I'll take note of that\n");
+   }
 
-   // ex: bob > like: beer
-   sprintf(key, "%s > like", parameter1);
-   db_add_pair(key, parameter2);
-   sprintf(output, "I'll take note of that\n");
    stioc(output);
 
 }
@@ -578,54 +555,88 @@ char output[80];
 // p1 is someones first name or ID
 // p2 is what that person likes
 //
-void handle_like_question(char* p1, char* p2) {
-char output[80];
+void handle_like_question(char* parameter1, char* parameter2) {
 
-/*
-p1
- get ID
- must have a first name
-p2
- must be in db
-add to db
-check if already known+
-*/
+// in: firstname, firstname or object or substance
+//
+//  examples:
+//  i like beer
+//     1) i'll take note of that
+//     2) what is beer?
+//     3) i already knew that
 
+   int result, result2;
+   char key[60];
+   char id_string[60];
+   char output[80];
+   int i;
 
+   strcat(debug_string, "like question\n");  // debug info
 
-   int result;
-   char value[20];
-   char id[20];
-char temp[20];
+   // Check parameter1
+   for(i = 0; i < 1; i++) { // the FOR loop is only here so BREAK can be used
+      // The current user?
+      if (strcmp(parameter1, "i") == 0) {
+         strcpy(parameter1, current_user_id_string);
+         break;
 
-   result = db_get_id_string2(p1, id);
-   //sprintf(output, "result %d %s %s %s      ", result, p1, p2, id); stioc(output);
-   //return;
+      } else
+         // The robot?
+         if (strcmp(parameter1, "you") == 0) {
+            strcpy(parameter1, "#1");
+            break;
+         }
 
-   if(result !=0) {
-      sprintf(output, "I dont know %s\n", p1); stioc(output);
-      return;
+      // A known person?
+      if (db_get_id_string2(parameter1, id_string) == FOUND) {
+         strcpy(parameter1, id_string);
+      } else {
+         sprintf(output, "%s is not a known specific entity\n", parameter1);
+         stioc(output);
+         return;
+      }
    }
 
-//sprintf(output, "result %d     ", result); stioc(output);
-//  return;
+// Check parameter2
+   for(i = 0; i < 1; i++) { // the for loop is only here so break can be used
 
-//check if the subject of rating is known
+      // Is known specific entity
+      if (db_get_id_string2(parameter2, id_string) == FOUND) {
+         strcpy(parameter2, id_string);
+         break;
+      }
 
-//   result = db_subject_search(p);
-   if(result!=0) {
-      sprintf(output, "What is %s?\n", p1); stioc(output);
-      return;
+// not in the database?
+      if(db_check(parameter2) != FOUND) {
+         sprintf(output, "I've never heard of %s\n", parameter2);
+         stioc(output);
+         return;
+
+      }
+
+      //  Check if object or substance?
+      result = db_root_check(parameter2, "object");
+      result2 = db_root_check(parameter2, "substance");
+
+      if(result == NOT_FOUND && result2 == NOT_FOUND ) {
+         sprintf(output, "I dont see how %s makes sense\n", parameter2);
+         stioc(output);
+         return;
+      }
+
    }
 
-// get rating if any
-   strcat(temp, p2);
-//  result = db_search(key,temp,value);
+   // compare_info
 
-   if(result==0) {
-      sprintf(output, "%s\n", value); stioc(output);
+   // ex: bob > like: beer
+   sprintf(key, "%s > like", parameter1);
+   result = db_check_pair(key, parameter2);
+   if(result == TRUE){
+   sprintf(output, "yes\n");
+   }else{
+   sprintf(output, "I don't know\n");
    }
-   else sprintf(output, "I dont know (code:%d)\n", result); stioc(output);
+   stioc(output);
 
 }
 
@@ -648,7 +659,7 @@ char output[80];
 strcat(debug_string, "greetings\n");  // debug info
    // if not logged in
    if(strcmp(current_user_id_string, "#0") == 0) {
-      sprintf(output, "hi, what is your name?\r\n"); stioc(output);
+      sprintf(output, "what is your first name?\r\n"); stioc(output);
       expecting_name = TRUE;
    }
    // if logged in
@@ -858,7 +869,7 @@ void handle_help(void) {
 
 char output[300];
 
- sprintf(output, "I've been programmed for simple questions and statements based on the words what, is, are, have, and like. If i don't know something, you can always try explaining. Just keep it really simple. \n"); stioc(output);
+ sprintf(output, "I've been programmed for simple questions and statements based on the words what, is, are, have, and like. I know a few hundred nouns. If I don't know something, you can always try explaining. Just keep it really simple. \n"); stioc(output);
 /*
 
 
@@ -924,14 +935,14 @@ char output[80];
 
    strcat(debug_string, "have question\n");  // debug info
 //
-
+for(i = 0; i < 1; i++) { // the FOR loop is only here so BREAK can be used
    if (strcmp(p1,"i")==0)  {
       strcpy(p1, current_user_id_string);
-      goto skip840;
+      break;
    }
    else if (strcmp(p1,"you")==0) {
       strcpy(p1, "#1");
-      goto skip840;
+      break;
    }
 
    // known person or robot
@@ -944,7 +955,7 @@ char output[80];
       return;
    }
 
-skip840:
+}
 
 //
    sprintf(key, "%s > condition", p1);  // assemble key
@@ -1140,14 +1151,14 @@ void handle_attribute_question(char* p1, char* p2){
 
   strcat(debug_string, "attribute question\n");  // debug info
 //
-
+for(i = 0; i < 1; i++) { // the FOR loop is only here so BREAK can be used
    if (strcmp(p1,"i")==0)  {
       strcpy(p1, current_user_id_string);
-      goto skip1100;
+      break;
    }
    else if (strcmp(p1,"you")==0) {
       strcpy(p1, "#1");
-      goto skip1100;
+      break;
    }
 /*
    // known person or robot
@@ -1160,7 +1171,7 @@ void handle_attribute_question(char* p1, char* p2){
       return;
    }
 */
-skip1100:
+}
 
 //
    sprintf(key, "%s > %s", p1, p2);  // assemble key
@@ -1201,8 +1212,8 @@ if(number_of_words == 3){
     if(strcmp(words[1],"where")==0 &&
             strcmp(words[2],"is")==0 )
     {
-        handle_location_question(words[3]);
-        //   handle_attribute_question(words[3], "location");
+        //handle_attribute_question(words[3]);
+        handle_attribute_question(words[3], "location");
         return 1;
     }
 
@@ -1278,6 +1289,14 @@ if(number_of_words == 3){
         return 1;
     }
 
+   // "do * like *"
+    if(strcmp(words[1],"do")==0 &&
+            strcmp(words[3],"like")==0 )
+    {
+        handle_like_question(words[2], words[4]);
+        return 1;
+    }
+
 
     // does jane have acne
     if(strcmp(words[1],"does")==0 &&
@@ -1287,7 +1306,7 @@ if(number_of_words == 3){
         return 1;
     }
 
-strcat(output, "silly question\n");
+sprintf(output, "silly question\n");
  stioc(output);
 
 
@@ -1330,25 +1349,6 @@ int handle_statement(void)
         handle_like_statement(words[1], words[3]);
         return 1;
     }
-/*
-    // Template: <person> hate __
-    // Example: i hate beer
-    if(strcmp(words[2],"hate")==0)
-    {
-        handle_like_statement(words[1], words[3]);
-        return 1;
-    }
-*/
-
-/*
-    // <creature> love ___
-    // conditions: 3 words, middle word is "love"
-    if(strcmp(words[2],"love")==0)
-    {
-        handle_rating_statement(words[1], words[3], "10");
-        return 1;
-    }
-*/
 
     // Template: i have *
     // Example: i have rabies
@@ -1368,15 +1368,6 @@ if(number_of_words == 4){
         return 1;
     }
 
-/*
-        // ___ dont like ___
-    if(strcmp(words[2],"dont")==0 &&
-            strcmp(words[3],"like")==0)
-    {
-        handle_rating_statement(words[1], words[3], "3");
-        return 1;
-    }
-*/
 
    // Template: i have a *
     // Example: i have a dog
@@ -1427,8 +1418,6 @@ if(number_of_words == 5){
         return 1;
     }
 
-
-
 }
 
 }
@@ -1466,7 +1455,21 @@ return 0;
 
 }
 
+void replace_i_and_you(char* word){
 
+      // The current user?
+      if (strcmp(word, "i") == 0) {
+         strcpy(word, current_user_id_string);
+         return;
+
+      } else
+         // The robot?
+         if (strcmp(word, "you") == 0) {
+            strcpy(word, "#1");
+            return;
+         }
+
+}
 
 
 

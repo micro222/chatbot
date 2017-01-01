@@ -17,11 +17,11 @@
 #include <stdlib.h>
 #include "functions.h"
 
-int db_check(char*);
-int db_get_value(char*, char*);
-int db_root_check(char*, char*);
-int db_check_pair(char*, char*);
-int db_add_pair(char*, char*);
+int db_check(char*); // returns TRUE if word is in the database
+int db_get_value(char*, char*); // give it a key and it gives the value
+int db_root_check(char*, char*); // checks if the class matches. Will dig through to the root if needed
+int db_check_pair(char*, char*); // returns TRUE if the key and value are in the database
+int db_add_pair(char*, char*); // adds a key/value pair to the end of the database
 int db_add_pair2(char*, char*, char*);
 int db_next_available_id(void);
 int db_next_available_id_string(char* id_string);

@@ -148,7 +148,7 @@ int main(void)
 
 // - - - - MUST BE LOGGED IN TO GET PAST THIS POINT - - - - - - -  - - - - - -
 
-        // A few quick answers. Will be processed normally at some point
+        // A few word for word answers. These will be processed normally at some point
         if(strcmp(user_input, "what are you")==0)      {stioc("a robot\n"); continue;}
         if(strcmp(user_input, "are you human")==0)     {stioc("no"); continue;}
         if(strcmp(user_input, "are you a robot")==0)   {stioc("yes\n"); continue;}
@@ -161,6 +161,7 @@ int main(void)
 
         //modify_nouns(); // comming soon
 
+        // Handle 1 word inputs
         if(number_of_words == 1) {f1(); continue;}
 
         // Determine if the sentence is a question, statement or command
