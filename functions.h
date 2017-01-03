@@ -46,6 +46,7 @@ extern int irc;
 extern char channel[20];
 //int isvalidname(char*);
 int isverb(char*);
+void normalize(void);
 
 typedef struct test {
    char* line[80];

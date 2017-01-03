@@ -489,7 +489,7 @@ brussels > class: city
 brussels > location: belgium
 
 canada > class: country
-//canada
+canada > location: earth
 england > class: country
 england > location: europe
 france > class: country
@@ -507,9 +507,9 @@ china > location: asia
 japan > class: country
 japan > location: asia
 spain > class: country
-spain > europe
+spain > location: europe
 italy > class: country
-italy > europe
+italy > location: europe
 korea > class: country
 korea > location: asia
 
@@ -545,10 +545,4 @@ robot > class: device
 #2 > class:person
 #2 > firstname:bob
 #2 > gender:male
-#3 > class:person
-#3 > firstname:ann
-#3 > gender:female
-#3 > state:fine
-#3 > state:happy
-#2 > state:lazy
-#2 > color:green
+

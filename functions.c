@@ -391,4 +391,60 @@ int iscommand(void)
     else return 0;
 }
 
+//=========================
 
+void normalize(void) {
+
+   int from = 0;
+   int to = 0;
+   char buffer[80];
+
+   // Skip past leading whitespaces
+   while(user_input[from] == ' ') from++;
+
+   while(1) {
+
+      // If lower case
+      if(user_input[from] >= 'a' && user_input[from] <= 'z') {
+         buffer[to++] = user_input[from++]; printf("1\n");
+         continue;
+      }
+
+      // If upper case
+      if(user_input[from] >= 'A' && user_input[from] <= 'Z') {
+         buffer[to++] = user_input[from++] + 32; printf("2\n");
+         continue;
+      }
+
+      // If number
+      if(user_input[from] >= '0' && user_input[from] <= '9') {
+         buffer[to++] = user_input[from++]; printf("3\n");
+         continue;
+      }
+
+
+      // If multiple whitespaces
+      //   if(user_input[from] == ' ' && user_input[from-1] == ' ' && from > 0) {
+      if(user_input[from] == ' ' && buffer[to - 1] == ' ' && to > 0) {
+         from++; printf("5\n");
+         continue;
+      }
+      // If normal whitespace
+      if(user_input[from] == ' ') {
+         buffer[to++] = user_input[from++]; printf("6\n");
+         continue;
+      }
+
+      // If null
+      if(user_input[from] == 0) {
+         buffer[to++] = user_input[from++];
+         strcpy(user_input, buffer); printf("7\n");
+         //puts(buffer); // DEBUG
+         return;
+      }
+
+      from++;
+   }
+}
+
+//=========================

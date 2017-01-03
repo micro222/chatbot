@@ -831,7 +831,7 @@ void handle_help(void) {
 
 char output[300];
 
- sprintf(output, "I've been programmed for simple questions and statements based on the words what, where, is, are, have, and like. I know a few hundred nouns. If I don't know something, you can always try explaining. Just keep it really simple. \n"); stioc(output);
+ sprintf(output, "I've been programmed for simple questions and statements based on the words what, where, how, is, are, have, and like. I also know a few hundred nouns. If I don't know something, you can always try explaining. Just keep it really simple. \n"); stioc(output);
 /*
 
 
@@ -1181,8 +1181,6 @@ if(number_of_words == 3){
         return 1;
     }
 
-
-//==========================
     // how is ___
     if(strcmp(words[1],"how")==0 &&
             strcmp(words[2],"is")==0 )
@@ -1190,22 +1188,6 @@ if(number_of_words == 3){
         handle_attribute_question(words[3], "state");
         return 1;
     }
-
-//==========================
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     // - - - - - - - - - - - - - - - - - - - - - -

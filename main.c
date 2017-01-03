@@ -50,6 +50,8 @@ int main(void)
             if(result == 0) continue;
         }
 
+        normalize(); // removes capitals, extra spaces, punctuation
+        puts(user_input);
         parse(); // separate the sentence into individual words
 
 #if 1

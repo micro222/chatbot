@@ -44,7 +44,7 @@ int f1(void)
 // and if input was not understood...
 
     // A single verb?
-    if(isverb(words[1]) == 0)
+    if(isverb(words[1]) == 1)
     {
         sprintf(output, "is a verb\n");
         stioc(output);
