@@ -1,3 +1,4 @@
+abigail
 alice
 amanda
 amy
@@ -9,6 +10,7 @@ anne
 annette
 annie
 ashley
+ava
 barbara
 beth
 betty
@@ -24,10 +26,13 @@ catherine
 cathy
 celine
 chantal
+charlotte
 cheryl
 christina
 christine
+chloe
 cindy
+claire
 clara
 clarice
 collete
@@ -44,11 +49,16 @@ donna
 dorothy
 elaine
 elizabeth
+ella
 ellen
 emily
+emma
 erin
+evelyn
 gail
 gloria
+grace
+hailey
 hazel
 heather
 heidi
@@ -56,6 +66,7 @@ helen
 helene
 huguette
 isabel
+isabella
 jacqueline
 jane
 janet
@@ -81,6 +92,8 @@ kim
 laura
 lauren
 laurie
+lily
+lillian
 linda
 lisa
 lori
@@ -99,9 +112,11 @@ marlene
 mary
 meg
 melanie
+mia
 michele
 michelle
 nancy
+nora
 natalie
 natasha
 nicole
@@ -121,6 +136,7 @@ sarah
 sharon
 sheila
 shirley
+sophia
 sonya
 stephanie
 sue
@@ -134,6 +150,7 @@ therese
 tina
 vicki
 vickie
+victoria
 wanda
 wendy
 yvonne

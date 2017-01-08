@@ -1078,11 +1078,6 @@ int shifting_needed;
 
    }
 
-
-// your
-
-
-
    // known person or robot
  //  result = db_get_id_string2(p1, id3);
    if (result == FOUND){
@@ -1138,8 +1133,6 @@ for(i = 0; i < 1; i++) { // the FOR loop is only here so BREAK can be used
 
 //
    sprintf(key, "%s > %s", p1, p2);  // assemble key
-
-   puts(key); // DEBUG
    if(db_get_value(key, value2) == FOUND) {
       sprintf(output, "%s\n", value2); stioc(output);
       return;
@@ -1198,6 +1191,10 @@ if(number_of_words == 3){
         handle_ability_question(words[2],words[3]);
         return 1;
     }
+
+    sprintf(output, "I don't understand your qestion\n");
+    stioc(output);
+
 }
 
   if(number_of_words == 4){
@@ -1271,11 +1268,10 @@ if(number_of_words == 3){
         return 1;
     }
 
-sprintf(output, "silly question\n");
- stioc(output);
+  }
 
-
-   }
+  sprintf(output, "I don't understand your qestion\n");
+  stioc(output);
 
 }
 

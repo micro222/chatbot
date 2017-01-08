@@ -406,19 +406,19 @@ void normalize(void) {
 
       // If lower case
       if(user_input[from] >= 'a' && user_input[from] <= 'z') {
-         buffer[to++] = user_input[from++]; printf("1\n");
+         buffer[to++] = user_input[from++];
          continue;
       }
 
       // If upper case
       if(user_input[from] >= 'A' && user_input[from] <= 'Z') {
-         buffer[to++] = user_input[from++] + 32; printf("2\n");
+         buffer[to++] = user_input[from++] + 32;
          continue;
       }
 
       // If number
       if(user_input[from] >= '0' && user_input[from] <= '9') {
-         buffer[to++] = user_input[from++]; printf("3\n");
+         buffer[to++] = user_input[from++];
          continue;
       }
 
@@ -426,19 +426,19 @@ void normalize(void) {
       // If multiple whitespaces
       //   if(user_input[from] == ' ' && user_input[from-1] == ' ' && from > 0) {
       if(user_input[from] == ' ' && buffer[to - 1] == ' ' && to > 0) {
-         from++; printf("5\n");
+         from++;
          continue;
       }
       // If normal whitespace
       if(user_input[from] == ' ') {
-         buffer[to++] = user_input[from++]; printf("6\n");
+         buffer[to++] = user_input[from++];
          continue;
       }
 
       // If null
       if(user_input[from] == 0) {
          buffer[to++] = user_input[from++];
-         strcpy(user_input, buffer); printf("7\n");
+         strcpy(user_input, buffer);
          //puts(buffer); // DEBUG
          return;
       }

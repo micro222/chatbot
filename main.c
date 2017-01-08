@@ -4,36 +4,49 @@ void error(const char *);
 
 //-------------------------------------------------------
 
-int main(void)
-{
+int main(void) {
 
-    // Declare vaiables
+   // Declare vaiables
 //   char out[MAX_WORDS][MAX_LETTERS];
-    char temp[40][20];
+   char temp[40][20];
 //    char key[80];
 //    char buffer[256];
-    char output[80];
+   char output[80];
 //  char *output; // this causes a segmentation fault
+   char c;
 
 //    ssize_t ssize;
 
-    irc = TRUE;
-    // irc = FALSE;
+   //irc = TRUE;
+   // irc = FALSE;
 
-    // INITIALIZE
-    irc_init();
-    gender_code = 0;
-    strcpy(debug_string, "");
-    strcpy(current_user_id_string, "#0");
-    strcpy(gender, "unknown");
-    strcpy(current_user_name, "unknown");
-    expecting_name = FALSE;
-    expecting_gender = FALSE;
-    time_of_last_input=time(NULL);
-    time_of_last_output=time(NULL);
+   // INITIALIZE
+   gender_code = 0;
+   strcpy(debug_string, "");
+   strcpy(current_user_id_string, "#0");
+   strcpy(gender, "unknown");
+   strcpy(current_user_name, "unknown");
+   expecting_name = FALSE;
+   expecting_gender = FALSE;
+   time_of_last_input = time(NULL);
+   time_of_last_output = time(NULL);
 
+   puts("Press 1 for IRC, 2 for console\n");
+   while(1) {
+      c = getchar();
 
-    // THE MAIN LOOP
+      if(c == '1') {
+         irc = TRUE;
+         irc_init();
+         break;
+      }
+      if(c == '2') {
+         irc = FALSE;
+         break;
+      }
+   }
+
+   // THE MAIN LOOP
     while(1)
     {
         // for console I/O
@@ -46,12 +59,11 @@ int main(void)
         else
         {   // Checks the IRC server for incoming data. Handles pings. Returns 1 if
             // there are words to be processed. Words will be in user_input
-            result = irc_io();
-            if(result == 0) continue;
+            if(irc_io() == 0) continue;
         }
 
         normalize(); // removes capitals, extra spaces, punctuation
-        puts(user_input);
+        if (irc==TRUE) puts(user_input);
         parse(); // separate the sentence into individual words
 
 #if 1
@@ -59,15 +71,15 @@ int main(void)
         for(n=1; n<=number_of_words; n++)
         {
             //if (strcmp(words[n],"does")==0) strcpy(words[n], "do");
-            if (strcmp(words[n],"has")==0)  strcpy(words[n], "have");
-            if (strcmp(words[n],"are")==0)  strcpy(words[n], "is");
-            if (strcmp(words[n],"wants")==0)strcpy(words[n], "want");
-            if (strcmp(words[n],"feels")==0)strcpy(words[n], "feel");
-            if (strcmp(words[n],"likes")==0)strcpy(words[n], "like");
-            if (strcmp(words[n],"am")==0)	  strcpy(words[n], "is");
-            if (strcmp(words[n],"an")==0)	  strcpy(words[n], "a");
-            if (strcmp(words[n],"hello")==0)	  strcpy(words[n], "hi");
-            if (strcmp(words[n],"hey")==0)	  strcpy(words[n], "hi");
+            if (strcmp(words[n],"has")==0)   strcpy(words[n], "have");
+            if (strcmp(words[n],"are")==0)   strcpy(words[n], "is");
+            if (strcmp(words[n],"wants")==0) strcpy(words[n], "want");
+            if (strcmp(words[n],"feels")==0) strcpy(words[n], "feel");
+            if (strcmp(words[n],"likes")==0) strcpy(words[n], "like");
+            if (strcmp(words[n],"am")==0)	   strcpy(words[n], "is");
+            if (strcmp(words[n],"an")==0)	   strcpy(words[n], "a");
+            if (strcmp(words[n],"hello")==0)	strcpy(words[n], "hi");
+            if (strcmp(words[n],"hey")==0)	strcpy(words[n], "hi");
         }
 #endif
 
@@ -115,8 +127,7 @@ int main(void)
             strcpy(temp[4], words[1]);
             memcpy(words, temp, 800);  // MAX_WORDS * MAX_LETTERS
             number_of_words = 4;
-            printf(" #ow%d \n", number_of_words);// DEBUG
-        }
+         }
         expecting_gender = FALSE;
 
         // Log in?
@@ -127,7 +138,6 @@ int main(void)
                 strcmp(words[3],"is")==0)
         {
             handle_login(words[4]);
-            printf("w4:%s\n", words[4]);// DEBUG
             continue;
         }
 
@@ -160,11 +170,24 @@ int main(void)
         if(strcmp(user_input, "where is home")==0)     {stioc("canada\n"); continue;}
        // if(strcmp(user_input, "how are you")==0)       {stioc("partialy functional\n"); continue;}
         if(strcmp(user_input, "what is your name")==0) {stioc("ivan\n"); continue;}
+        if(strcmp(user_input, "who built you")==0)     {stioc("elves\n"); continue;}
+        if(strcmp(user_input, "who programmed you")==0) {stioc("elves\n"); continue;}
+        if(strcmp(user_input, "who made you")==0)      {stioc("elves\n"); continue;}
+        if(strcmp(user_input, "who created you")==0)   {stioc("elves\n"); continue;}
 
         //modify_nouns(); // comming soon
 
         // Handle 1 word inputs
         if(number_of_words == 1) {f1(); continue;}
+
+        // Too many words?
+        if(number_of_words>5)
+        {
+            sprintf(output, "Try shorter sentences\n");
+            stioc(output);
+            continue;
+        }
+
 
         // Determine if the sentence is a question, statement or command
         if(isquestion())  {handle_question();  continue;}
@@ -174,13 +197,6 @@ int main(void)
 
 // If we haven't figured out the sentence by now, all we can do is offer suggestions
 
-        // Too many words?
-        if(number_of_words>5)
-        {
-            sprintf(output, "Try shorter sentences\n");
-            stioc(output);
-            continue;
-        }
 
         // No verbs?
         if(number_of_words>1)
@@ -214,7 +230,7 @@ int main(void)
         }
 
         // Default
-        sprintf(output, "I'm not familiar with that kind of sentence\n");
+        sprintf(output, "I don't see any verbs in the first 3 words\n");
         stioc(output);
         continue;
 

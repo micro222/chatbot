@@ -70,41 +70,42 @@ void irc_init(void){
 
    }
 
-int irc_io(void){
+int irc_io(void) {
 
-char output[80];
-         //Receive a reply from the server
-         bzero(server_reply,2000); // clear the buffer
-         length = recv(socket_desc, server_reply , 2000 , 0);
-         if (length <  0) {
-            if(strcmp(current_user_id_string, "#0") != 0 &&
+   char output[80];
+
+   //Receive a reply from the server
+   bzero(server_reply, 2000); // clear the buffer
+   length = recv(socket_desc, server_reply , 2000 , 0);
+   if (length <  0) {
+      if(strcmp(current_user_id_string, "#0") != 0 &&
             time(NULL) > time_of_last_input + 200 &&
-+           time(NULL) > time_of_last_output + 9) {
-               sprintf(output, "it looks like %s has wandered off somewhere\n", current_user_name);
-               stioc(output);
-               strcpy(current_user_id_string, "#0");
-               strcpy(current_user_name, "unknown");
-               strcpy(gender, "unknown");
-               time_of_last_output = time(NULL);
-            }
-            return 0;
-         }
-         puts(server_reply);
-         // Handle pings
-         if(!strncmp(server_reply, "PING ", 5)) {
-            server_reply[1] = 'O';  // turn a ping into a pong
-            send(socket_desc , server_reply , strlen(server_reply) , 0);  // send pong
-            printf("%s\n",server_reply);
-            return 0;
-         }
-         ret1 = strstr(server_reply, "PRIVMSG");
-         if(ret1 == NULL) return 0; // if it's not a message, go back to the top of the loop
-         ret2 = strstr(ret1, ":"); // get rid of everything before the :
-         ret2++; // move past the :
-         *(ret2 + strlen(ret2) -2) = 0; // get rid of the CR at the end
-         strcpy(user_input,ret2);
-         printf("extracted message: %s\r\n", user_input); // show the extracted message
-         time_of_last_input = time(NULL);
-         return 1; //
+            +           time(NULL) > time_of_last_output + 9) {
+         sprintf(output, "it looks like %s has wandered off somewhere\n", current_user_name);
+         stioc(output);
+         strcpy(current_user_id_string, "#0");
+         strcpy(current_user_name, "unknown");
+         strcpy(gender, "unknown");
+         time_of_last_output = time(NULL);
+      }
+      return 0;
+   }
+   puts(server_reply);
+   // Handle pings
+   if(!strncmp(server_reply, "PING ", 5)) {
+      server_reply[1] = 'O';  // turn a ping into a pong
+      send(socket_desc , server_reply , strlen(server_reply) , 0);  // send pong
+      printf("%s\n", server_reply);
+      return 0;
+   }
+   ret1 = strstr(server_reply, "PRIVMSG");
+   if(ret1 == NULL) return 0; // if it's not a message, go back to the top of the loop
+   ret2 = strstr(ret1, ":"); // get rid of everything before the :
+   ret2++; // move past the :
+   *(ret2 + strlen(ret2) - 2) = 0; // get rid of the CR at the end
+   strcpy(user_input, ret2);
+   printf("extracted message: %s\r\n", user_input); // show the extracted message
+   time_of_last_input = time(NULL);
+   return 1; //
 }
 

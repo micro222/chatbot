@@ -546,3 +546,10 @@ robot > class: device
 #2 > firstname:bob
 #2 > gender:male
 
+#3 > class:person
+#3 > firstname:ann
+#3 > gender:female
+#4 > class:person
+#4 > firstname:hi
+#2 > gender:female
+chocolate > class:substance
