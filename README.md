@@ -1,6 +1,6 @@
-A text-based learning robot that tries to get to know its users over a period of time. It runs on a Raspberry Pi and is usualy accessable from IRC and the web. To try it out, go to webchat.freenode.net and join "chatbot".
+A text-based learning robot that tries to get to know its users over a period of time. It runs on a Raspberry Pi.
 
-I've been working on this chatbot on and off for about 12 years, and while I've made a lot of progress, there's a great deal of work left to do. I was thinking that if this was a group project, development would pick up speed considerably, plus it could be more fun to work on. I'd like see if there's any interest out there.
+I've been working on this chatbot on and off for about 14 years, and while I've made a lot of progress, there's a great deal of work left to do. I was thinking that if this was a group project, development would pick up speed considerably, plus it could be more fun to work on. I'd like see if there's any interest out there.
 
 I wanted to make a chatbot that is better than the AIML types that are so common. Something that would pay attention to who it was talking to and try to learn from that person. It would not guess at an answer when it has no understanding of what was said.
 
@@ -17,10 +17,13 @@ Note: There's more info in the wiki.
 * Will try to use people to expand it's knowledge
 * The source code is documented so that even non-programmers should be able to figure out what's goin on.
 
-## Long term goals
-* Will form opinions of the people it talks to
-* Will initiate conversation if the user doesn't
-* Will be thinking of various things when it's not in a conversation. This activity may have an effect on its mood, may cause it to arrive at some conclusions. It may be prompted to ask related questions. It can be asked "what are you thinking about".
+## How it currently handles sentences
+A function is called to determine whether the sentence is a statement, question, command or misc.
+For statements, a function is called based on the verb used. The information provided is stored in the database.
+  The bot will ask about anything that is unfamiliar to it. It will point out contradictory info when nessessary
+For questions, a function is called based on the verb used. The information requested is retrieved from the database
+The bot will do what it's commanded.
+
 
 ## The database
 It's a text file called general.txt. Information is stored as a list of key-value pairs, one pair per line. The key is a series of increasingly specific keywords separated by the ">" character. Any information that is gathered during user sessions gets added to the end of the file. Specific entities like people, pets and objects are internally given ID numbers. 
@@ -55,3 +58,9 @@ There is a set of functions for easy access to it.
 * Ideas in general
 
 See "Issues" for a list of things that need to be worked on.
+
+## Long term goals
+* Will form opinions of the people it talks to
+* Will initiate conversation if the user doesn't
+* Will be thinking of various things when it's not in a conversation. This activity may have an effect on its mood, may cause it to arrive at some conclusions. It may be prompted to ask related questions. It can be asked "what are you thinking about".
+
