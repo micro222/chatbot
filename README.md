@@ -19,9 +19,11 @@ Note: There's more info in the wiki.
 
 ## How it currently handles sentences
 A function is called to determine whether the sentence is a statement, question, command or misc.
-For statements, a function is called based on the verb used. The information provided is stored in the database.
-  The bot will ask about anything that is unfamiliar to it. It will point out contradictory info when nessessary
+
+For statements, a function is called based on the verb used. The information provided is stored in the database. The bot will ask about anything that is unfamiliar to it. It will point out contradictory info when nessessary
+
 For questions, a function is called based on the verb used. The information requested is retrieved from the database
+
 The bot will do what it's commanded.
 
 
