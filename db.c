@@ -1,4 +1,6 @@
-#include "db.h"
+//#define FOUND 0
+//#define  3
+//#define  4
 
 /*
 lookup value (key, value)
@@ -7,8 +9,7 @@ change value (key, value)
 remove pair (key)
 */
 
-
-
+#include "db.h"
 
 //--------------------------------------------------
 //
@@ -18,16 +19,14 @@ remove pair (key)
 //    key, value
 //
 //  returns
-//  FOUND or NOT_FOUND
+//    0 if ,
 //
 //  1) opens the database
 //  2) gets a line
 //  3) extracts the key
-//  4) checks the key to see if it's the one we're looking for
-//  5) goes to step 2 if not
-//  6) returns value
-//
-int db_get_value(char *target_key, char *db_value) {
+//  4) checks the value to see if it's the one we're looking for
+
+int db_lookup(char*target_key, char*db_value){
 
     FILE *general;
     int linepos;
@@ -49,7 +48,7 @@ int db_get_value(char *target_key, char *db_value) {
        }
 
      // get the key
-       linepos =  copy_to_delimiter(line, db_key, ':', 0);
+       linepos =  copy_to_delimiter(line, db_key, ':');
        // is it the key we're looking for?
        // if not, get another line
 
@@ -59,7 +58,6 @@ int db_get_value(char *target_key, char *db_value) {
 
     // get value
     db_copy_word(line, linepos, db_value);
-//sprintf(output,"===%s===\n", line); stioc(output);
 
     fclose(general);
 
@@ -76,11 +74,10 @@ int db_get_value(char *target_key, char *db_value) {
 int db_add_pair(char*key, char*value){
 
     FILE *general;
-char output[80];
 
    //open
 	  general = fopen("general.txt","a");
-	  if(general == NULL) {sprintf(output, "fopen failed while trying to open general.txt"); stioc(output);}
+	  if(general == NULL) {printf("fopen failed while trying to open general.txt");}
 
    //add key and value
 	  fprintf(general, "%s:%s\n", key, value);
@@ -93,144 +90,53 @@ char output[80];
 }
 
 
-//-------------------------------------------------------------------
-//
-//   example:  db_add_pair2("grass", "color", "green");
-//
-//
-int db_add_pair2(char*key1, char*key2, char*value){
-
-    FILE *general;
-char output[80];
-
-   //open
-	  general = fopen("general.txt","a");
-	  if(general == NULL) {sprintf(output, "fopen failed while trying to open general.txt"); stioc(output);}
-
-   //add key and value
-	  fprintf(general, "%s > %s:%s\n", key1, key2, value);
-
-   // close
-	  fclose(general);
-
-	  return 1;
-
-}
-
 
 //--------------------------------
-//    look up a first name and return the id number
-//    returns 0 if error
-//
+//  returns
+//    0 if found, 3 if not found
+//    id
 //
 int db_get_id(char* firstname)
 {
 
-    int id;
+   int i;
     char id_string[20], name[20];
     char key[80];
     int result;
 
-    for(id=1; id<1000; id++)
+    for(i=1; i<1000; i++)
     {
-        snprintf (id_string, sizeof(id_string), "%d",id); // convert id number from integer to string (integer, string, base)
-        sprintf(key, "#%s > firstname", id_string);
-        result = db_get_value(key, name);
+        // look up name, retreive id
+        itoa(i, id_string,10);  // integer to string. integer, string, base
+        strcpy(key,"#");
+        strcat(key, id_string );
+        strcat(key, " > firstname"); // ex.: "#1 > firstname"
+        result = db_lookup(key, name);
+        if (result==NOT_FOUND )
+        {
+ //           printf("id not found  ");
 
-        // look up the first name
+        }
+  //      else printf("i=%d", i);
+
         if(result==FOUND)
         {
             result = strcmp(name, firstname);
             if(result==0)
             {
-                // That's the entity we're looking for
-                return id;
+
+  //              printf("name found, ID is %d  ", i);
+                return i;
             }
-            // That's not the entity we're looking for, so try again
-            else {
-                continue;
-            }
+            else continue;
         }
     }
 
-    return 0; // database size limit reached (DGI)
+    return 0; // not in the database
 
 }
 
-//--------------------------------
-//    look up a first name and return the id number
-//    returns 0 if error
-//
-//
-int db_get_id_string(char* firstname, char* id_string)
-{
 
-    int id;
-//    char id_string[20], name[20];
-    char key[80];
-    int result;
-
-    for(id=1; id<1000; id++)
-    {
-        snprintf (id_string, sizeof(id_string), "%d",id); // convert id number from integer to string (integer, string, base)
-        sprintf(key, "#%s > firstname", id_string);
-//        result = db_get_value(key, name);
-
-        // look up the first name
-        if(result==FOUND)
-        {
-//            result = strcmp(name, firstname);
-            if(result==0)
-            {
-                // That's the entity we're looking for
-
-                return result;
-
-            }
-            // That's not the entity we're looking for, so try again
-            else {
-                continue;
-            }
-        }
-    }
-
-    return 0; // database size limit reached (DGI)
-
-}
-
-int db_get_id_string2(char*name, char*id_string) {
-
-   FILE *general;
-   int linepos;
-   char *status;
-   char line[80];
-   char search_term[60];
-   char *result;
-
-   //  open general knowlege database
-   general = fopen("general.txt","r");
-   if(general == NULL) return CANT_OPEN_FILE;
-
-   sprintf(search_term, "firstname:%s", name);
-   // search for key
-   while(1) {
-      // get a line
-      status = fgets(line,80,general);
-      if (status==0) {
-         fclose(general);
-         return NOT_FOUND;
-      }
-      result = strstr(line, search_term);
-      if(result != NULL) break;
-   } // end of key search
-
-   // get ID string
-   copy_to_delimiter(line, id_string, ' ', 0);
-
-   fclose(general);
-   return FOUND;  // (found)
-
-}
 
 //--------------------------------------------------------
 //
@@ -238,10 +144,9 @@ int db_get_id_string2(char*name, char*id_string) {
 //
 //
 
-int db_change_value(char *key, char *value){
+int db_change_value(char*key, char*value){
     FILE *general;
     FILE *temp;
-char output[80];
 
     char *status;
     char line[80];
@@ -250,12 +155,12 @@ char output[80];
     //open files
    	general = fopen("general.txt","r");
 	   if(general == NULL) {
-       sprintf(output, "DB: can't open general.txt"); stioc(output);
+       printf("DB: can't open general.txt");
        return 2;
     }
 	temp = fopen("temp.txt","w");
    	if(temp == NULL) {
-       sprintf(output, "DB: can't open temp.txt"); stioc(output);
+       printf("DB: can't open temp.txt");
        fclose(general);
        return 2;
     }
@@ -296,12 +201,16 @@ char output[80];
 	   fclose(general);
 	   fclose(temp);
 
-   	if(remove("general.txt") != 0) {sprintf(output, "oops, file error ""%s"" \n", strerror(1)); stioc(output);}
-	   if(rename("temp.txt","general.txt") != 0) {sprintf(output, "file error ""%s"" \n", strerror(1)); stioc(output);}
+   	if(remove("general.txt") != 0) {printf("oops, file error ""%s"" \n", strerror(1));}
+	   if(rename("temp.txt","general.txt") != 0) {printf("file error ""%s"" \n", strerror(1));}
 
 	   return 0;  // (success)
 
 }
+
+
+
+
 
 //--------------------------------------------------------
 
@@ -311,37 +220,23 @@ int db_next_available_id(void){
    char value[20];
    int result;
    char key[20], id_string[20];
-char output[80];
 
+   //id[0]=0;
    for(i=1; i<1000; i++){
-      // look for id
-      snprintf(key, sizeof(key), "#%d > class", i); // ex: "#23 > class"
-      if(db_get_value(key,value) != FOUND){
-          return i;
+      // look for id, first_name
+      itoa(i,id_string,10);
+      strcpy(key,"#");
+      strcat(key, id_string);
+      strcat(key, " > def");
+      result = db_lookup(key,value);
+      if(result != FOUND){
+        //    printf("%d, %s   ", i, id_string);
+         return i;
       }
    }
-   sprintf(output, "error in function DNAI"); stioc(output);
-   return 0;
-}
 
-int db_next_available_id_string(char* id_string){
-
-   int i;
-   char value[20];
-   int result;
-   char key[20];
-char output[80];
-
-   for(i=1; i<1000; i++){
-      // look for id
-      snprintf(key, sizeof(key), "#%d > class", i); // ex: "#23 > class"
-      if(db_get_value(key,value) != FOUND){
-         sprintf(id_string, "#%d", i); // convert id# to db string
-         return 1;
-      }
-   }
-   sprintf(output, "error in function DNAIS"); stioc(output);
-   return 0;
+   printf("error in function DNAI");
+    return 0;
 }
 
 //----------------------------------------------------------
@@ -392,25 +287,20 @@ int db_copy_word(char* line, int position, char* value)
 //
 // usualy the copy then gets compared to a key that's being searched for
 //
-int copy_to_delimiter(char* from, char* to, char delimiter, int start){
+int copy_to_delimiter(char* from, char* to, char delimiter){
 
    int i;
 
    for(i=0; i<80; i++){
-      if (from[i+start] == delimiter){
-         to[i] = '\0'; //
-         return i + 1 + start;
-      }
-      else if (from[i+start] == 10 || from[i+start] == 13){
-         to[i] = '\0'; //
-         return 0;
+      if (from[i] == delimiter){
+         to[i] = NULL; //
+         return i + 1;
       }
       else{
-         to[i] = from[i+start];
+         to[i] = from[i];
+         //i++;
       }
    }
-   i++;
-   to[i+start] = '\0';
 return i;
 }
 
@@ -430,72 +320,15 @@ int db_root_check(char* startingwith, char* lookingfor){
 
    strcpy(subject, startingwith);
    for(n=0; n<5; n++){
-       sprintf(key, "%s > class", subject);
-       result = db_get_value(key, value); // lookup
+       strcpy(key, subject); // prepare to lookup
+       strcat(key," > class"); // prepare to lookup
+       result = db_lookup(key, value); // lookup
        if(result == NOT_FOUND) return NOT_FOUND; // if not in database at all, exit
        if(strcmp(value,lookingfor)==0)return FOUND;  // is it what we're looking for?
-       if(strcmp(value,"root")==0)return NOT_FOUND; // has it reached to root?
+       if(strcmp(value,"root")==0)return FOUND; // has it reached to root?
        strcpy(subject,value); // if no luck so far, the value becomes the subject
    }
+
   return NOT_FOUND;  // not found
-}
-
-//-----------------------------------------------------------------------
-//
-// ex:
-// db_check("cat");
-//
-int db_check(char* subject){
-
-   char key[60];
-   char value[20];
-
-   sprintf(key, "%s > class", subject);
-   return db_get_value(key, value); // lookup
 
 }
-
-//-----------------------------------------------------------------------
-int db_check_pair(char*target_key, char*target_value) {
-
-   FILE *general;
-   int linepos;
-   char *status;
-   char line[80];
-   char db_key[60];
-   char db_value[60];
-
-   //  open general knowlege database
-   general = fopen("general.txt","r");
-   if(general == NULL) return CANT_OPEN_FILE;
-
-   // search for key and value
-   while(1) {
-      // get a line
-      status = fgets(line,80,general);
-      if (status==0) {
-         fclose(general);
-         return NOT_FOUND;
-      }
-
-      // get the key
-      linepos =  copy_to_delimiter(line, db_key, ':', 0);
-
-      // get the value
-      if(line[linepos] == ':') linepos++;
-      if(line[linepos] == ' ') linepos++;
-      linepos =  copy_to_delimiter(line, db_value, ' ', linepos);
-
-      // is it the key and value we're looking for?
-      // if not, get another line
-      if(strcmp(target_key, db_key) == 0 && strcmp(target_value, db_value) == 0) break;
-
-   }
-
-   fclose(general);
-   return FOUND;
-}
-//===========================
-
-
-

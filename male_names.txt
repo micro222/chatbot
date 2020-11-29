@@ -45,7 +45,6 @@ david
 dennis
 don
 donald
-doug
 douglas
 dwight
 eddie
@@ -108,7 +107,6 @@ nathan
 neil
 nelson
 nicholas
-nigel
 norm
 norman
 normand

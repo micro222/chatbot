@@ -1,64 +1,42 @@
-robot asks question and will accept a full sentance or a  1 word reply
-example:
-what is your name
-expected template: my name is *
-user reply: bob
-sentence used: my name is bob
-if a question was asked, and user replies with 1 word, insert word in template and use that
-determine what to do if the user doesn't answer the question
+TO DO
 
---------------------------------
+remove value compare frome db_lookup
 
-Bad replies
+add id numbers to db.
+id numbers are used identify specific members of a category, usualy people
+could also be pets, significant rocks, buildings
+db entries start with a number sign followed by the id number
 
-you are a cat. you > class:cat
+#14 > first_name: bart
+#14 > last_name: simpson
+#14 > born:
+#14 > offspring: none
+#14 > nickname:
+#14 > father: #22
+#14 > mother: #30
+#14 > last_contact:
+#14 > opinion: 3
+#14 > def: person
+#14 > gender: male
+#14 >
+#14 >
+#14 >
+#14 >
+#14 >
+#14 >
 
+fix login
 
---------------------------------
-Robot related
+implement template file
 
-who are you
-what is your * (name, gender)
-what are you (robot)
-what are you * (doing, thinking)
-what do you * (think, eat, do)
-where are you
-when do you * (sleep)
-why do you * 
-how are you 
-how old are you (6)
-are you * (tired, human)
-are you a * (robot)
-are you some kind of * (machine)
-do you have * (children)
-do you have a * (dog, daughter, dollar)
-do you like * (wine, abba, movies, hockey)
-do you like to * (dance)
-do you * (dance)
-do you * * (play tennis)
-does your * have * (does your dog has fleas)
-do you have * (do you have acne)
-do you have * * (3 dogs, 2 thumbs)
-did you *
-did you like *
-you are * (clever)
-you are a * (robot, genius)
-   
-i am male
-bob is male
-is bob male
-my gender is male
-what is my gender
-bob is tired
-is bob tired
-I like * (beer, lucy)
-i have a * (dog, daughter)
-my daughters name is carol
-my car is red
-** has *,  (my dog has fleas)
-i have *, (i have rabies)
-i have * *,  (3 dogs, 2 thumbs)
-where is * (lucy)
+format first names
 
 
- 
+
+
+
+
+
+
+
+
