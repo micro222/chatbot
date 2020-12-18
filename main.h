@@ -9,11 +9,11 @@
 //#include "db.h"
 #include "handle.h"
 //#include "time.h"
-#include "hashtable.h"
+//#include "hashtable.h"
 #include "functions.h"
-#include "main.h"
+//#include "main.h"
 #include "fa.h"
-#include "irc.h"
+//#include "irc.h"
 //#define DEBUG TRUE
 
 // Global Variables

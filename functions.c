@@ -261,7 +261,7 @@ int separate_words(char* in, char out[MAX_WORDS][MAX_LETTERS]) {
 }
 
 //------------------------------------------------------------
-
+/*
 int check_gender_by_name(char* name, char* gender2) {
 
 #define LINE_LENGTH 20
@@ -335,7 +335,7 @@ int check_gender_by_name(char* name, char* gender2) {
    fclose(female);
    return NOT_FOUND;
 }
-
+*/
 //-------------------------------------------------------------
 
 // Send to intenet or console
@@ -343,15 +343,8 @@ void stioc(char* output_string) {
 
    char temp_string[300];
 
-   if (irc == TRUE) {
-      sprintf(temp_string, "PRIVMSG %s :%s\n",channel, output_string);
-      send(socket_desc , temp_string , strlen(temp_string) , 0);
-
-   } else {
-      puts(output_string);
-   }
-
-}
+   puts(output_string);
+ }
 
 //------------------------------------------------------------------------------
 

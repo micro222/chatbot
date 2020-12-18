@@ -3,11 +3,11 @@
 #include <string.h>
 #include "db.h"
 #include "handle.h"
+#include "main.h"
 
+//#include<winsock2.h>
 
-#include<winsock2.h>
-
-#pragma comment(lib,"ws2_32.lib") //Winsock Library
+//#pragma comment(lib,"ws2_32.lib") //Winsock Library
 
 
 #define TRUE 1
@@ -27,8 +27,9 @@ int current_user_id = 0;
 int gender_code = 0;
 
 // Prototypes
-void get_string(void);
-void parse(void);
+//void xget_string(void);
+//void parse(void);
+/*
 int isword(char*);
 int is_nonsense_word(char*);
 int isconsonant(char);
@@ -41,7 +42,7 @@ int template_search(char*user, char*template2);
 int check_gender_by_name(char*);
 
 //int isvalidname(char*);
-
+*/
 //-------------------------------------------------------
 
 int main(int argc, char *argv[]){
@@ -314,7 +315,7 @@ while(1){
 } // main
 
 //-----------------------------------------------------------
-
+/*
 void get_string(void){
 
    int position;
@@ -364,6 +365,7 @@ void parse(void){
   }
 
 }
+
 //------------------------------------------------------------------
 
 int isvowel(char c1){
@@ -469,6 +471,7 @@ int isword(char*word_to_lookup){
 	return result;
 
 }
+*/
 // --------------------------------------
 
 void handle_login(char*name)
@@ -624,13 +627,7 @@ void handle_help(void){
 }
 
 //-------------------------------------------------------------
-
-
-
-
-
-
-
+/*
 int tokenize(char* in_string, char* word_array, char delimiter){
 
 // input: in_string
@@ -664,7 +661,7 @@ int tokenize(char* in_string, char* word_array, char delimiter){
 
 }
 
-
+/*
 
 // new function for chat 10
 // compares user input with a sentance template
@@ -790,7 +787,7 @@ int template_search(char*user, char*template2)
 }
 
 //-----------------------------------------------------
-#if 1
+#if 0
 int separate_words(char* in, char out[MAX_WORDS][MAX_LETTERS]){
 //void separate_words(char* in, char out[MAX_WORDS][MAX_LETTERS])
 //void separate_words( char out[MAX_WORDS][MAX_LETTERS]){

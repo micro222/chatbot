@@ -5,7 +5,7 @@ int f1(void)
 
     char output[80];
 
-    strcat(debug_string, " f1 ");  // debug info
+//    strcat(debug_string, " f1 ");  // debug info
 // Log out
     if(strcmp(words[1],"bye")==0)
     {
@@ -54,7 +54,8 @@ int f1(void)
     // Single word
     sprintf(key, "%s > class", words[1]);  // assemble a key
 //        if(db_lookup(key, value) == FOUND) {
-    if(db_get_value(key, value) == FOUND)
+  //  if(db_get_value(key, value) == FOUND)
+     if(db_lookup(key, value) == FOUND)
     {
         sprintf(output, "That's a %s\n", value);
         stioc(output);
