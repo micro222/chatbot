@@ -26,6 +26,33 @@ char current_user_name[20]="unknown";
 int current_user_id = 0;
 int gender_code = 0;
 
+////
+
+#define MAX_WORDS 80
+#define MAX_LETTERS 80
+
+
+// function list
+//int tokenize(char[][100], char[][100], char);
+void search_file(void);
+
+// global variables
+//char words[40] [40];
+char template_line[150];
+char template_line_segments[80][80];
+char template_segments[80][80];
+char template_words[80][80];
+char function_name[80];
+char template1[80];
+char arg1[40];
+char arg2[40];
+
+
+////
+
+
+
+
 // Prototypes
 //void xget_string(void);
 //void parse(void);
@@ -50,47 +77,6 @@ int main(int argc, char *argv[]){
 char out[MAX_WORDS][MAX_LETTERS];
 int n;
 int result;
-//////////////////
-#if 0
-/*
-	Create a TCP socket
-*/
-
-	WSADATA wsa;
-	SOCKET s;
-
-	printf("\nInitialising Winsock...");
-	if (WSAStartup(MAKEWORD(2,2),&wsa) != 0)
-	{
-		printf("Failed. Error Code : %d",WSAGetLastError());
-		return 1;
-	}
-
-	printf("Initialised.\n");
-
-
-	if((s = socket(AF_INET , SOCK_STREAM , 0 )) == INVALID_SOCKET)
-	{
-		printf("Could not create socket : %d" , WSAGetLastError());
-	}
-
-	printf("Socket created.\n");
-
-#endif
-
-
-
-
-
-
-
-
-
-
-
-
-
-/////////////////////////
 
 while(1){
    printf(">"); // user prompt
@@ -100,8 +86,6 @@ while(1){
 //   result = check_gender_by_name(user_input);
 //   printf("result: %d", result);
 //   continue;
-
-
 
    parse(); // separates sentance into individual words
 
@@ -126,7 +110,7 @@ while(1){
 //printf("1:%s, 2:%s, 3:%s, 4:%s, 5:%s\n", out[1], out[2], out[3], out[4], out[5], out[6]);
 //printf("1:%s, 2:%s, 3:%s, 4:%s, 5:%s\n", out[1], out[2], out[3], out[4], out[5], out[6]);
 
-
+search_file();
 //----------------
 
 	if(number_of_words==1 && strcmp(words[1], "help")==0){

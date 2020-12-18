@@ -189,39 +189,7 @@ int isverb(char* word_to_lookup){
 }
 
 //-------------------------------------------------------------
-// Experimental. Not in use.
-int tokenize(char* in_string, char* word_array, char delimiter) {
 
-   // input: in_string
-   // output: words, number_of_words
-
-   int position = 0;
-   int letter_position;
-   int word_position;
-
-   for(word_position=1; word_position < MAX_WORDS; word_position++) {
-      for(letter_position = 0; letter_position < MAX_LETTERS; letter_position++) {
-         // End of in_string?
-         if(in_string[position]==0 || position >= 80) {
-            ////        word_array[word_position][letter_position] = 0;
-            return word_position;
-         }
-
-         //end of word?
-         if(in_string[position] == delimiter) {
-            ////       word_array[word_position][letter_position] = 0;  // terminate the word
-            letter_position = 0;  // probably not needed
-            position++;  // skip over the delimiter
-            break;
-         }
-
-         ////     word_array[word_position][letter_position] = in_string[position];
-         position++;
-
-      }
-   }
-
-}
 
 //-----------------------------------------------------
 
@@ -441,3 +409,273 @@ void normalize(void) {
 }
 
 //=========================
+
+
+#include "stdlib.h"
+#include "string.h"
+#include <ctype.h>
+#include <stdio.h>
+
+#define MAX_WORDS 80
+#define MAX_LETTERS 79
+
+
+// function list
+int tokenize(char[100], char*[100], char);
+void search_file(void);
+void extract_template(void);
+void split_template(void);
+int compare_template(void);
+void remove_comments(void);
+void extract_function_name(void);
+void extract_arg1(void);
+void extract_arg2(void);
+int str_to_int(char*);
+
+// global variables
+char user_words[40] [40];
+char template_line[100];
+char template_line_segments[80][100];
+char template_segments[80][100];
+char template_words[80][100];
+char function_name[100];
+char template1[100];
+char arg1[40];
+char arg2[40];
+int line_position = 0;
+int numberoftemplatewords;
+int match;
+
+void search_file(void)
+{
+#define MAX 150
+    int n;
+    int numberofwords;
+    FILE *templates;
+    char output[80];
+    int status;
+    char* file_status;
+    int result;
+
+// open file
+    templates = fopen("templates2.txt","r");
+    if(templates == NULL)
+    {
+        sprintf(output, "fopen failed while trying to open templates2.txt\n");
+        puts(output);
+    }
+
+// search line by line
+    while(1)
+    {
+        // read a line
+        file_status = fgets(template_line, 100, templates);
+        if (file_status==0){printf("\nEOF"); return;}
+        remove_comments();
+        extract_template();
+        split_template();
+        match = compare_template();
+        if(match == 1)printf("\nMATCH\n  ");
+        if(match == 1) break;
+    } // get another template if there's no match
+
+    fclose(templates);
+    for(n=0; n<numberoftemplatewords; n++) printf("TW%s ", template_words[n]);
+    extract_function_name();               printf(" func: %s ", function_name);
+    extract_arg1();                        printf(" arg1: %s ", arg1);
+    extract_arg2();                        printf(" arg2: %s ", arg2);
+
+ result = atoi(arg1);
+ if(result > 0){strcpy(arg1, user_words[result-1]); }
+ printf(" arg1b: %s ", arg1);
+
+ result = atoi(arg2);
+ if(result > 0){strcpy(arg2, user_words[result-1]); }
+ printf(" arg2b: %s ", arg2);
+
+ return;
+
+    /*
+    search file for matching template
+     read line, if EOL return fail
+     remove comments
+     extract template
+     split template
+     check template for match
+    extract info
+     extract function_name
+     extract arg1
+     extract arg2
+     change arguments if they are integers
+    return success
+    call function
+
+    */
+
+
+
+}
+////////////////////////////////
+
+void extract_template(void)
+{
+    int letter_position;
+    line_position =0;
+
+    for(letter_position = 0; letter_position < MAX_LETTERS; letter_position++)
+    {
+        // End of template_line?
+
+        if(template_line[line_position]==0 )
+        {
+            template1[letter_position] = 0;
+            return;
+        }
+        if(line_position >= 80)
+        {
+            template1[letter_position] = 0;
+            return;
+        }
+        //end of word?
+        if(template_line[line_position] == ',')
+        {
+            template1[letter_position] = 0;  // terminate the word
+            line_position++;
+            return;
+        }
+        template1[letter_position] = template_line[line_position];
+        line_position++;
+    }
+}
+
+void split_template()
+{
+
+    int letter_position = 0;
+    int word_position = 0;
+
+    for(line_position = 0; line_position < sizeof(template1); line_position++)
+    {
+
+        if(template1[line_position]==0)
+        {
+            template_words[word_position][letter_position] = 0;
+            numberoftemplatewords = word_position +1;
+            return;
+        }
+
+        if(template1[line_position] == ' ')
+        {
+            template_words[word_position][letter_position] = 0;  // terminate the word
+            word_position++;
+            letter_position = 0;
+            continue;
+        }
+        template_words[word_position][letter_position] = template1[line_position];
+        letter_position++;
+    }
+}
+
+int compare_template()
+{
+    int n;
+    //match = 1; // match
+    for(n=0; n<numberoftemplatewords; n++)
+    {
+        if(strcmp(user_words[n], template_words[n] ) == 0 ||
+                (strcmp(template_words[n], "*") == 0))        {
+        }
+        else return 0;
+    }
+    return 1;
+}
+
+
+void remove_comments(void)
+{
+//        status = 1;
+    int n;
+
+    for(n=0; n< MAX; n++)
+    {
+        if(template_line[n] == '/')
+        {
+            template_line[n] = 0;    // terminate the string
+            return;
+        }
+        else if(template_line[n] == 0)
+        {
+            //              status = 0;
+            return;
+        }
+    }
+
+}
+
+
+void extract_function_name(void){
+
+    int letter_position;
+
+    if(template_line[line_position] == ',' ) line_position++; // skip over the comma
+    if(template_line[line_position] == ' ' ) line_position++; // skip over the space
+    for(letter_position = 0; letter_position < MAX_LETTERS; letter_position++){
+        //end of function name?
+        if(template_line[line_position] == ','){
+            function_name[letter_position] = 0;  // terminate the word
+            line_position++; // skip over the comma
+            return;
+        }
+        function_name[letter_position] = template_line[line_position];
+        line_position++;
+    }
+}
+
+
+void extract_arg1(void){
+    int letter_position;
+
+    if(template_line[line_position] == ',' ) line_position++; // skip over the space
+    if(template_line[line_position] == ' ' ) line_position++; // skip over the space
+    for(letter_position = 0; letter_position < MAX_LETTERS; letter_position++)
+    {
+        //end of arg1?
+        if(template_line[line_position] == ',')
+        {
+            arg1[letter_position] = 0;  // terminate the word
+            line_position++; // skip over the comma
+            return;
+        }
+        arg1[letter_position] = template_line[line_position];
+        line_position++;
+    }
+}
+
+
+void extract_arg2(void){
+   int letter_position;
+
+    if(template_line[line_position] == ',' ) line_position++; // skip over the space
+    if(template_line[line_position] == ' ' ) line_position++; // skip over the space
+    for(letter_position = 0; letter_position < MAX_LETTERS; letter_position++)
+    {
+        //end of arg2?
+        if(template_line[line_position] == ' '  )
+        {
+            arg2[letter_position] = 0;  // terminate the word
+            line_position++; // skip over the comma
+            return;
+        }
+        arg2[letter_position] = template_line[line_position];
+        line_position++;
+    }
+}
+
+int str_to_int(char* s){
+  if (s[0] < '0' || s[0] > '9') return 0;
+  return s[0] - '0';
+}
+
+/////////////////////////////////
+
+

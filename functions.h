@@ -25,6 +25,7 @@ int result;
 char value[20];
 char key[20];
 
+
 void get_string(void);
 void parse(void);
 int isword(char*);
@@ -34,7 +35,6 @@ int isvowel(char);
 int isquestion(void);
 int isstatement(void);
 int iscommand(void);
-int tokenize(char*, char*, char);
 int separate_words(char*, char[MAX_WORDS][MAX_LETTERS]);
 //int template_search(char*, template_info_type*);
 //int check_gender_by_name(char*, char*);
