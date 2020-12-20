@@ -1,76 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "db.h"
-#include "handle.h"
 #include "main.h"
-
-//#include<winsock2.h>
-
-//#pragma comment(lib,"ws2_32.lib") //Winsock Library
-
-
-#define TRUE 1
-#define FALSE 0
-#define MAX_WORDS 40
-#define MAX_LETTERS 20
-//#define NULL 0
-
-// Global Variables
-char user_input[80];
-char wholeline[80];
-int number_of_words;
-
-char words[MAX_WORDS][MAX_LETTERS];  //
-char current_user_name[20]="unknown";
-int current_user_id = 0;
-int gender_code = 0;
-
-////
-
-#define MAX_WORDS 80
-#define MAX_LETTERS 80
-
-
-// function list
-//int tokenize(char[][100], char[][100], char);
-void search_file(void);
-
-// global variables
-//char words[40] [40];
-char template_line[150];
-char template_line_segments[80][80];
-char template_segments[80][80];
-char template_words[80][80];
-char function_name[80];
-char template1[80];
-char arg1[40];
-char arg2[40];
-
-
-////
-
-
-
-
-// Prototypes
-//void xget_string(void);
-//void parse(void);
-/*
-int isword(char*);
-int is_nonsense_word(char*);
-int isconsonant(char);
-int isvowel(char);
-void handle_help(void);
-int tokenize(char*, char*, char);
-//void separate_words(char* in, char* out[]);
-int separate_words(char* in, char out[MAX_WORDS][MAX_LETTERS]);
-int template_search(char*user, char*template2);
-int check_gender_by_name(char*);
-
-//int isvalidname(char*);
-*/
-//-------------------------------------------------------
 
 int main(int argc, char *argv[]){
 
@@ -82,45 +10,42 @@ while(1){
    printf(">"); // user prompt
    get_string(); // user input
 
-
 //   result = check_gender_by_name(user_input);
 //   printf("result: %d", result);
 //   continue;
 
-   parse(); // separates sentance into individual words
+   parse(); // separates sentence into individual words
 
 // word substitutions
   for(n=1;n<=number_of_words;n++){
-	  if (strcmp(words[n],"r")==0)    strcpy(words[n], "are");
-	  //if (strcmp(words[n],"does")==0) strcpy(words[n], "do");
-	  if (strcmp(words[n],"has")==0)  strcpy(words[n], "have");
-	  if (strcmp(words[n],"are")==0)  strcpy(words[n], "is");
-	  if (strcmp(words[n],"wants")==0)strcpy(words[n], "want");
-	  if (strcmp(words[n],"feels")==0)strcpy(words[n], "feel");
-	  if (strcmp(words[n],"likes")==0)strcpy(words[n], "like");
-//	  if (strcmp(words[n],"i")==0)    strcpy(words[n], current_user_name);
-	  if (strcmp(words[n],"u")==0)    strcpy(words[n], "you");
-	  if (strcmp(words[n],"you")==0)  strcpy(words[n], "bot");
-	  if (strcmp(words[n],"am")==0)	  strcpy(words[n], "is");
-	  if (strcmp(words[n],"an")==0)	  strcpy(words[n], "a");
+	  if (strcmp(user_words[n],"r")==0)    strcpy(user_words[n], "are");
+	  //if (strcmp(user_words[n],"does")==0) strcpy(user_words[n], "do");
+	  if (strcmp(user_words[n],"has")==0)  strcpy(user_words[n], "have");
+	  if (strcmp(user_words[n],"are")==0)  strcpy(user_words[n], "is");
+	  if (strcmp(user_words[n],"wants")==0)strcpy(user_words[n], "want");
+	  if (strcmp(user_words[n],"feels")==0)strcpy(user_words[n], "feel");
+	  if (strcmp(user_words[n],"likes")==0)strcpy(user_words[n], "like");
+//	  if (strcmp(user_words[n],"i")==0)    strcpy(user_words[n], current_user_name);
+	  if (strcmp(user_words[n],"u")==0)    strcpy(user_words[n], "you");
+	  if (strcmp(user_words[n],"you")==0)  strcpy(user_words[n], "bot");
+	  if (strcmp(user_words[n],"am")==0)	strcpy(user_words[n], "is");
+	  if (strcmp(user_words[n],"an")==0)    strcpy(user_words[n], "a");
   }
-//---------------
- template_search(user_input, out);
-//separate_words(user_input, out);
-//printf("1:%s, 2:%s, 3:%s, 4:%s, 5:%s\n", out[1], out[2], out[3], out[4], out[5], out[6]);
-//printf("1:%s, 2:%s, 3:%s, 4:%s, 5:%s\n", out[1], out[2], out[3], out[4], out[5], out[6]);
-
-search_file();
 //----------------
 
-	if(number_of_words==1 && strcmp(words[1], "help")==0){
+search_file();
+
+
+//----------------
+
+	if(number_of_words==1 && strcmp(user_words[1], "help")==0){
         handle_help();
 	}
 
 // login?
     // my name is _
-    if(number_of_words==4 && strcmp(words[1],"my")==0 && strcmp(words[2],"name")==0 && strcmp(words[3],"is")==0){
-       handle_login(words[4]);
+    if(number_of_words==4 && strcmp(user_words[1],"my")==0 && strcmp(user_words[2],"name")==0 && strcmp(user_words[3],"is")==0){
+       handle_login(user_words[4]);
        continue;
     }
 
@@ -134,120 +59,120 @@ search_file();
     // - - - - - - - - - - - - - - - - - - - - - -
     // DEFINITION (SUBSET OF)
     // what is ___
-    if(number_of_words==3 && strcmp(words[1],"what")==0 && strcmp(words[2],"is")==0){
-       handle_class_question(words[3]);
+    if(number_of_words==3 && strcmp(user_words[1],"what")==0 && strcmp(user_words[2],"is")==0){
+       handle_class_question(user_words[3]);
     }
       // what are ___
-    else if(number_of_words==3 && strcmp(words[1],"what")==0 && strcmp(words[2],"are")==0){
-       handle_class_question(words[3]);
+    else if(number_of_words==3 && strcmp(user_words[1],"what")==0 && strcmp(user_words[2],"are")==0){
+       handle_class_question(user_words[3]);
     }
     // what is a ___
-    else if(number_of_words==4 && strcmp(words[1],"what")==0 && strcmp(words[2],"is")==0 && strcmp(words[3],"a")==0){
-       handle_class_question(words[4]);
+    else if(number_of_words==4 && strcmp(user_words[1],"what")==0 && strcmp(user_words[2],"is")==0 && strcmp(user_words[3],"a")==0){
+       handle_class_question(user_words[4]);
     }
     // a __ is a __
     // ex: a cat is an animal
     else if(
       number_of_words==5 &&
-      strcmp(words[1],"a")==0 &&
-      strcmp(words[3],"is")==0 &&
-      strcmp(words[4],"a")==0
+      strcmp(user_words[1],"a")==0 &&
+      strcmp(user_words[3],"is")==0 &&
+      strcmp(user_words[4],"a")==0
     ){
-      handle_class_statement(words[2],words[5]);
+      handle_class_statement(user_words[2],user_words[5]);
     }
     else if(
       number_of_words==4 &&
-      strcmp(words[2],"is")==0 &&
-      strcmp(words[3],"a")==0
+      strcmp(user_words[2],"is")==0 &&
+      strcmp(user_words[3],"a")==0
     ){
-      handle_class_statement(words[1],words[4]);
+      handle_class_statement(user_words[1],user_words[4]);
     }
 
     else if(
       number_of_words==3 &&
-      strcmp(words[2],"is")==0
+      strcmp(user_words[2],"is")==0
     ){
-      handle_class_statement(words[1],words[3]);
+      handle_class_statement(user_words[1],user_words[3]);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - -
     // COLORS
     // what color is ___
-    else if(number_of_words==4 && strcmp(words[1],"what")==0 && strcmp(words[2],"color")==0&& strcmp(words[3],"is")==0){
-       handle_color_question(words[4]);
+    else if(number_of_words==4 && strcmp(user_words[1],"what")==0 && strcmp(user_words[2],"color")==0&& strcmp(user_words[3],"is")==0){
+       handle_color_question(user_words[4]);
     }
     // is ___ <color>?
     else if(number_of_words==3 &&
-       strcmp(words[1],"is")==0 &&
-       db_root_check(words[3],"color")==0)
+       strcmp(user_words[1],"is")==0 &&
+       db_root_check(user_words[3],"color")==0)
        {
-       handle_color_confirmation_question(words[2],words[3]);
+       handle_color_confirmation_question(user_words[2],user_words[3]);
     }
     // ___ is <color>
     // conditions: 3 words, middle word is "is"
-    else if(number_of_words==3 && strcmp(words[2],"is")==0 &&
-            db_root_check(words[3],"color")==0){
-       handle_color_statement(words[1],words[3]);
+    else if(number_of_words==3 && strcmp(user_words[2],"is")==0 &&
+            db_root_check(user_words[3],"color")==0){
+       handle_color_statement(user_words[1],user_words[3]);
     }
     // - - - - - - - - - - - - - - - - - - - - - -
     // LOCATION
     // where is ___
-    else if(number_of_words==3 && strcmp(words[1],"where")==0 && strcmp(words[2],"is")==0){
-       handle_location_question(words[3]);
+    else if(number_of_words==3 && strcmp(user_words[1],"where")==0 && strcmp(user_words[2],"is")==0){
+       handle_location_question(user_words[3]);
     }
     // - - - - - - - - - - - - - - - - - - - - - -
     // ABILITY
     // can <subject> <action>
-    else if(number_of_words==3 && strcmp(words[1],"can")==0 ){
-       handle_ability_question(words[2],words[3]);
+    else if(number_of_words==3 && strcmp(user_words[1],"can")==0 ){
+       handle_ability_question(user_words[2],user_words[3]);
     }
     // - - - - - - - - - - - - - - - - - - - - - -
     // OPINION
     // Template: do you like <subject>
     // Example: do you like beer
-//    else if(number_of_words==4 && strcmp(words[1],"do")==0 && strcmp(words[2],"you")==0 && strcmp(words[3],"like")==0 ){
+//    else if(number_of_words==4 && strcmp(user_words[1],"do")==0 && strcmp(user_words[2],"you")==0 && strcmp(user_words[3],"like")==0 ){
 //       handle_opinion_question();
 //    }
     // Template: __ like __
     // Example: i like beer
-    else if(number_of_words==3 && strcmp(words[2],"like")==0){
-       handle_opinion_statement(words[1], words[3], "7");
+    else if(number_of_words==3 && strcmp(user_words[2],"like")==0){
+       handle_opinion_statement(user_words[1], user_words[3], "7");
     }
     // Template: <person> hate __
     // Example: i hate beer
-    else if(number_of_words==3 && strcmp(words[2],"hate")==0){
-       handle_opinion_statement(words[1], words[3], "0");
+    else if(number_of_words==3 && strcmp(user_words[2],"hate")==0){
+       handle_opinion_statement(user_words[1], user_words[3], "0");
     }
     // <creature> love ___
     // conditions: 3 words, middle word is "love"
-    else if(number_of_words==3 && strcmp(words[2],"love")==0){
-       handle_opinion_statement(words[1], words[3], "10");
+    else if(number_of_words==3 && strcmp(user_words[2],"love")==0){
+       handle_opinion_statement(user_words[1], user_words[3], "10");
     }
     // ___ dont like ___
-    else if(number_of_words==4 && strcmp(words[2],"dont")==0 && strcmp(words[3],"like")==0){
-       handle_opinion_statement(words[1], words[3], "3");
+    else if(number_of_words==4 && strcmp(user_words[2],"dont")==0 && strcmp(user_words[3],"like")==0){
+       handle_opinion_statement(user_words[1], user_words[3], "3");
     }
 
     // Template: does <person> like <subject>
     // Example: does fred like beer
-    else if(number_of_words==4 && strcmp(words[1],"does")==0 && strcmp(words[3],"like")==0 ){
-       handle_opinion_question(words[2], words[4]);
+    else if(number_of_words==4 && strcmp(user_words[1],"does")==0 && strcmp(user_words[3],"like")==0 ){
+       handle_opinion_question(user_words[2], user_words[4]);
     }
 
     // Template: list <def>
     // Example: list action
-    else if(number_of_words==2 && strcmp(words[1],"list")==0){
-       handle_list_question(words[2]);
+    else if(number_of_words==2 && strcmp(user_words[1],"list")==0){
+       handle_list_question(user_words[2]);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - -
     // what is my name
-    else if(number_of_words==4 && strcmp(words[1],"what")==0 && strcmp(words[2],"is")==0 && strcmp(words[3],"my")==0 && strcmp(words[4],"name")==0){
+    else if(number_of_words==4 && strcmp(user_words[1],"what")==0 && strcmp(user_words[2],"is")==0 && strcmp(user_words[3],"my")==0 && strcmp(user_words[4],"name")==0){
        printf("%s\n",current_user_name);
     }
 
     // what is my gender
-    else if(number_of_words==4 && strcmp(words[1],"what")==0 && strcmp(words[2],"is")==0 && strcmp(words[3],"my")==0 && strcmp(words[4],"gender")==0){
+    else if(number_of_words==4 && strcmp(user_words[1],"what")==0 && strcmp(user_words[2],"is")==0 && strcmp(user_words[3],"my")==0 && strcmp(user_words[4],"gender")==0){
             switch(gender_code)
             {
             case 0:
@@ -264,21 +189,21 @@ search_file();
     }
 
     // say my name
-    else if(number_of_words==3 && strcmp(words[1],"say")==0 && strcmp(words[2],"my")==0 && strcmp(words[3],"name")==0){
+    else if(number_of_words==3 && strcmp(user_words[1],"say")==0 && strcmp(user_words[2],"my")==0 && strcmp(user_words[3],"name")==0){
        printf("%s\n",current_user_name);
     }
 
-   else if(number_of_words==1 && strcmp(words[1],"id")==0){
+   else if(number_of_words==1 && strcmp(user_words[1],"id")==0){
        printf("%d\n",current_user_id);
     }
 
-   else if(number_of_words==1 && strcmp(words[1],"g")==0){
+   else if(number_of_words==1 && strcmp(user_words[1],"g")==0){
        printf("%d\n",gender_code);
     }
 
     // one word?
     else if(number_of_words==1){
-      if(isword(words[1])==0){
+      if(isword(user_words[1])==0){
         printf("Yep, that's a word...\n");
       }
       else printf("That's not a word...\n");
@@ -329,21 +254,21 @@ void parse(void){
 
       // End of user input?
       if(user_input[position]==0 || position >= 80){
-        words[word_position][letter_position] = 0;
+        user_words[word_position][letter_position] = 0;
         number_of_words = word_position;
         return;
       }
 
       //end of word?
       if(user_input[position]==' '){
-        words[word_position][letter_position] = 0;  // terminate the word
+        user_words[word_position][letter_position] = 0;  // terminate the word
         letter_position = 0;  // probably not needed
         position++;  // skip over the space
         break;
       }
 
       //
-      words[word_position][letter_position] = user_input[position];
+      user_words[word_position][letter_position] = user_input[position];
       position++;
     }
   }
@@ -655,8 +580,8 @@ int tokenize(char* in_string, char* word_array, char delimiter){
 //  template  : what color is *, color_question, 4
 //
 // the old way:
-  //  else if(number_of_words==4 && strcmp(words[1],"what")==0 && strcmp(words[2],"color")==0&& strcmp(words[3],"is")==0){
-  //     handle_color_question(words[4]);
+  //  else if(number_of_words==4 && strcmp(user_words[1],"what")==0 && strcmp(user_words[2],"color")==0&& strcmp(user_words[3],"is")==0){
+  //     handle_color_question(user_words[4]);
 
 
 // number of words: 4
@@ -691,7 +616,7 @@ outer loop
             if(w=='*') continue;
         }
 */
-
+/*
 //--------------------------------------------------
 //
 //  TEMPLATE SEARCH
@@ -751,10 +676,10 @@ int template_search(char*user, char*template2)
         for(n=1; n<=number_of_words2; n++)
         {
             if(strcmp(out[n], "*") == 0) continue;
-            if(strcmp(out[n], words[n]) != 0)
+            if(strcmp(out[n], user_words[n]) != 0)
             {
                 match = FALSE;
-                // printf("NO MATCH: %s, %s\r\n\n", out[n], words[n]);
+                // printf("NO MATCH: %s, %s\r\n\n", out[n], user_words[n]);
                 break;
             }
         }
@@ -769,59 +694,9 @@ int template_search(char*user, char*template2)
     return template2;  // (found)
 
 }
-
+*/
 //-----------------------------------------------------
-#if 0
-int separate_words(char* in, char out[MAX_WORDS][MAX_LETTERS]){
-//void separate_words(char* in, char out[MAX_WORDS][MAX_LETTERS])
-//void separate_words( char out[MAX_WORDS][MAX_LETTERS]){
-//void separate_words(void ){
 
-// input:
-// output: out, number_of_words
-//char out[MAX_WORDS][MAX_LETTERS];
-// char in[80];
-  int position = 0;
-  int letter_position;
-  int word_position;
-  int number_of_words = 0;
-
-//strcpy(out[1],   "test");
-//strcpy(words[n], "have");
-//printf(">>%s<<",in);
-//printf("~");
-  for(word_position=1; word_position < MAX_WORDS; word_position++) {
-    for(letter_position = 0; letter_position < MAX_LETTERS; letter_position++){
-
-      // End of sentance?
-      if(in[position]==NULL || position >= 200){
-        out[word_position][letter_position] = NULL;
-        number_of_words = word_position;
-//        printf("$");
-        return number_of_words;
-      }
-
-      //end of word?
-      if(in[position]==' '){
-        out[word_position][letter_position] = NULL;  // terminate the word
-        letter_position = 0;  // probably not needed
-        position++;  // skip over the space
-//        printf("^");
-        break;
-      }
-//printf("+");
-      //
-      out[word_position][letter_position] = in[position];
-   //   out[2][2] = 0; // debug
- //     printf("@");
-      position++;
- //     printf("!");
-    }
-  }
-//printf("?");
-}
-
-#endif
 
 int check_gender_by_name(char* name)
 {

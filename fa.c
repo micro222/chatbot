@@ -7,7 +7,7 @@ int f1(void)
 
 //    strcat(debug_string, " f1 ");  // debug info
 // Log out
-    if(strcmp(words[1],"bye")==0)
+    if(strcmp(user_words[1],"bye")==0)
     {
         sprintf(output, "talk to you later %s\r\n",current_user_name);
         stioc(output);
@@ -21,7 +21,7 @@ int f1(void)
     }
 
     // Get ID number
-    if(strcmp(words[1],"id")==0)
+    if(strcmp(user_words[1],"id")==0)
     {
         {
             sprintf(output, "%s\n",current_user_id_string);
@@ -31,7 +31,7 @@ int f1(void)
     }
 
     // Get gender
-    if(strcmp(words[1],"g")==0)
+    if(strcmp(user_words[1],"g")==0)
     {
         {
             sprintf(output, "%s\n",gender);
@@ -44,7 +44,7 @@ int f1(void)
 // and if input was not understood...
 
     // A single verb?
-    if(isverb(words[1]) == 1)
+    if(isverb(user_words[1]) == 1)
     {
         sprintf(output, "is a verb\n");
         stioc(output);
@@ -52,7 +52,7 @@ int f1(void)
     }
 
     // Single word
-    sprintf(key, "%s > class", words[1]);  // assemble a key
+    sprintf(key, "%s > class", user_words[1]);  // assemble a key
 //        if(db_lookup(key, value) == FOUND) {
   //  if(db_get_value(key, value) == FOUND)
      if(db_lookup(key, value) == FOUND)
@@ -61,9 +61,9 @@ int f1(void)
         stioc(output);
         return 1;
     }
-    if(isword(words[1])==0)
+    if(isword(user_words[1])==0)
     {
-        sprintf(output, "%s is in my dictionary, but I'm not familiar with it\n", words[1]);
+        sprintf(output, "%s is in my dictionary, but I'm not familiar with it\n", user_words[1]);
         stioc(output);
     }
     else

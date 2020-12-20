@@ -336,7 +336,7 @@ void handle_ability_question(char* key, char* value){
 
   strcat(temp, value);
 //  result = db_search(key,temp,value);
-  //  result = db_get_value(words[2],temp,value);
+  //  result = db_get_value(user_words[2],temp,value);
 
   if(result==0) printf("%s\n", value);
   else printf(" error %d\n", result);

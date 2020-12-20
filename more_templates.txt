@@ -1,0 +1,31 @@
+
+// RATING STATEMENTS
+I hate *, handle_rating_statement,1, 3, 0
+I dont like *, handle_rating_statement,1, 4, 3
+I like *, handle_rating_statement,1, 3, 7        // ex: i like beer
+I love *, handle_rating_statement,1, 3, 10
+* hates *, handle_rating_statement,1, 3, 0        // ex: bob hates beer
+* doesn't like *, handle_rating_statement,1, 4, 3
+* likes *, handle_rating_statement,1, 3, 7        // ex: bob likes jane
+* loves *, handle_rating_statement,1, 3, 10       // ex: fred loves beer
+
+// RATING QUESTION
+do you like *, handle_rating_question,2, 4         // ex: do you like beer
+does * like *, handle_rating_question,2, 4         // ex: does fred like beer
+
+// MISC.
+list *, list_question, 2                           // ex: list action
+hi, handle_greetings
+hey, handle_greetings
+hello, handle_greetings
+
+// TO DO
+    // help
+    // bye
+    // what time is it
+    // how are you
+    // are you human
+** has *, handle_have_statement,??, 4              // my dog has fleas
+does your * have *, handle_have_question,??, 5     // ex: does your dog has fleas
+do you have * *, handle_have_question,2, ??        // ex: do you have 3 dogs, do you have 2 thumbs
+i have * *, handle_have_statement,1,               // ?? i have 3 dogs,   // ex: i have 2 thumbs

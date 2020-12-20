@@ -3,8 +3,8 @@
 
 #define NOT_FOUND   0
 #define FOUND       1
-#define MAX_WORDS 40
-#define MAX_LETTERS 20
+//#define MAX_WORDS 40
+//#define MAX_LETTERS 20
 
 #define EOF 3
 #define CANT_OPEN_FILE 4
@@ -12,6 +12,8 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
+#include "global.h"
+
 
 int db_lookup(char*,char*);
 int db_root_check(char*,char*);
