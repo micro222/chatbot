@@ -482,6 +482,148 @@ void handle_attribute_statement(char* user_subject,char* user_attribute){
 
 
 }
+
 //--------------------------------------------------
+
+void handle_help(void){
+	   printf("I can handle the following sentences\r\n\r\n");
+	   printf(" my name is ___\n");
+	   printf(" what is my name\n");
+	   printf(" what is my gender\n");
+	   printf(" say my name\n");
+	   printf(" what color is ___, ex: what color is grass\n");
+	   printf(" is <subject> <color>, ex: is grass green\n" );
+	   printf(" where is <object>\n" );
+	   printf(" can ___ ___, ");
+	   printf(" what are ___\n" );
+	   printf(" what is a ___\n" );
+       printf(" what is _\n" );
+	   printf(" a <object> is a _, ex: a cat is an animal\n" );
+	   printf(" ___ is <color>\n" );
+	   printf(" ___ like _, ex: I like pizza\n" );
+	   printf(" ___ hate _\n" );
+	   printf(" ___ love _\n" );
+	   printf(" ___ dont like _\n" );
+       printf(" do you like ___\n" );
+        //printf("who am i, ");
+		//printf("i am  _\r\n");
+		//printf("bye\r\n");
+		//printf("is _ _, ");
+		//printf("what is _, ");
+		//printf("have you heard of _, ");
+		//printf("_ is _\r\n");
+		//printf("can _ _, ");
+		//printf("do _ _, ");
+		//printf("_ can _\r\n");
+		//printf("_ like _, ");
+		//printf("do _ like _\r\n");
+		//printf("_ hates _, ");
+		//printf("do _ hate _\r\n");
+		//printf("_ is in _, ");
+		//printf("where is _\r\n");
+		//printf("how old is/are _\r\n");
+		//printf("do _ feel _, ");
+		//printf("_ feels _\r\n");
+		//printf("do _ want _, ");
+		//printf("_ want _\r\n");
+		//printf("do _ have _\r\n");
+		//printf("what is the _ of _, _ is the _ of_\r\n");
+		//printf("what time is it\r\n");
+        //printf("lookup _\r\n");
+       // continue;
+}
+
+//--------------------------------------------------
+
+// --------------------------------------
+
+void handle_login(char*name)
+{
+
+    int result, i;
+    int known=FALSE;
+    int new = TRUE;
+    char first_name[20], id_string[20];
+    char s2[20], value[20];
+    char key[80];
+    int id_number;
+
+// Proceedure
+//
+// 1 is the person the current user?
+// 2 is this person known? (search for first_name:s1)
+// 3 if not known, create new entry
+// 4 update user_id, user_name, gender)
+//
+////////////////////////////////////////////////////////////
+
+// Step 1: check if already current user
+    if(strcmp(name, current_user_name)==0)
+    {
+        printf("You told me that already\n");
+        known=TRUE;
+        return;
+    }
+
+// Step #2
+    id_number = db_get_id(name);
+    if(id_number != 0)
+    {
+        known=TRUE;
+        new = FALSE;
+    }
+    else
+    {
+        known=FALSE;
+    }
+
+// Step 3: add to database
+    if(known==FALSE)
+    {
+        // Get an id number
+        id_number = db_next_available_id();
+        // Add the following to the database
+        //   #1 > def: person
+        //   #1 > firstname:bob
+        //   #1 > gender:male
+        itoa(id_number, id_string, 10);
+
+        strcpy(key, "#");
+        strcat(key, id_string);
+        strcat(key, " > def");
+        db_add_pair(key, "person");
+
+        strcpy(key, "#");
+        strcat(key, id_string);
+        strcat(key, " > firstname");
+        db_add_pair(key, name);
+
+
+        strcpy(key, "#");
+        strcat(key, id_string);
+        strcat(key, " > gender");
+        gender_code = check_gender_by_name(name);
+        switch(gender_code)
+{
+            case 1:
+                db_add_pair(key, "male"); break;
+            case 2:
+                db_add_pair(key, "female");
+        }
+
+        known=TRUE;
+        new = TRUE;
+    }
+
+// Step 4:
+    strcpy(current_user_name, name);
+    current_user_id = id_number;
+    if(new == TRUE){
+        printf("hello %s\n", current_user_name);
+    }
+    else{
+        printf("hi %s\n", current_user_name);
+    }
+}
 
 

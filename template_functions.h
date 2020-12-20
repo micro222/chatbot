@@ -16,7 +16,7 @@ int match;
 // function list
 void test1(void);
 int tokenize(char[100], char*[100], char);
-void search_file(void);
+int search_file(void);
 int extract_template(void);
 void split_template(void);
 int compare_template(void);

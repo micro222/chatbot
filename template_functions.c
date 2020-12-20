@@ -1,6 +1,6 @@
 #include "template_functions.h"
 
-void search_file(void)
+int search_file(void)
 {
     /*
     search file for matching template
@@ -24,7 +24,8 @@ void search_file(void)
     char output[80];
     int status;
     char* file_status;
-    int result;
+    int index;
+    int length;
 
 // open file
     templates = fopen("templates2.txt","r");
@@ -35,45 +36,35 @@ void search_file(void)
     }
 
 // search line by line
-    while(1)
-    {
+    while(1){
         // read a line
         file_status = fgets(template_line, 100, templates);
-//printf("TLine:%s\n",template_line);////////////////////////////
-        if (file_status==0){printf("\nEOF"); return;}
+        if (file_status==0){printf("\nEOF"); return 0;}
         remove_comments();
-        result = extract_template();
- //       printf("el:%d\n", result);
-        if (result == 0) continue; // next line
- //       printf("tf46:%s\n", template1); //ok
-
-        split_template();
-
-
-        match = compare_template();  // fail
- //       printf("tf49\n");////////////////////////////
-        if(match == 1)printf("\nMATCH\n  ");
-
+        length = extract_template();
+        if (length == 0) continue; // get the next line
+        split_template();  // results are put in template_words
+        match = compare_template();
+  //       if(match == 1) printf("\nMATCH\n  ");
         if(match == 1) break;
     } // get another template if there's no match
-//printf("483\n");////////////////////////////
     fclose(templates);
-
-    printf("TW:");
+//if(match == 0) return;
+//    printf("Template words:");
     for(n=1; n<=numberoftemplatewords; n++) printf("%s ", template_words[n]);
-    extract_function_name();               printf(" func: %s ", function_name);
-    extract_arg1();                        printf(" arg1: %s ", arg1);
-    extract_arg2();                        printf(" arg2: %s ", arg2);
+    extract_function_name();           //    printf(" func: %s ", function_name);
+    extract_arg1();                    //    printf(" arg1: %s ", arg1);
+    extract_arg2();                    //    printf(" arg2: %s ", arg2);
 
- result = atoi(arg1);
- if(result > 0){strcpy(arg1, user_words[result]); }
- printf(" arg1b: %s ", arg1);
+ index = atoi(arg1);
+ if(index > 0){strcpy(arg1, user_words[index]); }
+ //printf(" arg1b: %s ", arg1);
 
- result = atoi(arg2);
- if(result > 0){strcpy(arg2, user_words[result]); }
- printf(" arg2b: %s \n", arg2);
+ index = atoi(arg2);
+ if(index > 0){strcpy(arg2, user_words[index]); }
+ //printf(" arg2b: %s \n", arg2);
 
- return;
+ return 1;
 
 }
 ////////////////////////////////
@@ -97,7 +88,7 @@ int extract_template(void)
         if(line_position >=  0x10|| line_position >= 0x13)
         {
             template1[letter_position] = 0;
-            printf("crlf:%s\n", template1);
+    //        printf("crlf:%s\n", template1);
             return 0;
         }
         //end of word?
@@ -120,6 +111,7 @@ void split_template()
 
     int letter_position = 0;
     int word_position = 1;
+    int n;
 
     for(line_position = 0; line_position < sizeof(template1); line_position++)
     {
@@ -128,15 +120,14 @@ void split_template()
         {
             template_words[word_position][letter_position] = 0;
             numberoftemplatewords = word_position ;
-/*
-            printf("t1%s\n", template_words[1]);
-printf("t2%s\n", template_words[2]);
-printf("t3%s\n", template_words[3]);
- printf("u1:%s\n", user_words[1]);//
- printf("u2:%s\n", user_words[2]);//
- printf("u3:%s\n", user_words[3]);//
 
-*/
+#if 0
+printf("user words: ");
+for(n=1;n<=number_of_words;n++) printf(" %s ", user_words[n]);
+printf("\ntemplate words: ");
+for(n=1;n<=numberoftemplatewords;n++) printf(" %s ", template_words[n]);
+printf("\n\n");
+#endif
 
             return;
         }
@@ -157,19 +148,28 @@ int compare_template()
 {
     int n;
     //match = 1; // match
-  // printf("num %d\n", numberoftemplatewords);////////////////////////////
-    for(n=0; n<numberoftemplatewords; n++)
+  // printf("num %d\n", numberoftemplatewords);/////
+  if(number_of_words != numberoftemplatewords) return 0;
+
+    for(n=1; n<=numberoftemplatewords; n++)
     {
 
- //printf("tem%s\n", template_words[n]);
- //printf("user:%s\n", user_words[n]);////////////////////////////
- //printf("483\n");////////////////////////////
+//printf("N:%d\n", n);
+//printf("tem: %s\n", template_words[n]);
+//printf("user: %s\n", user_words[n]);/////////////
+//printf("\n");
+
         if(strcmp(user_words[n], template_words[n] ) == 0 ||
                 (strcmp(template_words[n], "*") == 0))        {
+  //         printf("same\n");
         }
-        else return 0;
+        else {
+    //        printf("different\n");
+            return 0;
+        }
     }
-    return 1;
+  //  printf("default\n");
+    return 1; // match
 }
 
 
@@ -203,8 +203,12 @@ void extract_function_name(void){
     if(template_line[line_position] == ' ' ) line_position++; // skip over the space
     for(letter_position = 0; letter_position < MAX_LETTERS; letter_position++){
         //end of function name?
+  //        printf(" LP:%d",letter_position);
+
         if(template_line[line_position] == ','){
             function_name[letter_position] = 0;  // terminate the word
+
+
             line_position++; // skip over the comma
             return;
         }

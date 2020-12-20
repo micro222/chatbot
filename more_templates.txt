@@ -25,6 +25,17 @@ hello, handle_greetings
     // what time is it
     // how are you
     // are you human
+
+    //TO DO
+    // say my name
+    // what is my name,
+    // what is your name
+    // i am male,
+    // bob is male
+    // my gender is male
+    // what is my gender
+    // bob is tired
+
 ** has *, handle_have_statement,??, 4              // my dog has fleas
 does your * have *, handle_have_question,??, 5     // ex: does your dog has fleas
 do you have * *, handle_have_question,2, ??        // ex: do you have 3 dogs, do you have 2 thumbs

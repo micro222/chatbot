@@ -23,7 +23,7 @@ void handle_ability_question(char*, char*);
 void handle_opinion_question(char*, char*);
 void handle_opinion_statement(char*, char*, char*);
 void handle_list_question(char*);
-
+void handle_help(void);
 void handle_login(char*);
 
 #endif // HANDLE_H_INCLUDED
