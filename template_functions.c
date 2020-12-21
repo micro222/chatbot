@@ -34,7 +34,6 @@ int search_file(void)
         sprintf(output, "fopen failed while trying to open templates2.txt\n");
         puts(output);
     }
-
 // search line by line
     while(1){
         // read a line
@@ -49,21 +48,15 @@ int search_file(void)
         if(match == 1) break;
     } // get another template if there's no match
     fclose(templates);
-//if(match == 0) return;
-//    printf("Template words:");
+    //if(match == 0) return;
     for(n=1; n<=numberoftemplatewords; n++) printf("%s ", template_words[n]);
     extract_function_name();           //    printf(" func: %s ", function_name);
     extract_arg1();                    //    printf(" arg1: %s ", arg1);
     extract_arg2();                    //    printf(" arg2: %s ", arg2);
-
  index = atoi(arg1);
  if(index > 0){strcpy(arg1, user_words[index]); }
- //printf(" arg1b: %s ", arg1);
-
  index = atoi(arg2);
  if(index > 0){strcpy(arg2, user_words[index]); }
- //printf(" arg2b: %s \n", arg2);
-
  return 1;
 
 }
@@ -240,13 +233,12 @@ void extract_arg1(void){
 
 void extract_arg2(void){
    int letter_position;
-
     if(template_line[line_position] == ',' ) line_position++; // skip over the space
     if(template_line[line_position] == ' ' ) line_position++; // skip over the space
     for(letter_position = 0; letter_position < MAX_LETTERS; letter_position++)
     {
         //end of arg2?
-        if(template_line[line_position] == ' '  )
+        if(template_line[line_position] == ' ' || template_line[line_position] == 0  )
         {
             arg2[letter_position] = 0;  // terminate the word
             line_position++; // skip over the comma
@@ -255,6 +247,7 @@ void extract_arg2(void){
         arg2[letter_position] = template_line[line_position];
         line_position++;
     }
+    printf("ea2 error\n");
 }
 
 int str_to_int(char* s){

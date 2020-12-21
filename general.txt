@@ -293,3 +293,5 @@ felix > class:cat
 #5 > def:person
 #5 > firstname:fred
 #5 > gender:male
+what > class:cat
+fred > class:cat

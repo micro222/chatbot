@@ -36,6 +36,7 @@ while(1){
 result = search_file();
 
 #if 0
+
 // Testing
    printf("FN:%s l:%d ", function_name, strlen(function_name)  );
    printf("F10:%2x ", function_name[10]);
@@ -44,18 +45,28 @@ result = search_file();
    printf("F13:%2x ", function_name[13]);
 #endif // 0
 
-//printf("FFF:%s ", function_name);
-
-if(result == 1 && strcmp(function_name,"handle_help")==0)  {
-
+//if(result == 1 && strcmp(function_name,"handle_help")==0)  {
     //printf("help is coming  ");
-
-     handle_help();
-
-}
-//if(strcmp(function_name,"handle_class_statement")==0) handle_class_statement(arg1, arg2);
+//     handle_help();
+//}
 
 
+
+if(strcmp(function_name,"handle_class_statement")==0)          handle_class_statement(arg1, arg2);
+else if(strcmp(function_name,"handle_class_question")==0)      handle_class_question(arg1, arg2);
+//else if(strcmp(function_name,"handle_attribute_question")==0)  handle_attribute_question(arg1, arg2); // doesnt exist
+else if(strcmp(function_name,"handle_attribute_statement")==0) handle_attribute_statement(arg1, arg2); // exists
+else if(strcmp(function_name,"handle_color_question")==0)      handle_color_question(arg1);
+/*
+else if(strcmp(function_name,"handle_ability_question")==0)    handle_ability_question(arg1, arg2);
+else if(strcmp(function_name,"handle_list_question")==0)       handle_list_question(arg1);
+
+else if(strcmp(function_name,"handle_color_confirmation_question")==0) handle_color_confirmation_question(arg1, arg2);
+//else if(strcmp(function_name,"handle_opinion_question")==0)    handle_opinion_question(arg1, arg2);
+//else if(strcmp(function_name,"handle_opinion_statement")==0)   handle_opinion_statement(arg1, arg2);
+*/
+//continue;
+printf("\noriginal %d\n", number_of_words);
 
 
 //----------------
