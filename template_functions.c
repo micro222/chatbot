@@ -19,7 +19,7 @@ int search_file(void)
     */
 #define MAX 150
     int n;
-    int numberofwords;
+ //   int numberofwords;
     FILE *templates;
     char output[80];
     int status;

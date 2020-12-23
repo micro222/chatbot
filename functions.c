@@ -410,4 +410,97 @@ void normalize(void) {
 
 //=========================
 
+int check_gender_by_name(char* name)
+{
+
+    #define LINE_LENGTH 20
+    FILE *male;
+    FILE *female;
+    char *status;
+    char line[LINE_LENGTH];
+    int n, i;
+
+    //  open male file
+    male = fopen("male_names.txt","r");
+    if(male == NULL) return CANT_OPEN_FILE;
+
+    for(n=0; n<1000; n++)
+    {
+        // get a line
+        status = fgets(line, LINE_LENGTH, male);
+        if (status==0)
+        {
+            fclose(male);
+            break;
+        }
+
+        // teminate the word
+        for(i=0; i<LINE_LENGTH; i++)
+        {
+            if(line[i] == 10)
+            {
+                line[i] = 0;
+                break;
+            }
+        }
+
+        if(strcmp(name, line) == 0)
+        {
+            fclose(male);
+            return 1;
+        }
+
+    }
+
+    //  open female file
+    female = fopen("female_names.txt","r");
+    if(female == NULL) return CANT_OPEN_FILE;
+
+    for(n=0; n<1000; n++)
+    {
+        // get a line
+        status = fgets(line, LINE_LENGTH, female);
+        if (status==0)
+        {
+            fclose(female);
+            break;
+        }
+
+        // teminate the word
+        for(i=0; i<LINE_LENGTH; i++)
+        {
+            if(line[i] == 10)
+            {
+                line[i] = 0;
+                break;
+            }
+        }
+
+        if(strcmp(name, line) == 0)
+        {
+            fclose(female);
+            return 2;
+        }
+
+
+
+    }
+return 3;
+}
+
+//-------------------------------------------------------------
+
+/*
+int isvalidname(char* s1){
+
+  //  valid characters are a-z 0-1 _
+   if ((isalpha(s1)==0) && (isdigit(s1)==0) && s1!='_'){
+      return 0;  // not valid
+   }
+   else return 1;  // is valid
+}
+*/
+
+
+//-------------------------------------------------------
 

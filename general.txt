@@ -10,6 +10,10 @@ attribute > class:	root
 
 //---------------------------------------------
 
+color > class: attribute
+color > class:property
+
+
 creature > class:	object
 creature > ability > fly:	4
 creature > ability > walk:	6
@@ -210,7 +214,6 @@ cyan > class:	color
 
 // MISC
 
-color > class:property
 fire
 water
 rock
@@ -254,44 +257,29 @@ tool > class:object
 plant > class:object
 
 // ACTIONS
-    eat
-	drink
-	run
-	walk
-	talk
-	fly
-	go
-	move
-	fall
-	hit
-	kick
-	calculate
-	think
-
+//  eat
+//	drink
+//	run
+//	walk
+//	talk
+//	fly
+//	go
+//	move
+//	fall
+//	hit
+//	kick
+//	think
 
 
 
 //=============================================================
 // BELOW IS DATA COLLECTED DURING USER SESSIONS
 
-#1 > def:person
-#1 > firstname:ed
-#1 > gender:male
 
-#2 > def:person
-#2 > firstname:kim
-#2 > gender:male
-
-insect > class:creature
-spider > class:insect
-#3 > def:person
-#3 > firstname:bob
-#3 > gender:male
-felix > class:cat
-#4 > def:person
-#4 > firstname:rover
-#5 > def:person
-#5 > firstname:fred
-#5 > gender:male
-what > class:cat
-fred > class:cat
+coffee > color:brown
+coffee > color:brown
+grass > color:green
+grass > color:green
+bb > class:person
+bb > color:black
+bb > color:black

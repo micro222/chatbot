@@ -6,18 +6,27 @@ char out[MAX_WORDS][MAX_LETTERS];
 int n;
 int result;
 
+
+#if 0
+// STRUCT TEST
+typedef struct users{
+  int age;
+  int weight;
+} User;
+User user;
+user.age = 35;
+printf("=== %d ===\n", user.age);
+while(1);
+#endif // 0
+
+
 while(1){
    printf(">"); // user prompt
    get_string(); // user input
-
-//   result = check_gender_by_name(user_input);
-//   printf("result: %d", result);
-//   continue;
-
    parse(); // separates sentence into individual words
 
 // word substitutions
-  for(n=1;n<=number_of_words;n++){
+  for(n=1; n <= number_of_words; n++){
 	  if (strcmp(user_words[n],"r")==0)    strcpy(user_words[n], "are");
 	  //if (strcmp(user_words[n],"does")==0) strcpy(user_words[n], "do");
 	  if (strcmp(user_words[n],"has")==0)  strcpy(user_words[n], "have");
@@ -65,7 +74,7 @@ else if(strcmp(function_name,"handle_color_confirmation_question")==0) handle_co
 //else if(strcmp(function_name,"handle_opinion_question")==0)    handle_opinion_question(arg1, arg2);
 //else if(strcmp(function_name,"handle_opinion_statement")==0)   handle_opinion_statement(arg1, arg2);
 */
-//continue;
+
 printf("\noriginal %d\n", number_of_words);
 
 
@@ -127,7 +136,10 @@ printf("\noriginal %d\n", number_of_words);
       number_of_words==3 &&
       strcmp(user_words[2],"is")==0
     ){
-      handle_class_statement(user_words[1],user_words[3]);
+  //    handle_class_statement(user_words[1],user_words[3]);
+      handle_attribute_statement(user_words[1],user_words[3]);
+
+
     }
 
     // - - - - - - - - - - - - - - - - - - - - - -
@@ -168,31 +180,6 @@ printf("\noriginal %d\n", number_of_words);
 //    else if(number_of_words==4 && strcmp(user_words[1],"do")==0 && strcmp(user_words[2],"you")==0 && strcmp(user_words[3],"like")==0 ){
 //       handle_opinion_question();
 //    }
-    // Template: __ like __
-    // Example: i like beer
-    else if(number_of_words==3 && strcmp(user_words[2],"like")==0){
-       handle_opinion_statement(user_words[1], user_words[3], "7");
-    }
-    // Template: <person> hate __
-    // Example: i hate beer
-    else if(number_of_words==3 && strcmp(user_words[2],"hate")==0){
-       handle_opinion_statement(user_words[1], user_words[3], "0");
-    }
-    // <creature> love ___
-    // conditions: 3 words, middle word is "love"
-    else if(number_of_words==3 && strcmp(user_words[2],"love")==0){
-       handle_opinion_statement(user_words[1], user_words[3], "10");
-    }
-    // ___ dont like ___
-    else if(number_of_words==4 && strcmp(user_words[2],"dont")==0 && strcmp(user_words[3],"like")==0){
-       handle_opinion_statement(user_words[1], user_words[3], "3");
-    }
-
-    // Template: does <person> like <subject>
-    // Example: does fred like beer
-    else if(number_of_words==4 && strcmp(user_words[1],"does")==0 && strcmp(user_words[3],"like")==0 ){
-       handle_opinion_question(user_words[2], user_words[4]);
-    }
 
     // Template: list <def>
     // Example: list action
@@ -259,110 +246,4 @@ printf("\noriginal %d\n", number_of_words);
 } // main
 
 //-----------------------------------------------------------
-
-
-//-------------------------------------------------------
-
-
-/*
-int isvalidname(char* s1){
-
-  //  valid characters are a-z 0-1 _
-   if ((isalpha(s1)==0) && (isdigit(s1)==0) && s1!='_'){
-      return 0;  // not valid
-   }
-   else return 1;  // is valid
-}
-*/
-
-//-------------------------------------------------------------
-
-int check_gender_by_name(char* name)
-{
-
-    #define LINE_LENGTH 20
-    FILE *male;
-    FILE *female;
-    char *status;
-    char line[LINE_LENGTH];
-    int n, i;
-
-    //  open male file
-    male = fopen("male_names.txt","r");
-    if(male == NULL) return CANT_OPEN_FILE;
-
-    for(n=0; n<1000; n++)
-    {
-        // get a line
-        status = fgets(line, LINE_LENGTH, male);
-        if (status==0)
-        {
-            fclose(male);
-            break;
-        }
-
-        // teminate the word
-        for(i=0; i<LINE_LENGTH; i++)
-        {
-            if(line[i] == 10)
-            {
-                line[i] = 0;
-                break;
-            }
-        }
-
-        if(strcmp(name, line) == 0)
-        {
-            fclose(male);
-            return 1;
-        }
-
-    }
-
-    //  open female file
-    female = fopen("female_names.txt","r");
-    if(female == NULL) return CANT_OPEN_FILE;
-
-    for(n=0; n<1000; n++)
-    {
-        // get a line
-        status = fgets(line, LINE_LENGTH, female);
-        if (status==0)
-        {
-            fclose(female);
-            break;
-        }
-
-        // teminate the word
-        for(i=0; i<LINE_LENGTH; i++)
-        {
-            if(line[i] == 10)
-            {
-                line[i] = 0;
-                break;
-            }
-        }
-
-        if(strcmp(name, line) == 0)
-        {
-            fclose(female);
-            return 2;
-        }
-
-
-
-    }
-return 3;
-}
-
-
-
-
-
-
-
-
-
-
-
 
