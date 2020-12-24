@@ -266,9 +266,10 @@ void handle_attribute_statement(char* user_subject,char* user_attribute){
   char key[60];
   int subject_result;
 
- // char subject_class[20];
+  char subject_class[20];
   char db_class[20];
  char db_value[20];
+ char attribute_name[20];
 
     //  1) ex: is "grass" in database?
     sprintf(key, "%s > class", user_subject);
@@ -293,7 +294,7 @@ void handle_attribute_statement(char* user_subject,char* user_attribute){
        return;
     }
 
-    printf("/nSUB%s ATT%s", user_subject, user_attribute);
+    printf("\n[SUB%s ATT%s]\n", user_subject, user_attribute);
 
     //  4) is "green" an attribute
     result = db_root_check(user_attribute, "attribute");
@@ -302,25 +303,20 @@ void handle_attribute_statement(char* user_subject,char* user_attribute){
         return;
     }
 
-// 5) already known
+// 5) already known?
 // green
-/*
-grass is green
-grass > color:green
-user_subject > zzz:user_attribute
-to get zzz, lookup class green
 
-*/
-db_class
+// get attribute_name
+    sprintf(key, "%s > class", user_attribute);
+    result = db_lookup(key, attribute_name);
 
+//db_class
 
-    sprintf(key, "%s > %s %s", user_subject);
- //   strcpy(key, user_subject);
- //   strcat(key," > class");
+    sprintf(key, "%s > %s", user_subject, attribute_name);
     result = db_lookup(key, value);
-// color
-    sprintf(key, "%s > %s:%s", user_subject, db_class, user_attribute);
-    result = db_lookup(key, value);
+
+//    sprintf(key, "%s > %s:%s", user_subject, db_class, user_attribute);
+//    result = db_lookup(key, value);
 
     if(strcmp(user_attribute, value) == 0){
         printf("I already know that\n");
@@ -328,14 +324,11 @@ db_class
     }
 
 //  ex: lookup "grass"
-    strcpy(key, user_subject);
-    strcat(key," > ");
+    sprintf(key, "%s > %s", user_subject, attribute_name);
     subject_result = db_lookup(key, value);
 
-
     if(subject_result == NOT_FOUND) {
-       strcpy(key, user_subject);
-       strcat(key," > color");
+       sprintf(key, "%s > %s", user_subject, attribute_name);
        db_add_pair(key, user_attribute);
        printf("I'll take a note of that\n");
        return;

@@ -275,11 +275,6 @@ plant > class:object
 //=============================================================
 // BELOW IS DATA COLLECTED DURING USER SESSIONS
 
-
 coffee > color:brown
-coffee > color:brown
-grass > color:green
-grass > color:green
-bb > class:person
-bb > color:black
-bb > color:black
+milk > class:beverage
+milk > color:white
