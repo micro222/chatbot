@@ -303,30 +303,25 @@ void handle_attribute_statement(char* user_subject,char* user_attribute){
         return;
     }
 
-// 5) already known?
-// green
+// 5) Already known?
 
 // get attribute_name
     sprintf(key, "%s > class", user_attribute);
     result = db_lookup(key, attribute_name);
 
-//db_class
-
     sprintf(key, "%s > %s", user_subject, attribute_name);
     result = db_lookup(key, value);
-
-//    sprintf(key, "%s > %s:%s", user_subject, db_class, user_attribute);
-//    result = db_lookup(key, value);
 
     if(strcmp(user_attribute, value) == 0){
         printf("I already know that\n");
         return;
     }
 
-//  ex: lookup "grass"
+//  Lookup subject and attribute_name
     sprintf(key, "%s > %s", user_subject, attribute_name);
     subject_result = db_lookup(key, value);
 
+    // Store the information
     if(subject_result == NOT_FOUND) {
        sprintf(key, "%s > %s", user_subject, attribute_name);
        db_add_pair(key, user_attribute);
@@ -336,8 +331,79 @@ void handle_attribute_statement(char* user_subject,char* user_attribute){
 
 
 // 4)
-    printf("no, it's a %s\n", value);
+    printf("no, it's %s\n", value);
 
+
+}
+
+//--------------------------------------------------
+void handle_attribute_question(char* user_subject,char* attribute_name){
+  /*
+  example: what color is grass
+
+  Posibilities:
+  1   grass is unknown                   i dont know what grass is
+  2   grass is not an object or substance
+  3   color is unknown
+  4   color is not an attribute
+  5   if known, provide info
+  */
+
+  int result;
+  int result1;
+  int result2;
+  char value[20];
+  char key[60];
+  int subject_result;
+
+  char subject_class[20];
+  char db_class[20];
+ char db_value[20];
+ //char attribute_name[20];
+
+    //  1) ex: is "grass" in database?
+    sprintf(key, "%s > class", user_subject);
+    subject_result = db_lookup(key, subject_class);
+    if (subject_result == NOT_FOUND){
+        printf("I don't know what %s is\n", user_subject);
+        return;
+    }
+    // 2) is grass an object or substance?
+    result1 = db_root_check(user_subject, "object");
+    result2 = db_root_check(user_subject, "substance");
+    if ((result1 == NOT_FOUND) && (result2 == NOT_FOUND)){
+        printf("I don't think %s can have such an attribute\n", user_subject);
+        return;
+    }
+
+    //  3) is color in db?
+    sprintf(key, "%s > class", attribute_name);
+    result = db_lookup(key, db_class);
+    if(result == NOT_FOUND) {
+       printf("I'm unfamiliar with %s\n", attribute_name);
+       return;
+    }
+
+    printf("\n[SUB%s ATT%s]\n", user_subject, attribute_name);
+
+    //  4) is "color" an attribute
+    result = db_root_check(attribute_name, "attribute");
+    if(result == NOT_FOUND) {
+        printf("%s is not an attribute\n", attribute_name);
+        return;
+    }
+
+// 5) Known?
+
+    sprintf(key, "%s > %s", user_subject, attribute_name);
+    result = db_lookup(key, value);
+
+    if(result == FOUND){
+        printf("%s\n", value);
+        return;
+    }
+
+    printf("beats me\n");
 
 }
 

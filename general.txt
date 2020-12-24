@@ -3,7 +3,7 @@
 object > class:	    root
 action > class:	    root
 place > class:      root
-subtance > class:	root
+substance > class:	root
 phenomenon > class:	root
 concept > class:	root
 attribute > class:	root
@@ -11,7 +11,9 @@ attribute > class:	root
 //---------------------------------------------
 
 color > class: attribute
-color > class:property
+gender > class:attribute
+male > class:gender
+female > class:gender
 
 
 creature > class:	object
@@ -275,6 +277,3 @@ plant > class:object
 //=============================================================
 // BELOW IS DATA COLLECTED DURING USER SESSIONS
 
-coffee > color:brown
-milk > class:beverage
-milk > color:white

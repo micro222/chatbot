@@ -63,9 +63,9 @@ result = search_file();
 
 if(strcmp(function_name,"handle_class_statement")==0)          handle_class_statement(arg1, arg2);
 else if(strcmp(function_name,"handle_class_question")==0)      handle_class_question(arg1, arg2);
-//else if(strcmp(function_name,"handle_attribute_question")==0)  handle_attribute_question(arg1, arg2); // doesnt exist
+else if(strcmp(function_name,"handle_attribute_question")==0)  handle_attribute_question(arg1, arg2); //
 else if(strcmp(function_name,"handle_attribute_statement")==0) handle_attribute_statement(arg1, arg2); // exists
-else if(strcmp(function_name,"handle_color_question")==0)      handle_color_question(arg1);
+//else if(strcmp(function_name,"handle_color_question")==0)      handle_color_question(arg1);
 /*
 else if(strcmp(function_name,"handle_ability_question")==0)    handle_ability_question(arg1, arg2);
 else if(strcmp(function_name,"handle_list_question")==0)       handle_list_question(arg1);
@@ -75,7 +75,7 @@ else if(strcmp(function_name,"handle_color_confirmation_question")==0) handle_co
 //else if(strcmp(function_name,"handle_opinion_statement")==0)   handle_opinion_statement(arg1, arg2);
 */
 
-printf("\noriginal %d\n", number_of_words);
+printf("\noriginal proceedure %d\n", number_of_words);
 
 
 //----------------
@@ -221,6 +221,10 @@ printf("\noriginal %d\n", number_of_words);
 
    else if(number_of_words==1 && strcmp(user_words[1],"g")==0){
        printf("%d\n",gender_code);
+    }
+
+  else if(number_of_words==1 && strcmp(user_words[1],"d")==0){
+       printf("function_name: %s, arg1: %s, arg2: %s\n",function_name, arg1, arg2);
     }
 
     // one word?
