@@ -93,43 +93,38 @@ int db_add_pair(char*key, char*value){
 
 //--------------------------------
 //  returns
-//    0 if found, 3 if not found
-//    id
+//    0 if not found
+//    id number if found
 //
-int db_get_id(char* firstname)
+int db_get_id(char* firstname, char* id_string)
 {
 
    int i;
-    char id_string[20], name[20];
+    //char id_string[20],
+    char db_name[20];
+    char string[20];
     char key[80];
     int result;
 
-    for(i=1; i<1000; i++)
+    for(i=1; i<100; i++)
     {
         // look up name, retreive id
-        itoa(i, id_string,10);  // integer to string. integer, string, base
-        strcpy(key,"#");
-        strcat(key, id_string );
-        strcat(key, " > firstname"); // ex.: "#1 > firstname"
-        result = db_lookup(key, name);
-        if (result==NOT_FOUND )
-        {
- //           printf("id not found  ");
+
+        // make id_string
+        strcpy(id_string,"#");
+        itoa(i, string,10);  // integer to string. integer, string, base
+        strcat(id_string, string );
+
+        // make key
+        sprintf(key, "%s > firstname", id_string);
+        result = db_lookup(key, db_name);
+        if(result!=0)continue;
+        if(strcmp(db_name, firstname) == 0){
+
+            return i;
 
         }
-  //      else printf("i=%d", i);
 
-        if(result==FOUND)
-        {
-            result = strcmp(name, firstname);
-            if(result==0)
-            {
-
-  //              printf("name found, ID is %d  ", i);
-                return i;
-            }
-            else continue;
-        }
     }
 
     return 0; // not in the database
@@ -214,24 +209,43 @@ int db_change_value(char*key, char*value){
 
 //--------------------------------------------------------
 
-int db_next_available_id(void){
+int db_next_available_id( char id_string[20]){
 
    int i;
    char value[20];
+   char string[20];
    int result;
-   char key[20], id_string[20];
+   char key[20];
+ //  char id_string[20];
 
-   //id[0]=0;
-   for(i=1; i<1000; i++){
+   for(i=1; i<100; i++){
       // look for id, first_name
-      itoa(i,id_string,10);
-      strcpy(key,"#");
-      strcat(key, id_string);
-      strcat(key, " > def");
+      //itoa(i,id_string,10);
+printf("I: %d", i);
+//sscanf(key, "#%d > class", i);
+
+strcpy(id_string, "#");
+itoa(i, string,10);
+strcat(id_string, string);
+
+//strcat(id_string, string);
+
+strcpy(key, id_string);
+strcat(key, " > class");
+
+      //strcpy(key,"#");
+      //strcat(key, id_string);
+      //strcat(key, " > class");
       result = db_lookup(key,value);
       if(result != FOUND){
+
         //    printf("%d, %s   ", i, id_string);
-         return i;
+
+        //sscanf(id_string, "%d", i);
+        //strcpy();
+
+        //printf(" S: %s", id_string);
+        return i;
       }
    }
 

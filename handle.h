@@ -15,6 +15,8 @@ void handle_attribute_question(char*,char*);
 void handle_color_question(char*);
 void handle_color_confirmation_question(char*,char*);
 void handle_color_statement(char*,char*);
+void handle_have_statement(char*,char*);
+void handle_have_question(char*,char*);
 
 void handle_location_question(char*);
 

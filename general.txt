@@ -14,6 +14,61 @@ color > class: attribute
 gender > class:attribute
 male > class:gender
 female > class:gender
+relation > class:attribute
+condition > class:attribute
+state > class:attribute
+
+// RELATIONS
+brother > class:relation
+sister > class:relation
+mother > class:relation
+father > class:relation
+grandfather > class:relation
+grandmother > class:relation
+grandson > class:relation
+granddaughter > class:relation
+wife > class:relation
+husband > class:relation
+girlfriend > class:relation
+boyfriend > class:relation
+son > class:relation
+daughter > class:relation
+brother > class:relation
+
+sister > gender:female
+mother > gender:female
+father > gender:male
+grandfather > gender:male
+grandmother > gender:female
+grandson > gender:male
+granddaughter > gender:female
+wife > gender:female
+husband > gender:male
+girlfriend > gender:female
+boyfriend > gender:male
+son > gender:male
+daughter > gender:female
+
+
+CONDITIONS
+acne > class:condition
+shingles > class:condition
+ebola > class:condition
+covid > class:condition
+
+
+// STATES
+happy > class:state
+sad > class:state
+angry > class:state
+mad > class:state
+busy > class:state
+bored > class:state
+tired > class:state
+excited > class:state
+sick > class:state
+hungry > class:state
+pregnant > class:state
 
 
 creature > class:	object
@@ -276,4 +331,3 @@ plant > class:object
 
 //=============================================================
 // BELOW IS DATA COLLECTED DURING USER SESSIONS
-

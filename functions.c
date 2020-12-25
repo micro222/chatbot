@@ -503,4 +503,25 @@ int isvalidname(char* s1){
 
 
 //-------------------------------------------------------
+/*
+replace_name_with_number(char* name){
 
+       sprintf(key, "%s > class", user_subject);
+       result1 = db_root_check(user_subject, "creature");
+
+
+
+
+
+if (){
+
+
+
+}
+
+
+
+
+
+}
+*/

@@ -3,6 +3,7 @@
 int main(int argc, char *argv[]){
 
 char out[MAX_WORDS][MAX_LETTERS];
+char id_string[20];
 int n;
 int result;
 
@@ -25,6 +26,17 @@ while(1){
    get_string(); // user input
    parse(); // separates sentence into individual words
 
+
+   // login?
+    // my name is _
+    if(number_of_words==4 && strcmp(user_words[1],"my")==0 && strcmp(user_words[2],"name")==0 && strcmp(user_words[3],"is")==0){
+       handle_login(user_words[4]);
+       continue;
+    }
+
+
+
+
 // word substitutions
   for(n=1; n <= number_of_words; n++){
 	  if (strcmp(user_words[n],"r")==0)    strcpy(user_words[n], "are");
@@ -34,11 +46,15 @@ while(1){
 	  if (strcmp(user_words[n],"wants")==0)strcpy(user_words[n], "want");
 	  if (strcmp(user_words[n],"feels")==0)strcpy(user_words[n], "feel");
 	  if (strcmp(user_words[n],"likes")==0)strcpy(user_words[n], "like");
-//	  if (strcmp(user_words[n],"i")==0)    strcpy(user_words[n], current_user_name);
+	  if (strcmp(user_words[n],"i")==0)    strcpy(user_words[n], current_user_name);
 	  if (strcmp(user_words[n],"u")==0)    strcpy(user_words[n], "you");
 	  if (strcmp(user_words[n],"you")==0)  strcpy(user_words[n], "bot");
 	  if (strcmp(user_words[n],"am")==0)	strcpy(user_words[n], "is");
 	  if (strcmp(user_words[n],"an")==0)    strcpy(user_words[n], "a");
+//printf("\nN43: %s\n", user_words[1]);
+	  result = db_get_id(user_words[n], id_string);
+      if(result > 0) strcpy(user_words[n], id_string);
+
   }
 //----------------
 
@@ -58,13 +74,16 @@ result = search_file();
     //printf("help is coming  ");
 //     handle_help();
 //}
-
-
+printf("\nnumber_of_words: %d\n", number_of_words);
+printf("\ntemplate proceedure \n");
 
 if(strcmp(function_name,"handle_class_statement")==0)          handle_class_statement(arg1, arg2);
 else if(strcmp(function_name,"handle_class_question")==0)      handle_class_question(arg1, arg2);
 else if(strcmp(function_name,"handle_attribute_question")==0)  handle_attribute_question(arg1, arg2); //
 else if(strcmp(function_name,"handle_attribute_statement")==0) handle_attribute_statement(arg1, arg2); // exists
+else if(strcmp(function_name,"handle_have_statement")==0)      handle_have_statement(arg1, arg2); // exists
+else if(strcmp(function_name,"handle_have_question")==0)       handle_have_question(arg1, arg2); // exists
+
 //else if(strcmp(function_name,"handle_color_question")==0)      handle_color_question(arg1);
 /*
 else if(strcmp(function_name,"handle_ability_question")==0)    handle_ability_question(arg1, arg2);
@@ -75,8 +94,7 @@ else if(strcmp(function_name,"handle_color_confirmation_question")==0) handle_co
 //else if(strcmp(function_name,"handle_opinion_statement")==0)   handle_opinion_statement(arg1, arg2);
 */
 
-printf("\noriginal proceedure %d\n", number_of_words);
-
+printf("\noriginal proceedure\n");
 
 //----------------
 #if 0
@@ -85,13 +103,8 @@ printf("\noriginal proceedure %d\n", number_of_words);
 	}
 #endif
 
+     printf("\nnumber_of_words: %d\n", number_of_words);
 
-// login?
-    // my name is _
-    if(number_of_words==4 && strcmp(user_words[1],"my")==0 && strcmp(user_words[2],"name")==0 && strcmp(user_words[3],"is")==0){
-       handle_login(user_words[4]);
-       continue;
-    }
 
 /*
     if(strcmp(current_user_name,"unknown")==0){
@@ -138,53 +151,6 @@ printf("\noriginal proceedure %d\n", number_of_words);
     ){
   //    handle_class_statement(user_words[1],user_words[3]);
       handle_attribute_statement(user_words[1],user_words[3]);
-
-
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - -
-    // COLORS
-    // what color is ___
-    else if(number_of_words==4 && strcmp(user_words[1],"what")==0 && strcmp(user_words[2],"color")==0&& strcmp(user_words[3],"is")==0){
-       handle_color_question(user_words[4]);
-    }
-    // is ___ <color>?
-    else if(number_of_words==3 &&
-       strcmp(user_words[1],"is")==0 &&
-       db_root_check(user_words[3],"color")==0)
-       {
-       handle_color_confirmation_question(user_words[2],user_words[3]);
-    }
-    // ___ is <color>
-    // conditions: 3 words, middle word is "is"
-    else if(number_of_words==3 && strcmp(user_words[2],"is")==0 &&
-            db_root_check(user_words[3],"color")==0){
-       handle_color_statement(user_words[1],user_words[3]);
-    }
-    // - - - - - - - - - - - - - - - - - - - - - -
-    // LOCATION
-    // where is ___
-    else if(number_of_words==3 && strcmp(user_words[1],"where")==0 && strcmp(user_words[2],"is")==0){
-       handle_location_question(user_words[3]);
-    }
-    // - - - - - - - - - - - - - - - - - - - - - -
-    // ABILITY
-    // can <subject> <action>
-    else if(number_of_words==3 && strcmp(user_words[1],"can")==0 ){
-       handle_ability_question(user_words[2],user_words[3]);
-    }
-    // - - - - - - - - - - - - - - - - - - - - - -
-    // OPINION
-    // Template: do you like <subject>
-    // Example: do you like beer
-//    else if(number_of_words==4 && strcmp(user_words[1],"do")==0 && strcmp(user_words[2],"you")==0 && strcmp(user_words[3],"like")==0 ){
-//       handle_opinion_question();
-//    }
-
-    // Template: list <def>
-    // Example: list action
-    else if(number_of_words==2 && strcmp(user_words[1],"list")==0){
-       handle_list_question(user_words[2]);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - -

@@ -39,8 +39,6 @@ void handle_class_statement(char*user_subject, char*user_class){
         return;
     }
 
-
-
 //  lookup "animal"
     strcpy(key, user_class);
     strcat(key," > class");
@@ -68,60 +66,6 @@ void handle_class_statement(char*user_subject, char*user_class){
 }
 
 //--------------------------------------------------
-void handle_color_statement(char* user_subject,char* user_color){
-  /*
-  example: grass is green
-
-  Posibilities:
-  1   grass is unknown                   i dont know what grass is
-  2   grass known, color is unknown     add color
-  3   grass known, color = green      i know
-  4   grass known, color not green    is not
-  */
-
-char key[20];
-char value[20];
-int subject_result;
-char user_class;
-int class_result;
-
-//  ex: lookup "grass"
-    strcpy(key, user_subject);
-    strcat(key," > class");
-    subject_result = db_lookup(key, value);
-
-//  lookup "green"
-    strcpy(key, user_class);
-    strcat(key," > color");
-    class_result = db_lookup(key, value);
-
-// 1)
-    if(class_result == NOT_FOUND) {
-       printf("I'm unfamiliar with %s\n", user_class);
-       return;
-    }
-
-//  2)
-    if(subject_result == NOT_FOUND) {
-       strcpy(key, user_subject);
-       strcat(key," > color");
-       db_add_pair(key, user_color);
-       printf("I'll take a note of that\n");
-       return;
-    }
-
-//  3)
-    if(strcmp(user_class, value) == 0){
-        printf("I already know that\n");
-        return;
-    }
-
-// 4)
-    printf("no, it's a %s\n", value);
-
-
-}
-//--------------------------------------------------
 
 void handle_class_question(char* subject){
 
@@ -136,46 +80,9 @@ void handle_class_question(char* subject){
 
 }
 
-//------------------------------------------------------
 
-void handle_color_question(char* subject){
-  int result;
-  char value[20];
-  char key[60];
 
-  strcpy(key, subject);
-  strcat(key, " > color");
-  result = db_lookup(key, value);
-  if(result == FOUND){
-    printf("%s\n", value);
-    return;
-  }
-   else{
-     printf("I don't know\n");
-     return;
-   }
 
-  //else if(result==3)printf("I've never heard of %s\n",key);
- // else printf(" I don't know (result %d)\n", result);
-}
-
-//----------------------------------------------------
-
-void handle_color_confirmation_question(char* subject, char*value1){
-
-  int result;
-  char value[20];
-  char key[60];
-
-    strcpy(key, subject); // prepare to lookup
-       strcat(key," > color"); // prepare to lookup
-       db_lookup(key, value); // lookup
-       result = strcmp(value, value1);
-        if (result == 0){
-            printf("yes\n");
-        }
-        else printf("no\n");
-}
 
 //----------------------------------------------------
 
@@ -268,16 +175,19 @@ void handle_attribute_statement(char* user_subject,char* user_attribute){
 
   char subject_class[20];
   char db_class[20];
- char db_value[20];
- char attribute_name[20];
+  char db_value[20];
+  char attribute_name[20];
+
+    printf("   US: %s \n", user_subject);
 
     //  1) ex: is "grass" in database?
     sprintf(key, "%s > class", user_subject);
     subject_result = db_lookup(key, subject_class);
     if (subject_result == NOT_FOUND){
-        printf("I don't know what %s is\n", user_subject);
+        printf("I don't know what %s is(h278)\n", user_subject);
         return;
     }
+
     // 2) is grass an object or substance?
     result1 = db_root_check(user_subject, "object");
     result2 = db_root_check(user_subject, "substance");
@@ -365,7 +275,7 @@ void handle_attribute_question(char* user_subject,char* attribute_name){
     sprintf(key, "%s > class", user_subject);
     subject_result = db_lookup(key, subject_class);
     if (subject_result == NOT_FOUND){
-        printf("I don't know what %s is\n", user_subject);
+        printf("I don't know what %s is(h278)\n", user_subject);
         return;
     }
     // 2) is grass an object or substance?
@@ -490,7 +400,7 @@ void handle_login(char*name)
     }
 
 // Step #2
-    id_number = db_get_id(name);
+    id_number = db_get_id(name, id_string);
     if(id_number != 0)
     {
         known=TRUE;
@@ -505,29 +415,30 @@ void handle_login(char*name)
     if(known==FALSE)
     {
         // Get an id number
-        id_number = db_next_available_id();
+        id_number = db_next_available_id(id_string);
         // Add the following to the database
-        //   #1 > def: person
+        //   #1 > class: person
         //   #1 > firstname:bob
         //   #1 > gender:male
-        itoa(id_number, id_string, 10);
 
-        strcpy(key, "#");
-        strcat(key, id_string);
-        strcat(key, " > def");
+strcpy(key, id_string);
+strcat(key, " > class");
+
+       // printf("ID STRING: %s\n", id_string);
+
+
+     //   sprintf(key, "%s > class", id_string);
         db_add_pair(key, "person");
 
-        strcpy(key, "#");
-        strcat(key, id_string);
-        strcat(key, " > firstname");
+        printf("key: %s\n", key);
+        //strcpy(key, id_string);
+        //strcat(key, " > firstname");
+        sprintf(key, "%s > firstname", id_string);
         db_add_pair(key, name);
 
 
         // TEST
-        sprintf(key, "#%s > gender", id_string);
-    //    strcpy(key, "#");
-    //    strcat(key, id_string);
-    //    strcat(key, " > gender");
+        sprintf(key, "%s > gender", id_string);
         gender_code = check_gender_by_name(name);
         switch(gender_code)
 {
@@ -551,5 +462,91 @@ void handle_login(char*name)
         printf("hi %s\n", current_user_name);
     }
 }
+
+void handle_have_statement(char* user_subject, char* user_x){
+/*
+   USER WORDS                                          Database entry
+-----------------   -------------------------------  --------------------
+I have a daughter   relation                         #4 > daughter:#15
+I have a car        possession(object or substance or animal)  #4 > possession:#17
+I have covid        condition                        #4 > condition:covid
+
+check user_subject,  errors: unknown, not a person
+check user_x,        errors: unknown, not an object or substance
+condition, relation or possession,  errors: not a relation
+
+If condition, add #4 > condition:covid
+
+If relation, add #15 > class:person, #15 gender:female, #5 > daughter:#15
+(want to know name)
+
+If possession, add #17 > class:car, #5 > possession:#17
+
+*/
+char db_result[20];
+int result;
+
+  printf("\nHAVE STATEMENT\n");
+
+    //  1) ex: is subject in the database?
+    sprintf(key, "%s > class", user_subject);
+    result = db_lookup(key, db_result);
+    if (result == NOT_FOUND){
+        printf("I don't know what %s is.\n", user_subject);
+        return;
+    }
+    // 2) is subject a person?
+    result = db_root_check(user_subject, "person");
+    if (result == NOT_FOUND){
+        printf("I would think the first word would be a person\n");
+        return;
+    }
+
+    //  3) is x in db?
+    sprintf(key, "%s > class", user_x);
+    result = db_lookup(key, db_result);
+    if(result == NOT_FOUND) {
+       printf("I'm unfamiliar with %s\n", user_x);
+       return;
+    }
+
+    printf("\n[SUB: %s, X: %s]\n", user_subject, user_x);
+
+    //  4) is x a condition
+    result = db_root_check(user_x, "condition");
+    if(result == FOUND) {
+       // I'd like to check if the info exists but I dont know how to deal with multiple entries
+       // Store the information
+       sprintf(key, "%s > condition", user_subject);
+       db_add_pair(key, user_x);
+       printf("I'll take a note of that [condition]\n");
+       return;
+    }
+    else {
+            printf("info not found [condition]\n");
+            return;
+    }
+    //  4) is x a relation
+    result = db_root_check(user_x, "relation");
+    if(result == NOT_FOUND) {
+        printf("%s is not an relation\n", user_x);
+        return;
+    }
+
+    //  4) is x a possession
+    result = db_root_check(user_x, "possession");
+    if(result == NOT_FOUND) {
+        printf("%s is not an possession\n", user_x);
+        return;
+    }
+
+}
+
+void handle_have_question(char*x,char*y){
+
+}
+
+
+
 
 
