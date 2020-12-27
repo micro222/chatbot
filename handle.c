@@ -539,14 +539,14 @@ void handle_have_statement(char* user_subject, char* user_x)
     result = db_lookup(key, db_result);
     if (result == NOT_FOUND){
 
-            printf("\nUS%s RE%d K%s DBR%s\n", user_subject, result, key, db_result);
+    //        printf("\nUS%s RE%d K%s DBR%s\n", user_subject, result, key, db_result);
 
 
 
         printf("I don't know what %s is.\n", user_subject);
         return;
     }
-    printf("\nH2\n");
+  //  printf("\nH2\n");
     // 2) is subject a person?
     result = db_root_check(user_subject, "person");
     if (result == NOT_FOUND)
@@ -554,7 +554,7 @@ void handle_have_statement(char* user_subject, char* user_x)
         printf("I would think the first word would be a person\n");
         return;
     }
-printf("\nH3\n");
+//printf("\nH3\n");
     //  3) is x in db?
     sprintf(key, "%s > class", user_x);
     result = db_lookup(key, db_result);
@@ -565,13 +565,13 @@ printf("\nH3\n");
     }
 
  //   printf("\n[SUB: %s, X: %s]\n", user_subject, user_x);
-printf("\nH4\n");
+//printf("\nH4\n");
     //  4) is x a condition
     result = db_root_check(user_x, "condition");
     if(result != NOT_FOUND)
     {
 
-    printf("\n[RESULT: %d]\n", result);
+  //  printf("\n[RESULT: %d]\n", result);
         // I'd like to check if the info exists but I dont know how to deal with multiple entries
         // Store the information
         sprintf(key, "%s > condition", user_subject);
@@ -580,7 +580,7 @@ printf("\nH4\n");
         return;
     }
 
-    printf("\nH5\n");
+ //   printf("\nH5\n");
     //  4) is x a relation
     result = db_root_check(user_x, "relation");
     if(result == NOT_FOUND)
@@ -593,7 +593,7 @@ printf("\nH4\n");
 
  //--- construction
         printf("%s is a relation\n", user_x);
-printf("\nH6\n");
+  //printf("\nH6\n");
 // 6) Already known?
 
     sprintf(key, "%s > %s", user_subject, user_x);
@@ -601,31 +601,31 @@ printf("\nH6\n");
 
     //  If relation, add #15 > class:person, #15 gender:female, #5 > daughter:#15
 
-
+// Get an ID for this person
       id_number = db_next_available_id();   // get next id
-
       sprintf(id_string, "#%d", id_number);
 
+// add to DB
         sprintf(key, "%s > class", id_string);
         db_add_pair(key, "person");
 
+// add relationship
         sprintf(key, "%s > %s", user_subject, user_x);
         db_add_pair(key, id_string);
 
-        //sprintf(key, "%s > gender", user_subject);
-        //
-
-        printf("I'll take a note of that[2 entries created]\n");
+// add gender
+        sprintf(key, "%s > gender", user_x );
+        result = db_lookup(key, db_result);
+        if(result == FOUND){
+           sprintf(key, "%s > gender", id_string);
+           db_add_pair(key, db_result);
+        }
+        printf("I'll take a note of that [3 entries created]\n");
         return;
-
-
 
 // 7)
 printf("\nH7\n");
     printf("no, it's %s\n", value);
-
-
-
 
  //-----
 

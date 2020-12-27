@@ -48,7 +48,7 @@ while(1){
 	  if (strcmp(user_words[n],"likes")==0)strcpy(user_words[n], "like");
 	  if (strcmp(user_words[n],"i")==0)    strcpy(user_words[n], current_user_name);
 	  if (strcmp(user_words[n],"u")==0)    strcpy(user_words[n], "you");
-	  if (strcmp(user_words[n],"you")==0)  strcpy(user_words[n], "ivan");
+	  if (strcmp(user_words[n],"you")==0)  strcpy(user_words[n], "#1");
 	  if (strcmp(user_words[n],"am")==0)	strcpy(user_words[n], "is");
 	  if (strcmp(user_words[n],"an")==0)    strcpy(user_words[n], "a");
 //printf("\nN43: %s\n", user_words[1]);
