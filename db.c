@@ -336,7 +336,7 @@ int db_root_check(char* startingwith, char* lookingfor){
        strcpy(key, subject); // prepare to lookup
        strcat(key," > class"); // prepare to lookup
        result = db_lookup(key, value); // lookup
-printf("\nSW:%s LF:%s SUB:%s K:%s V:%s R:%d   ", startingwith, lookingfor, subject, key, value, result);
+//printf("\nSW:%s LF:%s SUB:%s K:%s V:%s R:%d   ", startingwith, lookingfor, subject, key, value, result);
        if(result == NOT_FOUND) return NOT_FOUND; // if not in database at all, exit
        if(strcmp(value,lookingfor)==0)return FOUND;  // is it what we're looking for?
 //       if(strcmp(value,"root")==0)return FOUND; // has it reached root?

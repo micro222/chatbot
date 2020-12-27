@@ -11,10 +11,19 @@ attribute > class:	root
 
 //---------------------------------------------
 
-robot > class: person  // I haven't decided the best way to deal with this
+//  THE ROBOT
+#1 > class:person  // I haven't decided the best way to deal with this
+#1 > gender:male
+#1 > firstname:ivan
+#1 > state: operational
+
+material > class:substance
+furniture > class:object
+tool > class:object
+
 
 // ATTRIBUTE
-color > class: attribute
+color > class:attribute
 gender > class:attribute
 male > class:gender
 female > class:gender
@@ -73,6 +82,7 @@ excited > class:state
 sick > class:state
 hungry > class:state
 pregnant > class:state
+operational > class:state  // this one is for the robot
 
 // COLORS
 black > class:	color
@@ -214,13 +224,14 @@ bone
 
 //---------------------------------------------
 
-guitar
-piano
+guitar > class:object
+piano > class:object
 
-chair
-table
+chair > class:object
+table > class:object
 bed class:furnature
-tv
+tv > class:object
+gun > class:object
 
 //---------------------------------------------
 
@@ -264,13 +275,7 @@ truck > class:vehicle
 bike > class:vehicle
 motorcycle > class:vehicle
 
-//-------------------------------------------------
-
-
-//-------------------------------------------------
-
 // FOOD
-
 fruit > class:object
 apple > class:fruit
 orange > class:fruit
@@ -288,11 +293,11 @@ beer > class:beverage
 // MISC
 
 fire
-water
-rock
-pen
-pencil
-paper
+water > class:substance
+rock > class:object
+pen > class:object
+pencil > class:object
+paper > class:substance
 beverage > class:substance
 device > class:object
 vehicle > class:object
@@ -313,10 +318,6 @@ country > class:place
 
 // to add later on
 
-
-material > class:substance
-furnature > class:object
-tool > class:object
 //house >
 //wall
 //floor
@@ -329,43 +330,7 @@ tool > class:object
 //sidewalk
 plant > class:object
 
-#1 > class:robot
-#1 > firstname:ivan
-#1 > gender:male
 
 //=============================================================
 // BELOW IS DATA COLLECTED DURING USER SESSIONS
 
-
-(null) > class:person
-(null) > gender:male
-#2 > class:person
-#2 > firstname:bob
-#2 > gender:male
-(null) > class:person
-(null) > gender:male
-(null) > class:person
-#2 > user_x:(null)
-(null) > class:person
-#1 > son:(null)
-(null) > class:person
-#2 > son:(null)
-#15 > class:person
-#2 > son:#15
-#3 > class:person
-#3 > firstname:guy
-#3 > gender:male
-#4 > class:person
-#3 > grandson:#4
-#3 > state:tired
-#5 > class:person
-#5 > firstname:sue
-#5 > gender:female
-#6 > class:person
-#6 > firstname:dan
-#6 > gender:male
-#7 > class:person
-#7 > firstname:don
-#7 > gender:male
-bot > class:person
-bot > gender:male

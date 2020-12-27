@@ -424,7 +424,7 @@ void handle_login(char*name)
 // 4 update user_id, user_name, gender)
 //
 ////////////////////////////////////////////////////////////
-printf(" L1 \n");
+    printf(" L1 \n");
 // Step 1: check if already current user
     if(strcmp(name, current_user_name)==0)
     {
@@ -442,7 +442,7 @@ printf(" L1 \n");
         known=TRUE;
         new = FALSE;
         sprintf(id_string, "#%d", id_number);
-printf("\nyour ID number is %d \n", id_number);
+        printf("\nyour ID number is %d \n", id_number);
     }
     else
     {
@@ -490,7 +490,7 @@ printf("\nyour ID number is %d \n", id_number);
         known=TRUE;
         new = TRUE;
     }
-printf(" L4 \n");
+    printf(" L4 \n");
 // Step 4:
     strcpy(current_user_name, name);
     current_user_id = id_number;
@@ -537,16 +537,17 @@ void handle_have_statement(char* user_subject, char* user_x)
     //  1) ex: is subject in the database?
     sprintf(key, "%s > class", user_subject);
     result = db_lookup(key, db_result);
-    if (result == NOT_FOUND){
+    if (result == NOT_FOUND)
+    {
 
-    //        printf("\nUS%s RE%d K%s DBR%s\n", user_subject, result, key, db_result);
+        //        printf("\nUS%s RE%d K%s DBR%s\n", user_subject, result, key, db_result);
 
 
 
         printf("I don't know what %s is.\n", user_subject);
         return;
     }
-  //  printf("\nH2\n");
+    //  printf("\nH2\n");
     // 2) is subject a person?
     result = db_root_check(user_subject, "person");
     if (result == NOT_FOUND)
@@ -564,14 +565,14 @@ void handle_have_statement(char* user_subject, char* user_x)
         return;
     }
 
- //   printf("\n[SUB: %s, X: %s]\n", user_subject, user_x);
+//   printf("\n[SUB: %s, X: %s]\n", user_subject, user_x);
 //printf("\nH4\n");
     //  4) is x a condition
     result = db_root_check(user_x, "condition");
     if(result != NOT_FOUND)
     {
 
-  //  printf("\n[RESULT: %d]\n", result);
+        //  printf("\n[RESULT: %d]\n", result);
         // I'd like to check if the info exists but I dont know how to deal with multiple entries
         // Store the information
         sprintf(key, "%s > condition", user_subject);
@@ -580,30 +581,24 @@ void handle_have_statement(char* user_subject, char* user_x)
         return;
     }
 
- //   printf("\nH5\n");
+   // printf("\nH5\n");
     //  4) is x a relation
     result = db_root_check(user_x, "relation");
-    if(result == NOT_FOUND)
+    if(result != NOT_FOUND)
     {
-        printf("%s is not a relation\n", user_x);
-        return;
-    }
 
-    else {
-
- //--- construction
         printf("%s is a relation\n", user_x);
-  //printf("\nH6\n");
+ //printf("\nH6\n");
 // 6) Already known?
 
-    sprintf(key, "%s > %s", user_subject, user_x);
-    result = db_lookup(key, value);
+        sprintf(key, "%s > %s", user_subject, user_x);
+        result = db_lookup(key, value);
 
-    //  If relation, add #15 > class:person, #15 gender:female, #5 > daughter:#15
+        //  If relation, add #15 > class:person, #15 gender:female, #5 > daughter:#15
 
 // Get an ID for this person
-      id_number = db_next_available_id();   // get next id
-      sprintf(id_string, "#%d", id_number);
+        id_number = db_next_available_id();   // get next id
+        sprintf(id_string, "#%d", id_number);
 
 // add to DB
         sprintf(key, "%s > class", id_string);
@@ -616,29 +611,47 @@ void handle_have_statement(char* user_subject, char* user_x)
 // add gender
         sprintf(key, "%s > gender", user_x );
         result = db_lookup(key, db_result);
-        if(result == FOUND){
-           sprintf(key, "%s > gender", id_string);
-           db_add_pair(key, db_result);
+        if(result == FOUND)
+        {
+            sprintf(key, "%s > gender", id_string);
+            db_add_pair(key, db_result);
         }
         printf("I'll take a note of that [3 entries created]\n");
         return;
-
+    }
 // 7)
-printf("\nH7\n");
-    printf("no, it's %s\n", value);
+ //printf("\nH7\n");
 
- //-----
+        //  4) is x a possession
+        result = db_root_check(user_x, "object");
+        if(result != NOT_FOUND)
+        {
+printf("\nhas some object\n");
+         //   sprintf(key, "%s > %s", user_subject, user_x);
+         //   result = db_lookup(key, value);
 
+            //  If possession,
 
-    }
-printf("\nH2\n");
-    //  4) is x a possession
-    result = db_root_check(user_x, "possession");
-    if(result == NOT_FOUND)
-    {
-        printf("%s is not an possession\n", user_x);
-        return;
-    }
+// Get an ID for this object
+            id_number = db_next_available_id();   // get next id
+            sprintf(id_string, "#%d", id_number);
+
+// add to DB
+            sprintf(key, "%s > class", id_string);
+            db_add_pair(key, user_x);
+
+// add relationship
+            sprintf(key, "%s > possession", user_subject);
+            db_add_pair(key, id_string);
+
+            printf("I'll take a note of that [2 entries created]\n");
+            return;
+//---
+        }
+
+        // If none of the above
+        printf("%s doesn't seem like something one can have\n", user_x);
+
 
 }
 
