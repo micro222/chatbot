@@ -1,4 +1,4 @@
-A text-based learning robot that tries to get to know its users over a period of time. It runs on a Raspberry Pi.
+A text-based learning robot that tries to get to know its users over a period of time. It runs on a Raspberry Pi and Windows.
 
 I've been working on this chatbot on and off for about 14 years, and while I've made a lot of progress, there's a great deal of work left to do. I was thinking that if this was a group project, development would pick up speed considerably, plus it could be more fun to work on. I'd like see if there's any interest out there.
 
@@ -17,9 +17,6 @@ Note: There's more info in the wiki.
 * Will try to use people to expand it's knowledge
 * The source code is documented so that even non-programmers should be able to figure out what's goin on.
 
-## How it currently handles sentences
-A function is called to determine whether the sentence is a statement, question, command or misc.
-
 For statements, a function is called based on the verb used. The information provided is stored in the database. The bot will ask about anything that is unfamiliar to it. It will point out contradictory info when nessessary
 
 For questions, a function is called based on the verb used. The information requested is retrieved from the database
@@ -29,14 +26,6 @@ The bot will do what it's commanded.
 
 ## The database
 It's a text file called general.txt. Information is stored as a list of key-value pairs, one pair per line. The key is a series of increasingly specific keywords separated by the ">" character. Any information that is gathered during user sessions gets added to the end of the file. Specific entities like people, pets and objects are internally given ID numbers. 
-
-There is a set of functions for easy access to it.
-* db_check - checks to see if a word is in the database
-* db_lookup - give it a key and it returns a value
-* db_add_pair - adds an item to the database
-* db_root_check - checks if a word belongs to the specified class(is a subset of) 
-* db_get_id - looks up a persons first name and returns their ID number
-* db_next_available_id - provides an unused id number to be used when adding a new person (or any other specific entity) to the database
 
 ## Current limitations
 * Only full sentences
@@ -50,7 +39,7 @@ There is a set of functions for easy access to it.
 * Language: C
 * Editor: Code::Blocks
 * Compiler: GCC
-* Platform: Raspberry Pi with Raspian
+* Platform: Raspberry Pi with Raspian and Windows
 
 ## What I need help with
 * Clearer and more complete documentation
