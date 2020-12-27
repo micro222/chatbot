@@ -19,6 +19,7 @@ what is a *, handle_class_question,4                     // ex: what is a cow?
 // parameters: subject, attribute
 what * is *, handle_attribute_question,4, 2              // ex: what color is chocolate
 where is *, handle_attribute_question,3, location     // ex: where is lucy?
+how is *, handle_attribute_question,3, state     //
 
 // ATTRIBUTE STATEMENTS
 // parameters: subject, attribute

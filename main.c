@@ -48,13 +48,14 @@ while(1){
 	  if (strcmp(user_words[n],"likes")==0)strcpy(user_words[n], "like");
 	  if (strcmp(user_words[n],"i")==0)    strcpy(user_words[n], current_user_name);
 	  if (strcmp(user_words[n],"u")==0)    strcpy(user_words[n], "you");
-	  if (strcmp(user_words[n],"you")==0)  strcpy(user_words[n], "bot");
+	  if (strcmp(user_words[n],"you")==0)  strcpy(user_words[n], "ivan");
 	  if (strcmp(user_words[n],"am")==0)	strcpy(user_words[n], "is");
 	  if (strcmp(user_words[n],"an")==0)    strcpy(user_words[n], "a");
 //printf("\nN43: %s\n", user_words[1]);
-	  result = db_get_id(user_words[n], id_string);
+	  result = db_get_id(user_words[n]);
+	  sprintf(id_string, "#%d", result);
       if(result > 0) strcpy(user_words[n], id_string);
-
+//printf("\nN57: %s, %s\n", current_user_id_string, id_string);
   }
 //----------------
 

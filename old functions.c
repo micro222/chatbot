@@ -315,4 +315,104 @@ int template_search(char*user, char*template2)
     return template2;  // (found)
 
 }
+
+
+void handle_color_statement(char* user_subject,char* user_color){
+  /*
+  example: grass is green
+
+  Posibilities:
+  1   grass is unknown                   i dont know what grass is
+  2   grass known, color is unknown     add color
+  3   grass known, color = green      i know
+  4   grass known, color not green    is not
+
+
+char key[20];
+char value[20];
+int subject_result;
+char user_class;
+int class_result;
+
+//  ex: lookup "grass"
+    strcpy(key, user_subject);
+    strcat(key," > class");
+    subject_result = db_lookup(key, value);
+
+//  lookup "green"
+    strcpy(key, user_class);
+    strcat(key," > color");
+    class_result = db_lookup(key, value);
+
+// 1)
+    if(class_result == NOT_FOUND) {
+       printf("I'm unfamiliar with %s\n", user_class);
+       return;
+    }
+
+//  2)
+    if(subject_result == NOT_FOUND) {
+       strcpy(key, user_subject);
+       strcat(key," > color");
+       db_add_pair(key, user_color);
+       printf("I'll take a note of that\n");
+       return;
+    }
+
+//  3)
+    if(strcmp(user_class, value) == 0){
+        printf("I already know that\n");
+        return;
+    }
+
+// 4)
+    printf("no, it's a %s\n", value);
+
+
+}
+
+
+//------------------------------------------------------
+
+void handle_color_question(char* subject){
+  int result;
+  char value[20];
+  char key[60];
+
+  strcpy(key, subject);
+  strcat(key, " > color");
+  result = db_lookup(key, value);
+  if(result == FOUND){
+    printf("%s\n", value);
+    return;
+  }
+   else{
+     printf("I don't know\n");
+     return;
+   }
+
+  //else if(result==3)printf("I've never heard of %s\n",key);
+ // else printf(" I don't know (result %d)\n", result);
+}
+
+//----------------------------------------------------
+
+void handle_color_confirmation_question(char* subject, char*value1){
+
+  int result;
+  char value[20];
+  char key[60];
+
+    strcpy(key, subject); // prepare to lookup
+       strcat(key," > color"); // prepare to lookup
+       db_lookup(key, value); // lookup
+       result = strcmp(value, value1);
+        if (result == 0){
+            printf("yes\n");
+        }
+        else printf("no\n");
+}
+//--------------------------------------------------
+
+
 */

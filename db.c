@@ -96,11 +96,11 @@ int db_add_pair(char*key, char*value){
 //    0 if not found
 //    id number if found
 //
-int db_get_id(char* firstname, char* id_string)
+int db_get_id(char* firstname)
 {
 
    int i;
-    //char id_string[20],
+    char id_string[20];
     char db_name[20];
     char string[20];
     char key[80];
@@ -111,24 +111,24 @@ int db_get_id(char* firstname, char* id_string)
         // look up name, retreive id
 
         // make id_string
-        strcpy(id_string,"#");
-        itoa(i, string,10);  // integer to string. integer, string, base
-        strcat(id_string, string );
 
+    //    strcpy(id_string,"#");
+    //    itoa(i, string,10);  // integer to string. integer, string, base
+    //    strcat(id_string, string );
+        sprintf(clipboard, "#%d", i); // make id string
+//printf("D119");
         // make key
-        sprintf(key, "%s > firstname", id_string);
+        sprintf(key, "%s > firstname", clipboard);
+//printf("D122");
         result = db_lookup(key, db_name);
-        if(result!=0)continue;
+//printf("D124");
+        if(result == 0)continue;
+
         if(strcmp(db_name, firstname) == 0){
-
             return i;
-
         }
-
     }
-
     return 0; // not in the database
-
 }
 
 
@@ -209,28 +209,26 @@ int db_change_value(char*key, char*value){
 
 //--------------------------------------------------------
 
-int db_next_available_id( char id_string[20]){
+int db_next_available_id(void){
 
    int i;
    char value[20];
    char string[20];
    int result;
    char key[20];
- //  char id_string[20];
+   char id_string[20];
 
    for(i=1; i<100; i++){
       // look for id, first_name
-      //itoa(i,id_string,10);
-printf("I: %d", i);
-//sscanf(key, "#%d > class", i);
 
-strcpy(id_string, "#");
-itoa(i, string,10);
-strcat(id_string, string);
+//printf("I: %d", i);
 
-//strcat(id_string, string);
+//strcpy(clipboard, "#"); printf("N220");
+//itoa(i, string,10);
+//strcat(clipboard, string);
+sprintf(clipboard, "#%d", i); // make id string
 
-strcpy(key, id_string);
+strcpy(key, clipboard);
 strcat(key, " > class");
 
       //strcpy(key,"#");
@@ -247,6 +245,7 @@ strcat(key, " > class");
         //printf(" S: %s", id_string);
         return i;
       }
+   //   printf("N245");
    }
 
    printf("error in function DNAI");
@@ -337,9 +336,12 @@ int db_root_check(char* startingwith, char* lookingfor){
        strcpy(key, subject); // prepare to lookup
        strcat(key," > class"); // prepare to lookup
        result = db_lookup(key, value); // lookup
+printf("\nSW:%s LF:%s SUB:%s K:%s V:%s R:%d   ", startingwith, lookingfor, subject, key, value, result);
        if(result == NOT_FOUND) return NOT_FOUND; // if not in database at all, exit
        if(strcmp(value,lookingfor)==0)return FOUND;  // is it what we're looking for?
-       if(strcmp(value,"root")==0)return FOUND; // has it reached to root?
+//       if(strcmp(value,"root")==0)return FOUND; // has it reached root?
+       if(strcmp(value,"root")==0)break; // has it reached root?
+
        strcpy(subject,value); // if no luck so far, the value becomes the subject
    }
 

@@ -17,8 +17,8 @@
 
 int db_lookup(char*,char*);
 int db_root_check(char*,char*);
-int db_next_available_id(char[20]);
-int db_get_id(char*, char*);
+int db_next_available_id();
+int db_get_id(char*);
 int db_copy_word(char*, int, char*); // copies string up to a space
 int copy_to_delimiter(char*, char*, char delimiter); // copies string up to a delimiter
 int db_add_pair(char*, char*);

@@ -1,4 +1,5 @@
 
+
 // root
 object > class:	    root
 action > class:	    root
@@ -10,6 +11,9 @@ attribute > class:	root
 
 //---------------------------------------------
 
+robot > class: person  // I haven't decided the best way to deal with this
+
+// ATTRIBUTE
 color > class: attribute
 gender > class:attribute
 male > class:gender
@@ -70,6 +74,54 @@ sick > class:state
 hungry > class:state
 pregnant > class:state
 
+// COLORS
+black > class:	color
+brown > class:	color
+red > class:	color
+orange > class:	color
+yellow > class:	color
+green > class:	color
+blue > class:	color
+purple > class:	color
+gray > class:	color
+white > class:	color
+pink > class:	color
+magenta > class:	color
+cyan > class:	color
+
+
+// CREATURES
+
+bird > class: creature
+bird > ability > fly: 9
+animal > class: creature
+insect > class: creature
+
+spider > class: insect
+ant > class: insect
+bee > class: insect
+wasp > class: insect
+hornet > class: insect
+cockroach > class: insect
+cat > class:animal
+dog > class:animal
+fish > class:creature
+lion > class:animal
+tiger >
+monkey >
+ape > class:animal
+cow >
+pig > class:animal
+squirrel >
+raccoon >
+horse > class:animal
+crow > class:bird
+crow > color:black
+crow > ability > fly:10
+crow > ability > talk:0
+crow > ability > swim:0
+
+//----------------------------------
 
 creature > class:	object
 creature > ability > fly:	4
@@ -107,11 +159,25 @@ person > ability > opinion:	10
 
 // ACTIONS
 
-fly
-  class:action
-
-//------------------------------------------------
-
+burn > class:action
+cry: > class:action
+dance > class:action
+drink > class:action
+eat > class:actionexplode
+fly > class:action
+fall > class:action
+go > class:action
+hit > class:action
+kick > class:action
+laugh > class:action
+move > class:action
+run > class:action
+swim > class:action
+scream > class:action
+talk > class:action
+think: > class:action
+walk > class:action
+yell > class:action
 
 // BODY PARTS
 
@@ -184,8 +250,8 @@ aluminum > class:	material
 wood > class:	material
 copper > class:	material
 plastic > class:	material
-cement >
-concrete >
+//cement >
+//concrete >
 
 //--------------------------------------------------
 
@@ -199,39 +265,6 @@ bike > class:vehicle
 motorcycle > class:vehicle
 
 //-------------------------------------------------
-
-// CREATURES
-
-// CREATURE TYPES
-
-bird > class: creature
-bird > ability > fly: 9
-animal > class: creature
-insect > class: creature
-
-spider > class: insect
-ant > class: insect
-bee > class: insect
-wasp > class: insect
-hornet > class: insect
-cockroach > class: insect
-cat > class:animal
-dog > class:animal
-fish > class:creature
-lion > class:animal
-tiger >
-monkey >
-ape > class:animal
-cow >
-pig > class:animal
-squirrel >
-raccoon >
-horse > class:animal
-crow > class:bird
-crow > color:black
-crow > ability > fly:10
-crow > ability > talk:0
-crow > ability > swim:0
 
 
 //-------------------------------------------------
@@ -251,23 +284,6 @@ carrot >
 beer > class:beverage
 
 //-----------------------------------------------------
-
-// COLORS
-
-black > class:	color
-brown > class:	color
-red > class:	color
-orange > class:	color
-yellow > class:	color
-green > class:	color
-blue > class:	color
-purple > class:	color
-gray > class:	color
-white > class:	color
-pink > class:	color
-magenta > class:	color
-cyan > class:	color
-
 
 // MISC
 
@@ -313,21 +329,43 @@ tool > class:object
 //sidewalk
 plant > class:object
 
-// ACTIONS
-//  eat
-//	drink
-//	run
-//	walk
-//	talk
-//	fly
-//	go
-//	move
-//	fall
-//	hit
-//	kick
-//	think
-
-
+#1 > class:robot
+#1 > firstname:ivan
+#1 > gender:male
 
 //=============================================================
 // BELOW IS DATA COLLECTED DURING USER SESSIONS
+
+
+(null) > class:person
+(null) > gender:male
+#2 > class:person
+#2 > firstname:bob
+#2 > gender:male
+(null) > class:person
+(null) > gender:male
+(null) > class:person
+#2 > user_x:(null)
+(null) > class:person
+#1 > son:(null)
+(null) > class:person
+#2 > son:(null)
+#15 > class:person
+#2 > son:#15
+#3 > class:person
+#3 > firstname:guy
+#3 > gender:male
+#4 > class:person
+#3 > grandson:#4
+#3 > state:tired
+#5 > class:person
+#5 > firstname:sue
+#5 > gender:female
+#6 > class:person
+#6 > firstname:dan
+#6 > gender:male
+#7 > class:person
+#7 > firstname:don
+#7 > gender:male
+bot > class:person
+bot > gender:male

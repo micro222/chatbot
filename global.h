@@ -11,11 +11,13 @@ char user_words[MAX_WORDS][MAX_LETTERS];
 int number_of_words;
 int gender_code;
 char current_user_name[20];
-int current_user_id ;char gender[10];
+int current_user_id ;
+char gender[10];
 char current_user_id_string[20];
 
 int expecting_name;
 int expecting_gender;
+char clipboard[100];
 
 extern char debug_string[200];
 //extern char* current_user_name;
