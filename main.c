@@ -26,16 +26,12 @@ while(1){
    get_string(); // user input
    parse(); // separates sentence into individual words
 
-
    // login?
     // my name is _
     if(number_of_words==4 && strcmp(user_words[1],"my")==0 && strcmp(user_words[2],"name")==0 && strcmp(user_words[3],"is")==0){
        handle_login(user_words[4]);
        continue;
     }
-
-
-
 
 // word substitutions
   for(n=1; n <= number_of_words; n++){
@@ -47,55 +43,39 @@ while(1){
 	  if (strcmp(user_words[n],"feels")==0)strcpy(user_words[n], "feel");
 	  if (strcmp(user_words[n],"likes")==0)strcpy(user_words[n], "like");
 	  if (strcmp(user_words[n],"i")==0)    strcpy(user_words[n], current_user_name);
-	  if (strcmp(user_words[n],"u")==0)    strcpy(user_words[n], "you");
 	  if (strcmp(user_words[n],"you")==0)  strcpy(user_words[n], "#1");
 	  if (strcmp(user_words[n],"am")==0)	strcpy(user_words[n], "is");
 	  if (strcmp(user_words[n],"an")==0)    strcpy(user_words[n], "a");
-//printf("\nN43: %s\n", user_words[1]);
 	  result = db_get_id(user_words[n]);
 	  sprintf(id_string, "#%d", result);
       if(result > 0) strcpy(user_words[n], id_string);
-//printf("\nN57: %s, %s\n", current_user_id_string, id_string);
   }
 //----------------
 
 result = search_file();
-
-#if 0
-
-// Testing
-   printf("FN:%s l:%d ", function_name, strlen(function_name)  );
-   printf("F10:%2x ", function_name[10]);
-   printf("F11:%2x ", function_name[11]);
-   printf("F12:%2x ", function_name[12]);
-   printf("F13:%2x ", function_name[13]);
-#endif // 0
-
+if(result == 0) printf("no matching template\n");
 //if(result == 1 && strcmp(function_name,"handle_help")==0)  {
     //printf("help is coming  ");
 //     handle_help();
 //}
-printf("\nnumber_of_words: %d\n", number_of_words);
-printf("\ntemplate proceedure \n");
+//printf("\nnumber_of_words: %d\n", number_of_words);
 
-if(strcmp(function_name,"handle_class_statement")==0)          handle_class_statement(arg1, arg2);
-else if(strcmp(function_name,"handle_class_question")==0)      handle_class_question(arg1, arg2);
-else if(strcmp(function_name,"handle_attribute_question")==0)  handle_attribute_question(arg1, arg2); //
-else if(strcmp(function_name,"handle_attribute_statement")==0) handle_attribute_statement(arg1, arg2); // exists
-else if(strcmp(function_name,"handle_have_statement")==0)      handle_have_statement(arg1, arg2); // exists
-else if(strcmp(function_name,"handle_have_question")==0)       handle_have_question(arg1, arg2); // exists
+if(result == 1){
+    if(strcmp(function_name,"handle_class_statement")==0)          {handle_class_statement(arg1, arg2);    continue;}
+    else if(strcmp(function_name,"handle_class_question")==0)      {handle_class_question(arg1, arg2);     continue;}
+    else if(strcmp(function_name,"handle_attribute_question")==0)  {handle_attribute_question(arg1, arg2); continue;}
+    else if(strcmp(function_name,"handle_attribute_statement")==0) {handle_attribute_statement(arg1, arg2);continue;}
+    else if(strcmp(function_name,"handle_have_statement")==0)      {handle_have_statement(arg1, arg2);     continue;}
+    else if(strcmp(function_name,"handle_have_question")==0)       {handle_have_question(arg1, arg2);      continue;}
 
-//else if(strcmp(function_name,"handle_color_question")==0)      handle_color_question(arg1);
-/*
-else if(strcmp(function_name,"handle_ability_question")==0)    handle_ability_question(arg1, arg2);
-else if(strcmp(function_name,"handle_list_question")==0)       handle_list_question(arg1);
-
-else if(strcmp(function_name,"handle_color_confirmation_question")==0) handle_color_confirmation_question(arg1, arg2);
-//else if(strcmp(function_name,"handle_opinion_question")==0)    handle_opinion_question(arg1, arg2);
-//else if(strcmp(function_name,"handle_opinion_statement")==0)   handle_opinion_statement(arg1, arg2);
-*/
-
-printf("\noriginal proceedure\n");
+    /*
+    else if(strcmp(function_name,"handle_ability_question")==0)    handle_ability_question(arg1, arg2);
+    else if(strcmp(function_name,"handle_color_confirmation_question")==0) handle_color_confirmation_question(arg1, arg2);
+    //else if(strcmp(function_name,"handle_opinion_question")==0)    handle_opinion_question(arg1, arg2);
+    //else if(strcmp(function_name,"handle_opinion_statement")==0)   handle_opinion_statement(arg1, arg2);
+    */
+}
+printf("after template search\n");
 
 //----------------
 #if 0
@@ -104,7 +84,7 @@ printf("\noriginal proceedure\n");
 	}
 #endif
 
-     printf("\nnumber_of_words: %d\n", number_of_words);
+//     printf("\nnumber_of_words: %d\n", number_of_words);
 
 
 /*
@@ -114,6 +94,7 @@ printf("\noriginal proceedure\n");
     }
 */
 
+#if 0
     // - - - - - - - - - - - - - - - - - - - - - -
     // DEFINITION (SUBSET OF)
     // what is ___
@@ -153,10 +134,11 @@ printf("\noriginal proceedure\n");
   //    handle_class_statement(user_words[1],user_words[3]);
       handle_attribute_statement(user_words[1],user_words[3]);
     }
+#endif
 
     // - - - - - - - - - - - - - - - - - - - - - -
     // what is my name
-    else if(number_of_words==4 && strcmp(user_words[1],"what")==0 && strcmp(user_words[2],"is")==0 && strcmp(user_words[3],"my")==0 && strcmp(user_words[4],"name")==0){
+    if(number_of_words==4 && strcmp(user_words[1],"what")==0 && strcmp(user_words[2],"is")==0 && strcmp(user_words[3],"my")==0 && strcmp(user_words[4],"name")==0){
        printf("%s\n",current_user_name);
     }
 
@@ -182,24 +164,9 @@ printf("\noriginal proceedure\n");
        printf("%s\n",current_user_name);
     }
 
-   else if(number_of_words==1 && strcmp(user_words[1],"id")==0){
-       printf("%d\n",current_user_id);
-    }
-
-   else if(number_of_words==1 && strcmp(user_words[1],"g")==0){
-       printf("%d\n",gender_code);
-    }
-
-  else if(number_of_words==1 && strcmp(user_words[1],"d")==0){
-       printf("function_name: %s, arg1: %s, arg2: %s\n",function_name, arg1, arg2);
-    }
-
     // one word?
     else if(number_of_words==1){
-      if(isword(user_words[1])==0){
-        printf("Yep, that's a word...\n");
-      }
-      else printf("That's not a word...\n");
+       handle_single_word();
     }
 
     // nothing typed?
@@ -210,9 +177,7 @@ printf("\noriginal proceedure\n");
     // default
     else printf("I'm not familiar with that kind of sentence\n");
 
-  //  system("PAUSE");
-  //  return EXIT_SUCCESS;
-} // main loop
+ } // main loop
 
 } // main
 

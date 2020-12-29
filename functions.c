@@ -28,7 +28,7 @@ void parse(void) {
    int position = 0;
    int letter_position;
    int word_position;
-   //while(1);
+
    for(word_position=1; word_position < MAX_WORDS; word_position++) {
       for(letter_position = 0; letter_position < MAX_LETTERS; letter_position++) {
 
@@ -53,303 +53,6 @@ void parse(void) {
       }
    }
 
-}
-//------------------------------------------------------------------
-
-int isvowel(char c1) {
-
-   char vowels[6]="aeiouy";
-   int i;
-
-   for(i=0; i<6; i++) {
-      if(c1 == vowels[i])return 0;
-   }
-   return 1;
-
-}
-
-//---------------------------------------
-
-int isconsonant(char c1) {
-
-   char consonants[20]="bcdfghjklmnpqrstvwxz";
-   int i;
-
-   for(i=0; i<20; i++) {
-      if(c1 == consonants[i]) return 0;
-   }
-   return 1;
-
-}
-
-//-----------------------------------------------------------------------
-
-int is_nonsense_word(char* s1) {
-   //
-   //  curently has trouble with: you, crackpot, apple, substance
-   //
-   //
-
-   // 3 vowels in a row?
-   int i,inarow;
-   int j;
-   char *list_nonsense[] = {"ch", "gh", "sc", "sp", "th", "ck", "pp", "tt"};
-char output[80];
-
-   inarow=0;
-   for(i=0; i<80-3; i++) {
-      if(user_input[i]==0) break;
-      if(isvowel(user_input[i])==0) inarow++;
-      else inarow=0;
-      if(inarow>=4) break;
-   }
-   if(inarow>=3)sprintf(output, "  3 vowels in a row  \n"); stioc(output);
-   // replace all occurances of CH GH SC SP TH CK PP ST with vowels
-   for(i=0; i<80-3; i++) {
-      if(user_input[i]==0) break;
-      for (j=0; j<sizeof(list_nonsense); j++) {
-         if(strncmp(&user_input[i], "ch", 2))
-            strncpy(&user_input[i], "aa", 2);
-      }
-   }
-
-   // 3 consonants in a row?
-   inarow=0;
-   for(i=0; i<80-3; i++) {
-      if(user_input[i]==0) break;
-      if(isconsonant(user_input[i])==0) inarow++;
-      else inarow=0;
-      if(inarow>=4) break;
-   }
-   if(inarow>=4)sprintf(output, "  that's jiberish\n"); stioc(output);
-
-}
-
-//--------------------------------------------------------
-
-int isword(char*word_to_lookup) {
-   FILE *general;
-
-   int result = 1;
-   char word_from_list[80];
-   char *status;
-char output[80];
-
-   //  open word list
-   general = fopen("word100k.txt","r");
-   if(general == NULL) {
-      sprintf(output, "fopen failed while trying to open word100k.txt\n"); stioc(output);
-   }
-
-   while(1) {
-      status = fgets(word_from_list,40,general);
-      if (status==0)break;
-      // remove the newline character
-      word_from_list[strlen(word_from_list)-1] = '\0';
-
-      if (strcmp(word_to_lookup, word_from_list) == 0) {
-         result = 0;
-         break;
-      }
-
-   }// end of while
-
-   fclose(general);
-   return result;
-
-}
-//--------------------------------------------------------
-
-int isverb(char* word_to_lookup){
-   FILE *verbs;
-   int result = 0;
-   char word_from_list[80];
-   char *status;
-   char output[80];
-
-   //  open word list
-   verbs = fopen("verbs.txt","r");
-   if(verbs == NULL) {
-      sprintf(output, "fopen failed while trying to open verbs.txt\n"); stioc(output);
-   }
-
-   while(1) {
-      status = fgets(word_from_list,40,verbs);
-      if (status==0)break;
-      // remove the newline character
-      word_from_list[strlen(word_from_list)-1] = '\0';
-
-      if (strcmp(word_to_lookup, word_from_list) == 0) {
-         return 1;
-         break;
-      }
-
-   }// end of while
-
-   fclose(verbs);
-   return 0;
-
-}
-
-//-----------------------------------------------------
-/*
-int separate_words(char* in, char out[MAX_WORDS][MAX_LETTERS]) {
-
-   // input:
-   // output: out, number_of_words
-
-   int position = 0;
-   int letter_position;
-   int word_position;
-   int number_of_words = 0;
-
-   for(word_position=1; word_position < MAX_WORDS; word_position++) {
-      for(letter_position = 0; letter_position < MAX_LETTERS; letter_position++) {
-
-         // End of sentence?
-         if(in[position]=='\0' || position >= 200) {
-            out[word_position][letter_position] = '\0';
-            number_of_words = word_position;
-            return number_of_words;
-         }
-
-         //end of word?
-         if(in[position]==' ') {
-            out[word_position][letter_position] = '\0';  // terminate the word
-            letter_position = 0;  // probably not needed
-            position++;  // skip over the space
-            break;
-         }
-
-         out[word_position][letter_position] = in[position];
-         position++;
-      }
-   }
-   return 0;
-}
-*/
-//------------------------------------------------------------
-/*
-int check_gender_by_name(char* name, char* gender2) {
-
-#define LINE_LENGTH 20
-   FILE *male;
-   FILE *female;
-   char *status;
-   char line[LINE_LENGTH];
-   int n, i;
-
-   //  open male file
-   male = fopen("male_names.txt","r");
-   if(male == NULL)
-      return CANT_OPEN_FILE;
-
-   for(n=0; n<1000; n++) {
-      // get a line
-      status = fgets(line, LINE_LENGTH, male);
-      if (status==0) {
-
-         break;
-      }
-
-      // teminate the word
-      for(i=0; i<LINE_LENGTH; i++) {
-         if(line[i] == 10) {
-            line[i] = 0;
-            break;
-         }
-      }
-
-      if(strcmp(name, line) == 0) {
-         strcpy(gender2, "male");
-         fclose(male);
-         return FOUND;
-      }
-
-   }
-
-   fclose(male);
-
-   //  open female file
-   female = fopen("female_names.txt","r");
-   if(female == NULL)
-
-      return NOT_FOUND;
-
-   for(n=0; n<1000; n++) {
-      // get a line
-      status = fgets(line, LINE_LENGTH, female);
-      if (status==0) {
-
-         break;
-      }
-
-      // teminate the word
-      for(i=0; i<LINE_LENGTH; i++) {
-         if(line[i] == 10) {
-            line[i] = 0;
-            break;
-         }
-      }
-
-      if(strcmp(name, line) == 0) {
-         fclose(female);
-         strcpy(gender2, "female");
-         return FOUND;
-      }
-
-   }
-
-   fclose(female);
-   return NOT_FOUND;
-}
-*/
-//-------------------------------------------------------------
-
-// Send to intenet or console
-void stioc(char* output_string) {
-
-   char temp_string[300];
-
-   puts(output_string);
- }
-
-//------------------------------------------------------------------------------
-
-int isquestion(void){
-
-   // If the first word is one of the 9 listed below , the sentence is a question
-
-   int i;
-   char w[10][6] = {"who", "what", "where", "when", "why", "how", "is", "do", "can"};
-
-   for(i=0; i<9; i++){
-      if(strcmp(user_words[1], w[i]) == 0) return i+1;
-   }
-   return 0;
-}
-
-//------------------------------------------------------------------------------
-
-int isstatement(void)
-{
-    // If the second or third word is a verb, the sentence is a statement
-
-    if(number_of_words < 3) return 0; // at least 3 words are needed
-    if(isverb(user_words[2])) return 1;
-    if(isverb(user_words[3])) return 1;
-    return 0;
-
-}
-
-//----------------------------------------------------------------------
-
-int iscommand(void)
-{
-    // If the first word is a verb, the sentence is a command
-
-    if(isverb(user_words[1]))return 1;
-    else return 0;
 }
 
 //=========================
@@ -400,10 +103,8 @@ void normalize(void) {
       if(user_input[from] == 0) {
          buffer[to++] = user_input[from++];
          strcpy(user_input, buffer);
-         //puts(buffer); // DEBUG
          return;
       }
-
       from++;
    }
 }
@@ -488,40 +189,181 @@ int check_gender_by_name(char* name)
 return 3;
 }
 
-//-------------------------------------------------------------
 
-/*
-int isvalidname(char* s1){
+//------------------------------------------------------------------
 
-  //  valid characters are a-z 0-1 _
-   if ((isalpha(s1)==0) && (isdigit(s1)==0) && s1!='_'){
-      return 0;  // not valid
+int isvowel(char c1) {
+
+   char vowels[6]="aeiouy";
+   int i;
+
+   for(i=0; i<6; i++) {
+      if(c1 == vowels[i])return 0;
    }
-   else return 1;  // is valid
-}
-*/
-
-
-//-------------------------------------------------------
-/*
-replace_name_with_number(char* name){
-
-       sprintf(key, "%s > class", user_subject);
-       result1 = db_root_check(user_subject, "creature");
-
-
-
-
-
-if (){
-
-
+   return 1;
 
 }
 
+//---------------------------------------
 
+int isconsonant(char c1) {
 
+   char consonants[20]="bcdfghjklmnpqrstvwxz";
+   int i;
 
+   for(i=0; i<20; i++) {
+      if(c1 == consonants[i]) return 0;
+   }
+   return 1;
 
 }
-*/
+
+//-----------------------------------------------------------------------
+
+int is_nonsense_word(char* s1) {
+   //
+   //  curently has trouble with: you, crackpot, apple, substance
+   //
+   //
+
+   // 3 vowels in a row?
+   int i,inarow;
+   int j;
+   char *list_nonsense[] = {"ch", "gh", "sc", "sp", "th", "ck", "pp", "tt"};
+char output[80];
+
+   inarow=0;
+   for(i=0; i<80-3; i++) {
+      if(user_input[i]==0) break;
+      if(isvowel(user_input[i])==0) inarow++;
+      else inarow=0;
+      if(inarow>=4) break;
+   }
+   if(inarow>=3)sprintf(output, "  3 vowels in a row  \n"); puts(output);
+   // replace all occurances of CH GH SC SP TH CK PP ST with vowels
+   for(i=0; i<80-3; i++) {
+      if(user_input[i]==0) break;
+      for (j=0; j<sizeof(list_nonsense); j++) {
+         if(strncmp(&user_input[i], "ch", 2))
+            strncpy(&user_input[i], "aa", 2);
+      }
+   }
+
+   // 3 consonants in a row?
+   inarow=0;
+   for(i=0; i<80-3; i++) {
+      if(user_input[i]==0) break;
+      if(isconsonant(user_input[i])==0) inarow++;
+      else inarow=0;
+      if(inarow>=4) break;
+   }
+   if(inarow>=4)sprintf(output, "  that's jiberish\n"); puts(output);
+
+}
+
+//--------------------------------------------------------
+
+int isword(char*word_to_lookup) {
+   FILE *general;
+
+   int result = 1;
+   char word_from_list[80];
+   char *status;
+char output[80];
+
+   //  open word list
+   general = fopen("word100k.txt","r");
+   if(general == NULL) {
+      sprintf(output, "fopen failed while trying to open word100k.txt\n"); puts(output);
+   }
+
+   while(1) {
+      status = fgets(word_from_list,40,general);
+      if (status==0)break;
+      // remove the newline character
+      word_from_list[strlen(word_from_list)-1] = '\0';
+
+      if (strcmp(word_to_lookup, word_from_list) == 0) {
+         result = 0;
+         break;
+      }
+
+   }// end of while
+
+   fclose(general);
+   return result;
+
+}
+//--------------------------------------------------------
+
+int isverb(char* word_to_lookup){
+   FILE *verbs;
+   int result = 0;
+   char word_from_list[80];
+   char *status;
+   char output[80];
+
+   //  open word list
+   verbs = fopen("verbs.txt","r");
+   if(verbs == NULL) {
+      sprintf(output, "fopen failed while trying to open verbs.txt\n"); puts(output);
+   }
+
+   while(1) {
+      status = fgets(word_from_list,40,verbs);
+      if (status==0)break;
+      // remove the newline character
+      word_from_list[strlen(word_from_list)-1] = '\0';
+
+      if (strcmp(word_to_lookup, word_from_list) == 0) {
+         return 1;
+         break;
+      }
+
+   }// end of while
+
+   fclose(verbs);
+   return 0;
+
+}
+
+//------------------------------------------------------------------------------
+
+int isquestion(void){
+
+   // If the first word is one of the 9 listed below , the sentence is a question
+
+   int i;
+   char w[10][6] = {"who", "what", "where", "when", "why", "how", "is", "do", "can"};
+
+   for(i=0; i<9; i++){
+      if(strcmp(user_words[1], w[i]) == 0) return i+1;
+   }
+   return 0;
+}
+
+//------------------------------------------------------------------------------
+
+int isstatement(void)
+{
+    // If the second or third word is a verb, the sentence is a statement
+
+    if(number_of_words < 3) return 0; // at least 3 words are needed
+    if(isverb(user_words[2])) return 1;
+    if(isverb(user_words[3])) return 1;
+    return 0;
+
+}
+
+//----------------------------------------------------------------------
+
+int iscommand(void)
+{
+    // If the first word is a verb, the sentence is a command
+
+    if(isverb(user_words[1]))return 1;
+    else return 0;
+}
+
+
+//-------------------------------------------------------------

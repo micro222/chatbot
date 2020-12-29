@@ -1,6 +1,6 @@
 
 
-// root
+// ROOT
 object > class:	    root
 action > class:	    root
 place > class:      root
@@ -12,10 +12,11 @@ attribute > class:	root
 //---------------------------------------------
 
 //  THE ROBOT
-#1 > class:person  // I haven't decided the best way to deal with this
+#1 > class:robot
 #1 > gender:male
 #1 > firstname:ivan
 #1 > state: operational
+robot > class:person  // I haven't decided the best way to deal with this
 
 material > class:substance
 furniture > class:object
@@ -63,7 +64,7 @@ son > gender:male
 daughter > gender:female
 
 
-CONDITIONS
+// CONDITIONS
 acne > class:condition
 shingles > class:condition
 ebola > class:condition
@@ -170,10 +171,13 @@ person > ability > opinion:	10
 // ACTIONS
 
 burn > class:action
+sit > class:action
+stand > class:action
 cry: > class:action
 dance > class:action
 drink > class:action
-eat > class:actionexplode
+eat > class:action
+explode > class:action
 fly > class:action
 fall > class:action
 go > class:action
@@ -333,4 +337,5 @@ plant > class:object
 
 //=============================================================
 // BELOW IS DATA COLLECTED DURING USER SESSIONS
+
 

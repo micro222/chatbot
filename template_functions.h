@@ -24,6 +24,6 @@ void remove_comments(void);
 void extract_function_name(void);
 void extract_arg1(void);
 void extract_arg2(void);
-int str_to_int(char*);
+//int str_to_int(char*);
 
 #endif // TEMPLATE_FUNCTIONS_H_INCLUDED

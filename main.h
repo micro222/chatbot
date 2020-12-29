@@ -10,7 +10,6 @@
 #include "handle.h"
 #include "functions.h"
 #include "template_functions.h"
-#include "fa.h"
 #include "global.h"
 
 //#define DEBUG TRUE

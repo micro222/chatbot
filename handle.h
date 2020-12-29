@@ -26,5 +26,6 @@ void handle_ability_question(char*, char*);
 void handle_list_question(char*);
 void handle_help(void);
 void handle_login(char*);
+void handle_single_word(void);
 
 #endif // HANDLE_H_INCLUDED

@@ -660,6 +660,88 @@ void handle_have_question(char*x,char*y)
 
 }
 
+//--------------------------------------
+
+void handle_single_word(void){
+
+int result;
+char value[20];
+
+
+
+ if(strcmp(user_words[1],"id")==0){
+       printf("%d\n",current_user_id);
+       return;
+    }
+
+   else if(number_of_words==1 && strcmp(user_words[1],"g")==0){
+       printf("%d\n",gender_code);
+       return;
+    }
+
+  if(number_of_words==1 && strcmp(user_words[1],"d")==0){
+       printf("function_name: %s, arg1: %s, arg2: %s\n",function_name, arg1, arg2);
+       return;
+    }
+
+// Log out
+    if(strcmp(user_words[1],"bye")==0)
+    {
+        printf("talk to you later %s\r\n",current_user_name);
+        //       current_user_name[20]="unknown";
+        strcpy(current_user_name, "unknown");
+        strcpy(current_user_id_string, "#0");
+        //current_user_id = 0;
+        gender_code = 0;
+        strcpy(gender, "unknown");
+        return 1;
+    }
+
+
+// and if input was not understood...
+
+
+
+
+
+
+
+sprintf(key, "%s > class", user_words[1]);
+result = db_lookup(key, value);
+if(result == FOUND){
+        printf("%s is a %s\n", user_words[1], value);
+        return;
+}
+
+if(isverb(user_words[1]) == 1){
+        printf("%s is a verb I'm unfamiliar with\n", user_words[1]);
+        return;
+}
+
+       result = check_gender_by_name(user_words[1]);
+        switch(result)
+        {
+        case 1:
+            printf("I've never heard of him\n");
+            return;
+        case 2:
+            printf("I've never heard of her\n");
+            return;
+        }
+
+
+if(isword(user_words[1]) == 0){
+        printf("%s is a word, but I'm unfamiliar with it\n", user_words[1]);
+        return;
+}
+
+printf("Ihat's not a word\n");
+
+}
+
+
+
+
 
 
 

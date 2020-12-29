@@ -2,7 +2,7 @@ TO DO
 
 remove value compare frome db_lookup
 
-add id numbers to db.
+
 id numbers are used identify specific members of a category, usualy people
 could also be pets, significant rocks, buildings
 db entries start with a number sign followed by the id number
@@ -18,25 +18,37 @@ db entries start with a number sign followed by the id number
 #14 > opinion: 3
 #14 > def: person
 #14 > gender: male
-#14 >
-#14 >
-#14 >
-#14 >
-#14 >
-#14 >
-
-fix login
-
-implement template file
 
 format first names
 
+Issues
+  changing names
+  I am a dog
+  i am a spoon
+  bye
+  do you have a dog
+  do you like beer
+  fork is a tool
 
+question to ask. ask immediate question
+  i have a daughter
+  what is her first name
 
+separate nouns from the rest of the sentence
+nouns are in a file called general.txt
+the rest of the sentence is in a file called templ
 
+The bot relies on 2 text files for processing sentences One file contains nouns and some info about them. The another file cont some common sent without the nouns with info about the purpose of the sentence and what functions should deal with it
+the functions tend to focus on the verb in the sentence an whether the sent is a statement, q or command.
+with statements info is stored, with questions the info is retrieved
 
-
-
-
+example:
+bob types "i am tired"
+the matching template is found
+   * is *, handle_attribute_statement,1, 3
+it determined that bob has typed a statement that assins an atribute(the 3rd word) to himself(the first word)
+the following entry is added to the database. It contains Bobs ID, the type of attribute and his current state:
+   #2 > state: tired
+Some other time the bot can ask Bob "how are you, still tired"
 
 
