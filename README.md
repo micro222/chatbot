@@ -1,6 +1,6 @@
 A text-based learning robot that tries to get to know its users over a period of time. It runs on a Raspberry Pi and Windows.
 
-I've been working on this chatbot on and off for about 14 years, and while I've made a lot of progress, there's a great deal of work left to do. I was thinking that if this was a group project, development would pick up speed considerably, plus it could be more fun to work on. I'd like see if there's any interest out there.
+I've been working on this chatbot on and off for about 17 years, and while I've made a lot of progress, there's a great deal of work left to do. I was thinking that if this was a group project, development would pick up speed considerably, plus it could be more fun to work on. I'd like see if there's any interest out there.
 
 I wanted to make a chatbot that is better than the AIML types that are so common. Something that would pay attention to who it was talking to and try to learn from that person. It would not guess at an answer when it has no understanding of what was said.
 
@@ -21,11 +21,8 @@ For statements, a function is called based on the verb used. The information pro
 
 For questions, a function is called based on the verb used. The information requested is retrieved from the database
 
-The bot will do what it's commanded.
+## How it works
 
-
-## The database
-It's a text file called general.txt. Information is stored as a list of key-value pairs, one pair per line. The key is a series of increasingly specific keywords separated by the ">" character. Any information that is gathered during user sessions gets added to the end of the file. Specific entities like people, pets and objects are internally given ID numbers. 
 
 ## Current limitations
 * Only full sentences
