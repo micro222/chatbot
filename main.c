@@ -8,19 +8,6 @@ int n;
 int result;
 
 
-#if 0
-// STRUCT TEST
-typedef struct users{
-  int age;
-  int weight;
-} User;
-User user;
-user.age = 35;
-printf("=== %d ===\n", user.age);
-while(1);
-#endif // 0
-
-
 while(1){
    printf(">"); // user prompt
    get_string(); // user input
@@ -52,12 +39,17 @@ while(1){
   }
 //----------------
 
+// Check the template file for a matching template
+// If found, the required function name and its arguments are returned in global variables
 result = search_file();
 if(result == 0) printf("no matching template\n");
+
+// Help
 //if(result == 1 && strcmp(function_name,"handle_help")==0)  {
     //printf("help is coming  ");
 //     handle_help();
 //}
+
 //printf("\nnumber_of_words: %d\n", number_of_words);
 
 if(result == 1){
@@ -76,65 +68,6 @@ if(result == 1){
     */
 }
 printf("after template search\n");
-
-//----------------
-#if 0
-	if(number_of_words==1 && strcmp(user_words[1], "help")==0){
-        handle_help();
-	}
-#endif
-
-//     printf("\nnumber_of_words: %d\n", number_of_words);
-
-
-/*
-    if(strcmp(current_user_name,"unknown")==0){
-      printf("who is this?\n");
-      continue;
-    }
-*/
-
-#if 0
-    // - - - - - - - - - - - - - - - - - - - - - -
-    // DEFINITION (SUBSET OF)
-    // what is ___
-    if(number_of_words==3 && strcmp(user_words[1],"what")==0 && strcmp(user_words[2],"is")==0){
-       handle_class_question(user_words[3]);
-    }
-      // what are ___
-    else if(number_of_words==3 && strcmp(user_words[1],"what")==0 && strcmp(user_words[2],"are")==0){
-       handle_class_question(user_words[3]);
-    }
-    // what is a ___
-    else if(number_of_words==4 && strcmp(user_words[1],"what")==0 && strcmp(user_words[2],"is")==0 && strcmp(user_words[3],"a")==0){
-       handle_class_question(user_words[4]);
-    }
-    // a __ is a __
-    // ex: a cat is an animal
-    else if(
-      number_of_words==5 &&
-      strcmp(user_words[1],"a")==0 &&
-      strcmp(user_words[3],"is")==0 &&
-      strcmp(user_words[4],"a")==0
-    ){
-      handle_class_statement(user_words[2],user_words[5]);
-    }
-    else if(
-      number_of_words==4 &&
-      strcmp(user_words[2],"is")==0 &&
-      strcmp(user_words[3],"a")==0
-    ){
-      handle_class_statement(user_words[1],user_words[4]);
-    }
-
-    else if(
-      number_of_words==3 &&
-      strcmp(user_words[2],"is")==0
-    ){
-  //    handle_class_statement(user_words[1],user_words[3]);
-      handle_attribute_statement(user_words[1],user_words[3]);
-    }
-#endif
 
     // - - - - - - - - - - - - - - - - - - - - - -
     // what is my name
