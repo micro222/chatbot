@@ -239,7 +239,7 @@ char output[80];
       else inarow=0;
       if(inarow>=4) break;
    }
-   if(inarow>=3)sprintf(output, "  3 vowels in a row  \n"); puts(output);
+   if(inarow>=3)printf("  3 vowels in a row  \n");
    // replace all occurances of CH GH SC SP TH CK PP ST with vowels
    for(i=0; i<80-3; i++) {
       if(user_input[i]==0) break;
@@ -257,7 +257,7 @@ char output[80];
       else inarow=0;
       if(inarow>=4) break;
    }
-   if(inarow>=4)sprintf(output, "  that's jiberish\n"); puts(output);
+   if(inarow>=4)printf("  that's jiberish\n");
 
 }
 
@@ -298,7 +298,7 @@ char output[80];
 
 int isverb(char* word_to_lookup){
    FILE *verbs;
-   int result = 0;
+   //int result = 0;
    char word_from_list[80];
    char *status;
    char output[80];

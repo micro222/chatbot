@@ -228,7 +228,7 @@ void handle_attribute_statement(char* user_subject,char* user_attribute)
         return;
     }
 
-    printf("\n[SUB%s ATT%s]\n", user_subject, user_attribute);
+    printf("\n[Subject: %s Attribute%s]\n", user_subject, user_attribute);
 
     //  4) is "green" an attribute
     result = db_root_check(user_attribute, "attribute");
@@ -325,7 +325,7 @@ void handle_attribute_question(char* user_subject,char* attribute_name)
         return;
     }
 
-    printf("\n[SUB%s ATT%s]\n", user_subject, attribute_name);
+    printf("\n[Subject: %s Attribute: %s]\n", user_subject, attribute_name);
 
     //  4) is "color" an attribute
     result = db_root_check(attribute_name, "attribute");
@@ -565,8 +565,6 @@ void handle_have_statement(char* user_subject, char* user_x)
         return;
     }
 
-//   printf("\n[SUB: %s, X: %s]\n", user_subject, user_x);
-//printf("\nH4\n");
     //  4) is x a condition
     result = db_root_check(user_x, "condition");
     if(result != NOT_FOUND)
@@ -620,7 +618,6 @@ void handle_have_statement(char* user_subject, char* user_x)
         return;
     }
 // 7)
- //printf("\nH7\n");
 
         //  4) is x a possession
         result = db_root_check(user_x, "object");
@@ -694,17 +691,10 @@ char value[20];
         //current_user_id = 0;
         gender_code = 0;
         strcpy(gender, "unknown");
-        return 1;
+        return ;
     }
 
-
 // and if input was not understood...
-
-
-
-
-
-
 
 sprintf(key, "%s > class", user_words[1]);
 result = db_lookup(key, value);

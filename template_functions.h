@@ -2,6 +2,7 @@
 #define TEMPLATE_FUNCTIONS_H_INCLUDED
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "global.h"
 
@@ -16,7 +17,7 @@ int match;
 // function list
 void test1(void);
 int tokenize(char[100], char*[100], char);
-int search_file(void);
+int search_template_file(void);
 int extract_template(void);
 void split_template(void);
 int compare_template(void);

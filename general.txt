@@ -8,7 +8,7 @@ substance > class:	root
 phenomenon > class:	root
 concept > class:	root
 attribute > class:	root
-
+class > class: attribute    
 //---------------------------------------------
 
 //  THE ROBOT
@@ -308,7 +308,7 @@ vehicle > class:object
 part > class: object
 foot > class: part
 foot > part_of: creature
-tower
+tower > class:object
 phone > class:device
 radio > class:device
 computer > class:device
@@ -319,23 +319,17 @@ france > class:country
 france > location:europe
 country > class:place
 
-
-// to add later on
-
-//house >
-//wall
-//floor
-//door
-//carpet
-//stairs
-
-//window
-//road
-//sidewalk
+house > class:object
+wall > class:object
+floor > class:object
+door > class:object
+carpet > class:object
+stairs > class:object
+window > class:object
+road > class:object
+sidewalk > class:object
 plant > class:object
-
 
 //=============================================================
 // BELOW IS DATA COLLECTED DURING USER SESSIONS
-
 

@@ -2,7 +2,7 @@
 
 int main(int argc, char *argv[]){
 
-char out[MAX_WORDS][MAX_LETTERS];
+//char out[MAX_WORDS][MAX_LETTERS];
 char id_string[20];
 int n;
 int result;
@@ -41,7 +41,7 @@ while(1){
 
 // Check the template file for a matching template
 // If found, the required function name and its arguments are returned in global variables
-result = search_file();
+result = search_template_file();
 if(result == 0) printf("no matching template\n");
 
 // Help
@@ -54,7 +54,7 @@ if(result == 0) printf("no matching template\n");
 
 if(result == 1){
     if(strcmp(function_name,"handle_class_statement")==0)          {handle_class_statement(arg1, arg2);    continue;}
-    else if(strcmp(function_name,"handle_class_question")==0)      {handle_class_question(arg1, arg2);     continue;}
+    else if(strcmp(function_name,"handle_class_question")==0)      {handle_class_question(arg1);           continue;}
     else if(strcmp(function_name,"handle_attribute_question")==0)  {handle_attribute_question(arg1, arg2); continue;}
     else if(strcmp(function_name,"handle_attribute_statement")==0) {handle_attribute_statement(arg1, arg2);continue;}
     else if(strcmp(function_name,"handle_have_statement")==0)      {handle_have_statement(arg1, arg2);     continue;}

@@ -6,12 +6,15 @@
 //#define NULL 0
 
 #include "db.h"
+#include "functions.h"
 #include <string.h>
 #include <stdio.h>
 
-void handle_def_question(char*);
-void handle_def_statement(char*,char*);
+void handle_class_question(char*);
+void handle_class_statement(char*,char*);
 void handle_attribute_question(char*,char*);
+void handle_attribute_statement(char*,char*);
+
 void handle_color_question(char*);
 void handle_color_confirmation_question(char*,char*);
 void handle_color_statement(char*,char*);

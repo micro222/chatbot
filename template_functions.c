@@ -1,22 +1,20 @@
 #include "template_functions.h"
 
-int search_file(void){
+int search_template_file(void){
 
     #define MAX 150
     int n;
     FILE *templates;
-    char output[80];
-    int status;
+   // char output[80];
+   // int status;
     char* file_status;
     int index;
     int length;
 
 // open file
     templates = fopen("templates2.txt","r");
-    if(templates == NULL){
-        sprintf(output, "fopen failed while trying to open templates2.txt\n");
-        puts(output);
-    }
+    if(templates == NULL) printf("fopen failed while trying to open templates2.txt\n");
+
 // search line by line
     while(1)    {
         // read a line
@@ -26,7 +24,7 @@ int search_file(void){
         length = extract_template(); // gets stored in templates1
         if (length == 0) continue;   // if there was no template, move on to the next line
         split_template();            // results are put in template_words
-        match = compare_template();
+        match = compare_template();  // compares user_words with template_words
         if(match == 1) break;
     } // get another template if there's no match
     fclose(templates);
