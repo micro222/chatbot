@@ -23,6 +23,17 @@ For questions, a function is called based on the verb used. The information requ
 
 ## How it works
 
+Sentences are divided into 4 categories: statements, questions, commands and other.
+* Statements are used to provide data about a specified noun. The bot will store that data in it's database for future use.
+* Questions request data about a specified noun. The bot will provide that data if it's in it's database
+* The bot will consider commands it receives and may comply if it wants to. This software will eventually be installed in a 4 foot tall mobile robot so if for example it is told to go full speed into a wall it would not do so and tell the user what it thinks of his command.
+* Other sentences are dealt with individually.
+
+
+The program relies mostly on 2 text files to interpret sentences. It's nessessary to understand these files to understand how this progem works
+1 The database. This is a list of bits of information about nouns. The essential information about these nouns is what category they are in. For example, "Bob" is classified as a person. A person is a creature. A creature is an object. "Object" is in the root category and is not classified any further.
+2 The sentence templates. It's list of sentences with the nouns removed. After each sentence in the list there is the name of a function that will process the sentence further.
+
 
 ## Current limitations
 * Only full sentences
@@ -41,5 +52,6 @@ For questions, a function is called based on the verb used. The information requ
 ## Long term goals
 * Will form opinions of the people it talks to
 * Will initiate conversation if the user doesn't
+* Will be able to cope with pronouns
 * Will be thinking of various things when it's not in a conversation. This activity may have an effect on its mood, may cause it to arrive at some conclusions. It may be prompted to ask related questions. It can be asked "what are you thinking about".
 
