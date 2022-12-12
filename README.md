@@ -17,22 +17,17 @@ Note: There's more info in the wiki.
 * Will try to use people to expand it's knowledge
 * The source code is documented so that even non-programmers should be able to figure out what's goin on.
 
-For statements, a function is called based on the verb used. The information provided is stored in the database. The bot will ask about anything that is unfamiliar to it. It will point out contradictory info when nessessary
-
-For questions, a function is called based on the verb used. The information requested is retrieved from the database
-
 ## How it works
 
 Sentences are divided into 4 categories: statements, questions, commands and other.
-* Statements are used to provide data about a specified noun. The bot will store that data in it's database for future use.
-* Questions request data about a specified noun. The bot will provide that data if it's in it's database
+* Statements are used to provide data about a specified noun. The bot will store that data in it's database for future use. The bot will ask about anything that is unfamiliar to it and will point out contradictory info when nessessary
+* Questions request data about a specified noun. The bot will respond by providing that data if it's in it's database. It bot will ask about words that are unfamiliar to it.
 * The bot will consider commands it receives and may comply if it wants to. This software will eventually be installed in a 4 foot tall mobile robot so if for example it is told to go full speed into a wall it would not do so and tell the user what it thinks of his command.
 * Other sentences are dealt with individually.
 
-
 The program relies mostly on 2 text files to interpret sentences. It's nessessary to understand these files to understand how this progem works
-1 The database. This is a list of bits of information about nouns. The essential information about these nouns is what category they are in. For example, "Bob" is classified as a person. A person is a creature. A creature is an object. "Object" is in the root category and is not classified any further.
-2 The sentence templates. It's list of sentences with the nouns removed. After each sentence in the list there is the name of a function that will process the sentence further.
+1. The database. This is a list of bits of information about nouns. The essential information about these nouns is what category they are in. For example, "Bob" is classified as a person. A person is a creature. A creature is an object. "Object" is in the root category and is not classified any further. This clasification is used to determine if a sentence makes sense or not.
+2. The sentence templates. It's list of sentences with the nouns removed. After each sentence in the list there is the name of a function that will process the sentence further. The function that is chosen is determined by the type of sentence and on the verb used.
 
 
 ## Current limitations
