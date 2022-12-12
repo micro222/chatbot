@@ -1,6 +1,6 @@
-A text-based learning robot that tries to get to know its users over a period of time. It runs on a Raspberry Pi and Windows.
+A text-based learning robot that tries to get to know its users. It runs on a Raspberry Pi and Windows.
 
-I've been working on this chatbot on and off for about 17 years, and while I've made a lot of progress, there's a great deal of work left to do. I was thinking that if this was a group project, development would pick up speed considerably, plus it could be more fun to work on. I'd like see if there's any interest out there.
+I've been working on this chatbot on and off for about 20 years, and while I've made a lot of progress, there's a great deal of work left to do.
 
 I wanted to make a chatbot that is better than the AIML types that are so common. Something that would pay attention to who it was talking to and try to learn from that person. It would not guess at an answer when it has no understanding of what was said.
 
@@ -37,15 +37,6 @@ For questions, a function is called based on the verb used. The information requ
 * Editor: Code::Blocks
 * Compiler: GCC
 * Platform: Raspberry Pi with Raspian and Windows
-
-## What I need help with
-* Clearer and more complete documentation
-* Getting it to understand more sentences
-* Clearer code
-* The various issues in the issue list
-* Ideas in general
-
-See "Issues" for a list of things that need to be worked on.
 
 ## Long term goals
 * Will form opinions of the people it talks to
