@@ -1,7 +1,6 @@
 alice
 amanda
 amy
-andrea
 angela
 ann
 anna
@@ -14,7 +13,6 @@ betty
 beverly
 bonnie
 brenda
-brooke
 carol
 carole
 carolyn

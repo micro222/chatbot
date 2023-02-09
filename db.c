@@ -1,3 +1,7 @@
+//#define FOUND 0
+//#define  3
+//#define  4
+
 /*
 lookup value (key, value)
 add pair (key, value)
@@ -15,15 +19,13 @@ remove pair (key)
 //    key, value
 //
 //  returns
-//  FOUND or NOT_FOUND
+//    0 if ,
 //
 //  1) opens the database
 //  2) gets a line
 //  3) extracts the key
-//  4) checks the key to see if it's the one we're looking for
-//  5) goes to step 2 if not
-//  6) returns value
-//
+//  4) checks the value to see if it's the one we're looking for
+
 int db_lookup(char*target_key, char*db_value){
 
     FILE *general;
@@ -46,7 +48,7 @@ int db_lookup(char*target_key, char*db_value){
        }
 
      // get the key
-       linepos =  copy_to_delimiter(line, db_key, ':', 0);
+       linepos =  copy_to_delimiter(line, db_key, ':');
        // is it the key we're looking for?
        // if not, get another line
 
@@ -88,44 +90,47 @@ int db_add_pair(char*key, char*value){
 }
 
 
+
 //--------------------------------
-//    look up a first name and return the id number
-//    returns 0 if error
-//
+//  returns
+//    0 if not found
+//    id number if found
 //
 int db_get_id(char* firstname)
 {
 
-    int id;
-    char id_string[20], name[20];
+   int i;
+    char id_string[20];
+    char db_name[20];
+    char string[20];
     char key[80];
     int result;
 
-    for(id=1; id<1000; id++)
+    for(i=1; i<100; i++)
     {
-        snprintf (id_string, sizeof(id_string), "%d",id); // convert id number from integer to string (integer, string, base)
-        sprintf(key, "#%s > firstname", id_string);
-        result = db_lookup(key, name);
+        // look up name, retreive id
 
-        // look up the first name
-        if(result==FOUND)
-        {
-            result = strcmp(name, firstname);
-            if(result==0)
-            {
-                // That's the entity we're looking for
-                return id;
-            }
-            // That's not the entity we're looking for, so try again
-            else {
-                continue;
-            }
+        // make id_string
+
+    //    strcpy(id_string,"#");
+    //    itoa(i, string,10);  // integer to string. integer, string, base
+    //    strcat(id_string, string );
+        sprintf(clipboard, "#%d", i); // make id string
+//printf("D119");
+        // make key
+        sprintf(key, "%s > firstname", clipboard);
+//printf("D122");
+        result = db_lookup(key, db_name);
+//printf("D124");
+        if(result == 0)continue;
+
+        if(strcmp(db_name, firstname) == 0){
+            return i;
         }
     }
-
-    return 0; // database size limit reached (DGI)
-
+    return 0; // not in the database
 }
+
 
 
 //--------------------------------------------------------
@@ -208,21 +213,39 @@ int db_next_available_id(void){
 
    int i;
    char value[20];
+   char string[20];
    int result;
-   char key[20], id_string[20];
+   char key[20];
+   char id_string[20];
 
-   //id[0]=0;
-   for(i=1; i<1000; i++){
+   for(i=1; i<100; i++){
       // look for id, first_name
-      snprintf (id_string, sizeof(id_string), "%d",i);
-      strcpy(key,"#");
-      strcat(key, id_string);
-      strcat(key, " > class");
+
+//printf("I: %d", i);
+
+//strcpy(clipboard, "#"); printf("N220");
+//itoa(i, string,10);
+//strcat(clipboard, string);
+sprintf(clipboard, "#%d", i); // make id string
+
+strcpy(key, clipboard);
+strcat(key, " > class");
+
+      //strcpy(key,"#");
+      //strcat(key, id_string);
+      //strcat(key, " > class");
       result = db_lookup(key,value);
       if(result != FOUND){
+
         //    printf("%d, %s   ", i, id_string);
-         return i;
+
+        //sscanf(id_string, "%d", i);
+        //strcpy();
+
+        //printf(" S: %s", id_string);
+        return i;
       }
+   //   printf("N245");
    }
 
    printf("error in function DNAI");
@@ -277,25 +300,20 @@ int db_copy_word(char* line, int position, char* value)
 //
 // usualy the copy then gets compared to a key that's being searched for
 //
-int copy_to_delimiter(char* from, char* to, char delimiter, int start){
+int copy_to_delimiter(char* from, char* to, char delimiter){
 
    int i;
 
    for(i=0; i<80; i++){
-      if (from[i+start] == delimiter){
+      if (from[i] == delimiter){
          to[i] = NULL; //
-         return i + 1 + start;
-      }
-      else if (from[i+start] == 10 || from[i+start] == 13){
-         to[i] = NULL; //
-         return 0;
+         return i + 1;
       }
       else{
-         to[i] = from[i+start];
+         to[i] = from[i];
+         //i++;
       }
    }
-   i++;
-   to[i+start] = NULL;
 return i;
 }
 
@@ -315,31 +333,18 @@ int db_root_check(char* startingwith, char* lookingfor){
 
    strcpy(subject, startingwith);
    for(n=0; n<5; n++){
-       sprintf(key, "%s > class", subject);
+       strcpy(key, subject); // prepare to lookup
+       strcat(key," > class"); // prepare to lookup
        result = db_lookup(key, value); // lookup
+//printf("\nSW:%s LF:%s SUB:%s K:%s V:%s R:%d   ", startingwith, lookingfor, subject, key, value, result);
        if(result == NOT_FOUND) return NOT_FOUND; // if not in database at all, exit
-       if(strcmp(value,lookingfor)==0)return MATCH;  // is it what we're looking for?
-       if(strcmp(value,"root")==0)return NO_MATCH; // has it reached to root?
+       if(strcmp(value,lookingfor)==0)return FOUND;  // is it what we're looking for?
+//       if(strcmp(value,"root")==0)return FOUND; // has it reached root?
+       if(strcmp(value,"root")==0)break; // has it reached root?
+
        strcpy(subject,value); // if no luck so far, the value becomes the subject
    }
-  return NO_MATCH;  // not found
-}
 
-//-----------------------------------------------------------------------
-//
-// ex:
-// db_check("cat");
-//
-int db_check(char* subject){
-
-   char key[60];
-   char value[20];
-
-   sprintf(key, "%s > class", subject);
-   return db_lookup(key, value); // lookup
+  return NOT_FOUND;  // not found
 
 }
-
-
-
-

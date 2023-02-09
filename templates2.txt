@@ -1,0 +1,45 @@
+// The robot will try to match the sentence with one of the templates below.
+// If there's a match, the specified function will deal with the rest of the processing.
+// The first 2 numbers indicate which words are passed to the function.
+//
+// Note, where there ia a *, no match is needed
+
+// CLASS QUESTIONS
+// parameters: subject
+what is *, handle_class_question,3           // ex: what is coffee?
+what are *, handle_class_question,3                     // ex: what are raccoons?
+what is a *, handle_class_question,4           // ex: what is a cow?
+
+// ATTRIBUTE QUESTIONS
+// parameters: subject, attribute
+what * is *, handle_attribute_question,4, 2              // ex: what color is chocolate
+where is *, handle_attribute_question,3, location        // ex: where is lucy?
+how is *, handle_attribute_question,3, state     //
+
+// CLASS STATEMENTS
+// parameters: subject, class
+a * is a *, handle_class_statement,2, 5                 // ex: a cat is an animal
+* is a *, handle_class_statement,1, 4                   // ex: beer is a beverage
+
+// ATTRIBUTE STATEMENTS
+// parameters: subject, attribute
+* is *, handle_attribute_statement,1, 3                 // ex: chocolate is brown
+
+// ATTRIBUTE CONFIRMAION QUESTIONS
+// parameters: subject, attribute
+is * *, handle_attribute_confirmation_question,2, 3     // ex: is chocolate brown
+
+// HAVE QUESTIONS
+do * have a *, handle_have_question,2, 5         // ex: do you have a dog, daughter, cold, dollar
+do * have *, handle_have_question,2, 4           // ex: do you have influenza
+
+// ABILITY
+can * *, handle_ability_question,2, 3                    // ex: can cows fly
+* can *, handle_ability_statement,1, 3                   // ex: crows can fly
+
+// HAVE STATEMENTS
+* have a *, handle_have_statement,1, 4             // ex: i have a dog, daughter, cold
+* have *, handle_have_statement,1, 3               // i have influenza
+
+help, handle_help,  //
+ayuda, handle_help, //

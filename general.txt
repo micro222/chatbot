@@ -1,40 +1,91 @@
-// This is the main database. Most of the robot's knowledge is contained here.
-// Individua pieces of information is stored as key-value pairs. It uses terms that are organized in a tree structure. 
-// 
-// Level 0 (ROOT)
 
-object > class:	root
-attribute > class: root
-substance > class: root
-action > class:	root
-phenomenon > class: root
-concept > class: root
 
-//------------------------------
+// ROOT
+object > class:	    root
+action > class:	    root
+place > class:      root
+substance > class:	root
+phenomenon > class:	root
+concept > class:	root
+attribute > class:	root
+class > class: attribute    
+//---------------------------------------------
 
-// Level 1
+//  THE ROBOT
+#1 > class:robot
+#1 > gender:male
+#1 > firstname:ivan
+#1 > state: operational
+robot > class:person  // I haven't decided the best way to deal with this
 
-creature > class: object
-device > class: object
-vehicle > class: object
-furnature > class: object
-tool > class: object
-plant > class: object
-color > class: attribute
-gender > class: attribute
-first_name > class: attribute
-location > class: attribute
-creation_date > class: attribute
-part_of > class: attribute
-material > class: substance
-beverage > class: substance
-tool > class: device
-material > class: substance
+material > class:substance
+furniture > class:object
+tool > class:object
 
-//------------------------------
+
+// ATTRIBUTE
+color > class:attribute
+gender > class:attribute
+male > class:gender
+female > class:gender
+relation > class:attribute
+condition > class:attribute
+state > class:attribute
+
+// RELATIONS
+brother > class:relation
+sister > class:relation
+mother > class:relation
+father > class:relation
+grandfather > class:relation
+grandmother > class:relation
+grandson > class:relation
+granddaughter > class:relation
+wife > class:relation
+husband > class:relation
+girlfriend > class:relation
+boyfriend > class:relation
+son > class:relation
+daughter > class:relation
+brother > class:relation
+
+sister > gender:female
+mother > gender:female
+father > gender:male
+grandfather > gender:male
+grandmother > gender:female
+grandson > gender:male
+granddaughter > gender:female
+wife > gender:female
+husband > gender:male
+girlfriend > gender:female
+boyfriend > gender:male
+son > gender:male
+daughter > gender:female
+
+
+// CONDITIONS
+acne > class:condition
+shingles > class:condition
+ebola > class:condition
+covid > class:condition
+
+
+// STATES
+happy > class:state
+sad > class:state
+angry > class:state
+mad > class:state
+busy > class:state
+bored > class:state
+tired > class:state
+excited > class:state
+sick > class:state
+hungry > class:state
+pregnant > class:state
+operational > class:state  // this one is for the robot
 
 // COLORS
-
 black > class:	color
 brown > class:	color
 red > class:	color
@@ -46,27 +97,11 @@ purple > class:	color
 gray > class:	color
 white > class:	color
 pink > class:	color
-magenta > class:color
+magenta > class:	color
 cyan > class:	color
 
-//-------------------------------------------------
-
-// MATERIALS
-
-steel > class: material
-aluminum > class: material
-wood > class: material
-copper > class:	material
-plastic > class: material
-//cement >
-//concrete >
-
-
-//-------------------------------------------------
 
 // CREATURES
-
-// CREATURE TYPES
 
 bird > class: creature
 bird > ability > fly: 9
@@ -83,13 +118,13 @@ cat > class:animal
 dog > class:animal
 fish > class:creature
 lion > class:animal
-tiger > class:animal
-monkey > class:animal
+tiger >
+monkey >
 ape > class:animal
-cow > class:animal
+cow >
 pig > class:animal
-squirrel > class:animal
-raccoon > class:animal
+squirrel >
+raccoon >
 horse > class:animal
 crow > class:bird
 crow > color:black
@@ -97,13 +132,16 @@ crow > ability > fly:10
 crow > ability > talk:0
 crow > ability > swim:0
 
+//----------------------------------
+
+creature > class:	object
 creature > ability > fly:	4
 creature > ability > walk:	6
 creature > ability > talk:	2
 creature > ability > run:	8
 creature > ability > swim:	5
 creature > ability > eat:	10
-creature > ability > rating:	10
+creature > ability > opinion:	10
 creature > ability > sing:	2
 creature > ability > dance:	2
 creature > ability > move:	10
@@ -126,38 +164,86 @@ person > ability > talk:	9
 person > ability > run:	9
 person > ability > swim:	5
 person > ability > eat:	10
-person > ability > rating:	10
+person > ability > opinion:	10
+
+//--------------------------------------------------
+
+// ACTIONS
+
+burn > class:action
+sit > class:action
+stand > class:action
+cry: > class:action
+dance > class:action
+drink > class:action
+eat > class:action
+explode > class:action
+fly > class:action
+fall > class:action
+go > class:action
+hit > class:action
+kick > class:action
+laugh > class:action
+move > class:action
+run > class:action
+swim > class:action
+scream > class:action
+talk > class:action
+think: > class:action
+walk > class:action
+yell > class:action
+
+// BODY PARTS
+
+foot
+leg
+arm
+head
+face
+hair
+nose
+mouth
+chin
+cheek
+eye
+ear
+toungue
+tooth
+neck
+hand
+finger
+thumb
+chest
+back
+stomach
+elbow
+wrist
+shoulder
+knee
+liver
+heart
+brain
+lung
+bone
 
 //---------------------------------------------
 
-// ACTIONS
-eat > class: action
-drink > class: action
-run > class: action
-walk > class: action
-talk > class: action
-fly > class: action
-go > class: action
-move > class: action
-fall > class: action
-hit > class: action
-kick > class: action
-calculate > class: action
-think > class: action
-read > class: action
-write > class: action
-see > class: action
-hear > class: action
-smell > class: action
-taste > class: action
-feel > class: action
-jump > class: action
+guitar > class:object
+piano > class:object
 
-//--------------------------------------------
+chair > class:object
+table > class:object
+bed class:furnature
+tv > class:object
+gun > class:object
+
+//---------------------------------------------
 
 // KITCHEN ITEMS
 
 appliance > class: device
+tool > class: device
+
 plate > class:	tool
 glass > class:	tool
 cup > class:	tool
@@ -170,159 +256,80 @@ toaster > class: appliance
 dishwasher > class: appliance
 fridge > class: appliance
 
+//-------------------------------------------------
+
+// MATERIALS
+
+steel > class:	material
+aluminum > class:	material
+wood > class:	material
+copper > class:	material
+plastic > class:	material
+//cement >
+//concrete >
+
 //--------------------------------------------------
 
 // VEHICLES
 
-plane > class: vehicle
-train > class: vehicle
-car > class: vehicle
-truck > class: vehicle
-bike > class: vehicle
-motorcycle > class: vehicle
-
-//-------------------------------------------------
+plane > class:vehicle
+train > class:vehicle
+car > class:vehicle
+truck > class:vehicle
+bike > class:vehicle
+motorcycle > class:vehicle
 
 // FOOD
-
-//fruit > 
-//apple > 
-//orange > 
-//toast >
-//bread >
-//potato >
-//onion >
-//tomato >
-//milk >
-//carrot >
-beer > class: beverage
+fruit > class:object
+apple > class:fruit
+orange > class:fruit
+toast >
+bread >
+potato >
+onion >
+tomato >
+milk >
+carrot >
+beer > class:beverage
 
 //-----------------------------------------------------
 
 // MISC
 
-//fire
-//water
-//rock
-//pen
-//pencil
-//paper
-
-foot > class: object
+fire
+water > class:substance
+rock > class:object
+pen > class:object
+pencil > class:object
+paper > class:substance
+beverage > class:substance
+device > class:object
+vehicle > class:object
+part > class: object
+foot > class: part
 foot > part_of: creature
-//tower
+tower > class:object
 phone > class:device
 radio > class:device
 computer > class:device
 coffee > class:beverage
 grass > class:substance
 grass > color:green
-
+france > class:country
 france > location:europe
+country > class:place
 
-
-//------------------------------------------
-
-// to add later on
-
-//house >
-//wall
-//floor
-//door
-//carpet
-//stairs
-
-//window
-//road
-//sidewalk
-
-// BODY PARTS
-
-arm	 > part_of 	creature
-arm	 > class 	object
-back	 > part_of 	creature
-back	 > class 	object
-bone	 > part_of 	creature
-bone	 > class 	object
-brain	 > part_of 	creature
-brain	 > class 	object
-cheek	 > part_of 	creature
-cheek	 > class 	object
-chest	 > part_of 	creature
-chest	 > class 	object
-chin	 > part_of 	creature
-chin	 > class 	object
-ear	 > part_of 	creature
-ear	 > class 	object
-elbow	 > part_of 	creature
-elbow	 > class 	object
-eye	 > part_of 	creature
-eye	 > class 	object
-face	 > part_of 	creature
-face	 > class 	object
-finger	 > part_of 	creature
-finger	 > class 	object
-foot	 > part_of 	creature
-foot	 > class 	object
-hair	 > part_of 	creature
-hair	 > class 	object
-hand	 > part_of 	creature
-hand	 > class 	object
-head	 > part_of 	creature
-head	 > class 	object
-heart	 > part_of 	creature
-heart	 > class 	object
-knee	 > part_of 	creature
-knee	 > class 	object
-leg	 > part_of 	creature
-leg	 > class 	object
-liver	 > part_of 	creature
-liver	 > class 	object
-lung	 > part_of 	creature
-lung	 > class 	object
-mouth	 > part_of 	creature
-mouth	 > class 	object
-neck	 > part_of 	creature
-neck	 > class 	object
-nose	 > part_of 	creature
-nose	 > class 	object
-shoulder	 > part_of 	creature
-shoulder	 > class 	object
-stomach	 > part_of 	creature
-stomach	 > class 	object
-thumb	 > part_of 	creature
-thumb	 > class 	object
-tooth	 > part_of 	creature
-tooth	 > class 	object
-toungue	 > part_of 	creature
-toungue	 > class 	object
-wrist	 > part_of 	creature
-wrist	 > class 	object
-
-
-
-//---------------------------------------------
-
-//MISC
-
-//guitar
-//piano
-//chair
-//table
-bed class:furnature
-//tv
+house > class:object
+wall > class:object
+floor > class:object
+door > class:object
+carpet > class:object
+stairs > class:object
+window > class:object
+road > class:object
+sidewalk > class:object
+plant > class:object
 
 //=============================================================
 // BELOW IS DATA COLLECTED DURING USER SESSIONS
 
-#1 > class:person
-#1 > firstname:bob
-#1 > gender:male
-#2 > class:person
-#2 > firstname:ron
-#2 > gender:male
-#3 > class:person
-#3 > firstname:thor
-#4 > class:person
-#4 > firstname:annie
-#4 > gender:female

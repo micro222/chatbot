@@ -1,0 +1,10 @@
+bin/Debug/chatbot
+bin/Release/chatbot
+chatbot.cbp
+chatbot.depend
+templates.txt
+*.o
+obj
+chatbot.*
+bin
+

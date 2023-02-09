@@ -1,44 +1,36 @@
-A text-based learning robot.
+A text-based learning robot that tries to get to know its users. It runs on a Raspberry Pi and Windows.
 
+I've been working on this chatbot on and off for about 20 years, and while I've made a lot of progress, there's a great deal of work left to do.
 
-I've been working on a chatbot on and off for about 11 years, and while I've made a lot of progress, there's a great deal of work left to do. I was thinking that if this was a group project, development would pick up speed considerably, plus it could be more fun to work on. I'd like see if there's any interest out there.
+I wanted to make a chatbot that is better than the AIML types that are so common. Something that would pay attention to who it was talking to and try to learn from that person. It would not guess at an answer when it has no understanding of what was said.
 
-I wanted to make a chatbot that is better than the AIML types. Something that would pay attention to who it was talking to and try to learn from that person. It would not guess at an answer when it has no understanding of that was said. If it doesn't understand, it will explain why and ask for information in an attempt to understand. What it learns can be applied later in the conversation and with other users.
+Note: There's more info in the wiki.
 
 ## About this program
-* This is a text based robot with learning as the main emphasis
-* It tends to try to learn about the people it talks to and the world in general
+* It will try to make sense of every word in a sentence. It will never pretend to know its meaning. It will attempt to explain what it's having trouble with. The user may be able to explain new words that are new to it.
 * Its database relies on a classification of basic knowledge
 * It uses templates to interpret sentences
 * Only certain types of words are allowed to fit in the templates
-* It keeps track of the people that talk to it
 * It starts out with simple features and is expandable
-* ID numbers are used identify specific members of a category, usually people could also be pets, buildings database entries start with a number sign followed by the id number 
-
-## Short term goals
-All of these are working to some extent
-* Will expect to know who it's talking to
+* ID numbers are used identify specific members of a category, usually people could also be pets, buildings database entries start with a number sign followed by the id number* Will expect to know who it's talking to
 * Will remember elements of conversations
 * Will try to use people to expand it's knowledge
-* Will try to make sense of every part of a sentence and will reject any word it can't make sense of.
+* The source code is documented so that even non-programmers should be able to figure out what's goin on.
 
-## Long term goals
-* Will form opinions of the people it talks to
-* Will initiate conversation if the user doesn't
-* Will be thinking of various things when it's not in a conversation. This activity may have an effect on its mood, may cause it to arrive at some conclusions. It may be prompted to ask related questions. It can be asked "what are you thinking about".
+## How it works
 
-## The database
-The database is working. It's a text file called general.txt. Information is stored as a list of key-value pairs, one pair per line. The key is a series of increasingly specific keywords separated by the ">" character. Any information that is gathered during user sessions gets added to the end of the file. Specific entities such as "ronald" or "my computer" are given ID numbers. 
+Sentences are divided into 4 categories: statements, questions, commands and other.
+* Statements are used to provide data about a specified noun. The bot will store that data in it's database for future use. The bot will ask about anything that is unfamiliar to it and will point out contradictory info when nessessary
+* Questions request data about a specified noun. The bot will respond by providing that data if it's in it's database. It bot will ask about words that are unfamiliar to it.
+* The bot will consider commands it receives and may comply if it wants to. This software will eventually be installed in a 4 foot tall mobile robot so if for example it is told to go full speed into a wall it would not do so and tell the user what it thinks of his command.
+* Other sentences are dealt with individually.
 
-There is a set of functions for easy access to it.
-* db_check - checks to see if a word is in the database
-* db_lookup - give it a key and it returns a value
-* db_add_pair - adds an item to the database
-* db_root_check - checks if a word belongs to the specified class(is a subset of) 
-* db_get_id - looks up a persons first name and returns their ID number
-* db_next_available_id - provides an unused id number to be used when adding a new person (or any other specific entity) to the database
+The program relies mostly on 2 text files to interpret sentences. It's nessessary to understand these files to understand how this progem works
+1. The database. This is a list of bits of information about nouns. The essential information about these nouns is what category they are in. For example, "Bob" is classified as a person. A person is a creature. A creature is an object. "Object" is in the root category and is not classified any further. This clasification is used to determine if a sentence makes sense or not.
+2. The sentence templates. It's list of sentences with the nouns removed. After each sentence in the list there is the name of a function that will process the sentence further. The function that is chosen is determined by the type of sentence and on the verb used.
 
-## Limitations
+
+## Current limitations
 * Only full sentences
 * No pronouns, adjectives or adverbs
 * No figures of speech
@@ -50,14 +42,11 @@ There is a set of functions for easy access to it.
 * Language: C
 * Editor: Code::Blocks
 * Compiler: GCC
-* Platform: Windows console
+* Platform: Raspberry Pi with Raspian and Windows
 
-## What I need help with
-* Clearer and more complete documentation
-* Clearer code
-* The various issues in the issue list
-* Ideas in general
+## Long term goals
+* Will form opinions of the people it talks to
+* Will initiate conversation if the user doesn't
+* Will be able to cope with pronouns
+* Will be thinking of various things when it's not in a conversation. This activity may have an effect on its mood, may cause it to arrive at some conclusions. It may be prompted to ask related questions. It can be asked "what are you thinking about".
 
-See "Issues" for a list of things that need to be worked on.
-
-To run this software on windows, place all the files in a folder and double-click on chat.exe. For other platforms, you'll need to do a little editing and compile. 
