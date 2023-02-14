@@ -11,7 +11,6 @@ Note: There's more info in the wiki.
 * Its database relies on a classification of basic knowledge
 * It uses templates to interpret sentences
 * Only certain types of words are allowed to fit in the templates
-* It starts out with simple features and is expandable
 * ID numbers are used identify specific members of a category, usually people could also be pets, buildings database entries start with a number sign followed by the id number* Will expect to know who it's talking to
 * Will remember elements of conversations
 * Will try to use people to expand it's knowledge
@@ -44,9 +43,11 @@ The program relies mostly on 2 text files to interpret sentences. It's nessessar
 * Compiler: GCC
 * Platform: Raspberry Pi with Raspian and Windows
 
+## Short term goals
+* Will ask questions when nothing is typed by the user
+
 ## Long term goals
 * Will form opinions of the people it talks to
-* Will initiate conversation if the user doesn't
 * Will be able to cope with pronouns
 * Will be thinking of various things when it's not in a conversation. This activity may have an effect on its mood, may cause it to arrive at some conclusions. It may be prompted to ask related questions. It can be asked "what are you thinking about".
 
