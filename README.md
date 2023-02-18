@@ -30,7 +30,9 @@ This function will concider 7 posibilities
 * 7   the sentence is without issues
 
 If 7 applies, the programm will type "I'll take a note of that" and the following entry will be added to the database (general.txt)
+...
               grass > color: green;
+...              
 If 1 to 6, the program will inform the user of the issue.
 
 Questions are answered by looking them up in the database. 
