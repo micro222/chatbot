@@ -16,9 +16,9 @@ Note: There's more info in the wiki.
 
 ## How it works
 
-The program first separates the nouns from the rest of the sentence. I refer to the rest of the sentence as a template. From the template the program can determine wether the sentence is a question, statement, command or something else. The templates that the program recognizes are in a file called templates2.txt. Each template has it's own function to process it and is specified in that file. The functions are in handle.c.
+The bot first separates the nouns from the rest of the sentence. I refer to the rest of the sentence as a template. From the template the bot can determine wether the sentence is a question, statement, command or something else. The templates that the bot recognizes are in a file called templates2.txt. Each template has it's own function to process it and is specified in that file. The functions are in handle.c.
 
-So let's run through an example. The user types "grass is green". The nouns are removed and the template is "* is *". The purpose of this sentence is to inform the program that the specified attribute (the color green) is to be applied to the specified object or substance (grass). The function "handle_attribute_statement" is called with grass and green as arguments.
+So let's run through an example. The user types "grass is green". The nouns are removed and the template is "* is *". The purpose of this sentence is to inform the bot that the specified attribute (the color green) is to be applied to the specified object or substance (grass). The function "handle_attribute_statement" is called with grass and green as arguments.
 
 This function will concider 7 posibilities
 * 1   grass is not in the database
@@ -29,7 +29,7 @@ This function will concider 7 posibilities
 * 6   the info contradicts what is in the database
 * 7   the sentence is without issues
 
-If 7 applies, the programm will type "I'll take a note of that" and the following entry will be added to the database (general.txt)
+If 7 applies, the bot will type "I'll take a note of that" and the following entry will be added to the database (general.txt)
 ```
               grass > color: green;
 ```              
