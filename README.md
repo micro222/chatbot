@@ -1,6 +1,4 @@
-A text-based learning robot that tries to get to know its users. It runs on a Raspberry Pi and Windows.
-
-I've been working on this chatbot on and off for about 20 years, and while I've made a lot of progress, there's a great deal of work left to do.
+A text-based learning robot that tries to get to know its users. It runs on a Raspberry Pi and Windows. I've been working on this chatbot on and off for about 20 years, and while I've made a lot of progress, there's a great deal of work left to do.
 
 I wanted to make a chatbot that is better than the AIML types that are so common. Something that would pay attention to who it was talking to and try to learn from that person. It would not guess at an answer when it has no understanding of what was said.
 
@@ -18,15 +16,29 @@ Note: There's more info in the wiki.
 
 ## How it works
 
-Sentences are divided into 4 categories: statements, questions, commands and other.
-* Statements are used to provide data about a specified noun. The bot will store that data in it's database for future use. The bot will ask about anything that is unfamiliar to it and will point out contradictory info when nessessary
-* Questions request data about a specified noun. The bot will respond by providing that data if it's in it's database. It bot will ask about words that are unfamiliar to it.
-* The bot will consider commands it receives and may comply if it wants to. This software will eventually be installed in a 4 foot tall mobile robot so if for example it is told to go full speed into a wall it would not do so and tell the user what it thinks of his command.
-* Other sentences are dealt with individually.
+The program first separates the nouns from the rest of the sentence. I refer to the rest of the sentence as a template. From the template the program can determine wether the sentence is a question, statement, command or something else. The templates that the program recognizes are in a file called templates2.txt. Each template has it's own function to process it and is specified in that file. The functions are in handle.c.
 
-The program relies mostly on 2 text files to interpret sentences. It's nessessary to understand these files to understand how this progem works
-1. The database. This is a list of bits of information about nouns. The essential information about these nouns is what category they are in. For example, "Bob" is classified as a person. A person is a creature. A creature is an object. "Object" is in the root category and is not classified any further. This clasification is used to determine if a sentence makes sense or not.
-2. The sentence templates. It's list of sentences with the nouns removed. After each sentence in the list there is the name of a function that will process the sentence further. The function that is chosen is determined by the type of sentence and on the verb used.
+So let's run through an example. The user types "grass is green". The nouns are removed and the template is "* is *". The purpose of this sentence is to inform the program that the specified attribute (the color green) is to be applied to the specified object or substance (grass). The function "handle_attribute_statement" is called with grass and green as arguments.
+
+This function will concider 7 posibilities
+* 1   grass is not in the database
+* 2   grass is neither an object or a substance and therefore can't have a color
+* 3   green is not in the database
+* 4   green is in the database but is not an attribute
+* 5   the info is already in the database
+* 6   the info contradicts what is in the database
+* 7   the sentence is without issues
+
+If 7 applies, the programm will type "I'll take a note of that" and the following entry will be added to the database (general.txt)
+              grass > color: green;
+If 1 to 6, the program will inform the user of the issue.
+
+Questions are answered by looking them up in the database. 
+
+The program will consider commands it receives and may comply if it wants to. This software will eventually be installed in a 4 foot tall mobile robot so if for example it is told to go full speed into a wall it would not do so and tell the user what it thinks of his command. 
+
+Other sentences are dealt with individually.
+
 
 
 ## Current limitations
